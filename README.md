@@ -8,8 +8,8 @@ One could argue that video does a better job at recording life’s moments, but 
 Along with syncing with friends, soundbites can shared to the public so that everyone can live your experiences. This could eventually be a platform for artists and musicians where they could share songs they are working on or songs that are inspiring them for all of their fans to listen to.
 
 ## Why does this project make sense in a mobile form factor?
-	* We have mobile devices with us all the time
-	* All mobile devices have a microphone and speakers
-	* Each smartphone can connect to the internet for sharing
-	* Large touch displays allow users to interact with their tuneline
-	* Mobile devices allow rich collection of metadata which is used for searching soundbites
+* We have mobile devices with us all the time
+* All mobile devices have a microphone and speakers
+* Each smartphone can connect to the internet for sharing
+* Large touch displays allow users to interact with their tuneline
+* Mobile devices allow rich collection of metadata which is used for searching soundbites

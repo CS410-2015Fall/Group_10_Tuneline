@@ -17,7 +17,7 @@ window.onerror = (msg, url, line, column, e) => {
 
 try {
     document.addEventListener('deviceready', () => {
-        React.render(<App />, document.body);
+        React.render(<App />, document.getElementById('main-content'));
     }, false)
 } catch (e) {
     handleError(e);

@@ -11,6 +11,10 @@
                         {
                             "xml": "<feature name=\"Device\"><param name=\"browser-package\" value=\"Device\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"AndroidPersistentFileLocation\" value=\"Internal\" />",
+                            "count": 1
                         }
                     ]
                 }
@@ -69,10 +73,16 @@
         },
         "cordova-plugin-crosswalk-webview": {
             "PACKAGE_NAME": "com.cs410.tuneline"
+        },
+        "cordova-plugin-media-capture": {
+            "PACKAGE_NAME": "com.cs410.tuneline"
         }
     },
     "dependent_plugins": {
         "com.ququplay.websocket.WebSocket": {
+            "PACKAGE_NAME": "com.cs410.tuneline"
+        },
+        "cordova-plugin-file": {
             "PACKAGE_NAME": "com.cs410.tuneline"
         }
     }

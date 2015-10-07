@@ -1,2 +1,11 @@
 *.sublime-workspace
 *.sublime-project
+node_modules
+
+www/js/vendor
+www/js/*.js
+
+platforms
+
+plugins/*
+!plugins/fetch.json

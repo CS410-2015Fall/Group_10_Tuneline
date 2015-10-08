@@ -312,13 +312,10 @@ webpackJsonp([0],[
 		displayName: 'RecordButton',
 
 		handleClick: function handleClick(event) {
-			//RecordController.startRecording('testFile');
-			var media = new Media('fileName.mp3');
-			media.startRecord();
-			alert('Supposed to have started recording.');
+			RecordController.startRecording('testFile.amr');
 		},
 		render: function render() {
-			return React.createElement(FloatingActionButton, { iconClassName: 'muidocs-icon-action-grade' });
+			return React.createElement(FloatingActionButton, { onClick: this.handleClick, iconClassName: 'muidocs-icon-action-grade' });
 		}
 	});
 
@@ -5327,14 +5324,20 @@ webpackJsonp([0],[
 /* 217 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	module.exports = {
-			startRecording: function startRecording(fileName) {
-					var media = new Media(fileName);
-					media.startRecord();
-					alert('Supposed to have started recording.');
-			}
+		startRecording: function startRecording(fileName) {
+			// var media = new Media(cordova.file.applicationStorageDirectory+'/'+fileName);
+			// media.startRecord();
+			// alert(cordova.file.applicationStorageDirectory);
+			var options = { limit: 1, duration: 10 };
+			navigator.device.capture.captureAudio(function (mediaFiles) {
+				console.log(mediaFiles);
+			}, function (error) {
+				console.log(error);
+			}, options);
+		}
 
 	};
 

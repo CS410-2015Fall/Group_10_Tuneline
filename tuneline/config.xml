@@ -28,6 +28,9 @@
         <content src="index.html" />
         <allow-intent href="market:*" />
     </platform>
-    <hook type="before_prepare" src="scripts/appBeforePrepare.js" />
-    <hook type="after_prepare" src="scripts/appAfterPrepare.js" />
+    <hook src="scripts/appBeforePrepare.js" type="before_prepare" />
+    <hook src="scripts/appAfterPrepare.js" type="after_prepare" />
+    <preference name="xwalkVersion" value="14+" />
+    <preference name="xwalkCommandLine" value="--disable-pull-to-refresh-effect" />
+    <preference name="xwalkMode" value="embedded" />
 </widget>

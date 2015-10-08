@@ -76,6 +76,9 @@
         },
         "cordova-plugin-media-capture": {
             "PACKAGE_NAME": "com.cs410.tuneline"
+        },
+        "cordova-plugin-media": {
+            "PACKAGE_NAME": "com.cs410.tuneline"
         }
     },
     "dependent_plugins": {

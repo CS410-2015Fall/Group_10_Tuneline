@@ -27,7 +27,7 @@ window.onerror = (msg, url, line, column, e) => {
 try {
     document.addEventListener('deviceready', () => {
     	injectTapEventPlugin();
-        React.render(<RecordButton buttonwidth="90%"/>, document.body);
+        React.render(<RecordButton />, document.body);
     }, false)
 } catch (e) {
     handleError(e);

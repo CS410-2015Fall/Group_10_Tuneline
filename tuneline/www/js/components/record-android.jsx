@@ -1,7 +1,21 @@
 const React = require('react');
 const FloatingActionButton = require('material-ui/lib/floating-action-button');
+const RaisedButton = require('material-ui/lib/raised-button');
 
 const RecordController = require('./recordcontroller');
+
+var buttonStyle = {
+    height: '500px',
+    width: '500px'
+};
+
+var divStyle = {
+	width: '100%',
+	height: '100%',
+	textAlign: 'center'
+};
+
+
 
 const RecordButton = React.createClass({
 	startRecord: function(event) {
@@ -19,18 +33,18 @@ const RecordButton = React.createClass({
 	},
 	render() {
 	    return (
-	    	<div>
-		        <FloatingActionButton onClick={this.startRecord} width={this.props.buttonwidth}>
-		        	<i className="material-icons">&#xE029;</i>
+	    	<div style={divStyle}>
+		        <FloatingActionButton onClick={this.startRecord} style={buttonStyle}>
+		        	<i className="fa fa-microphone"></i>
 		        </FloatingActionButton>
 		        <FloatingActionButton onClick={this.stopRecord}>
-		        	<i className="material-icons">&#xE034;</i>
+		        	<i className="fa fa-stop"></i>
 		        </FloatingActionButton>
 		        <FloatingActionButton onClick={this.play}>
-		        	<i className="material-icons">&#xE037;</i>
+		        	<i className="fa fa-play"></i>
 		        </FloatingActionButton>
 		        <FloatingActionButton onClick={this.stop}>
-		        	<i className="material-icons">&#xE037;</i>
+		        	<i className="fa fa-stop"></i>
 		        </FloatingActionButton>
 	        </div>
 	    );

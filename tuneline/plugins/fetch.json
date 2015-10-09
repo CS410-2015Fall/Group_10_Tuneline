@@ -63,14 +63,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "pro.fing.cordova.gapreload": {
-        "source": {
-            "type": "registry",
-            "id": "pro.fing.cordova.gapreload"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "com.ququplay.websocket.WebSocket": {
         "source": {
             "type": "git",
@@ -78,14 +70,6 @@
             "subdir": "."
         },
         "is_top_level": false,
-        "variables": {}
-    },
-    "cordova-plugin-crosswalk-webview": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-crosswalk-webview"
-        },
-        "is_top_level": true,
         "variables": {}
     },
     "cordova-plugin-media-capture": {

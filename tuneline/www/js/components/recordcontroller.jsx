@@ -2,19 +2,42 @@ var recordButtonMedia;
 
 module.exports = {
 	startRecording : function(fileName){
-		recordButtonMedia = new Media(cordova.file.applicationStorageDirectory+'/'+fileName);
+		recordButtonMedia = new Media(fileName, success, failure, status);
 		recordButtonMedia.startRecord();
-		alert(cordova.file.applicationStorageDirectory);
-		// var options = { limit: 1, duration: 10 };
-		// navigator.device.capture.captureAudio(function(mediaFiles){
-		// 	console.log(mediaFiles);
-		// }, function(error) {
-		// 	console.log(error);
-		// } , options);
 	},
 
 	stopRecording : function(){
-		recordButtonMedia.stopRecord();
+		if(recordButtonMedia !== null){
+			recordButtonMedia.stopRecord();
+			recordButtonMedia.release();
+			return recordButtonMedia.src
+		}
+	},
+
+	playMedia :  function(fileName){
+		if(recordButtonMedia !== null){
+			recordButtonMedia = new Media(fileName, success, failure, status);
+			recordButtonMedia.play();
+		}
+	},
+
+	stopMedia :  function(){
+		if(recordButtonMedia !== null){
+			recordButtonMedia.stop();
+			recordButtonMedia.release();
+		}
 	}
 
 };
+
+var success = function(){
+
+}
+
+var failure = function(error){
+	alert('error: '+error.code+' : ' + error.message);
+}
+
+var status = function(){
+	alert(recordButtonMedia.src);
+}

@@ -42,7 +42,7 @@ webpackJsonp([0],[
 	try {
 	    document.addEventListener('deviceready', function () {
 	        injectTapEventPlugin();
-	        _react2['default'].render(_react2['default'].createElement(_componentsRecordAndroid2['default'], null), document.body);
+	        _react2['default'].render(_react2['default'].createElement(_componentsRecordAndroid2['default'], { buttonwidth: '90%' }), document.body);
 	    }, false);
 	} catch (e) {
 	    handleError(e);
@@ -312,17 +312,58 @@ webpackJsonp([0],[
 		displayName: 'RecordButton',
 
 		startRecord: function startRecord(event) {
-			RecordController.startRecording('testFile.amr');
+			var now = new Date();
+			RecordController.startRecording(now.getTime() + '.m4a');
 		},
 		stopRecord: function stopRecord(event) {
-			RecordController.stopRecording();
+			this.props.audioName = RecordController.stopRecording();
+		},
+		play: function play(event) {
+			RecordController.playMedia(this.props.audioName);
+		},
+		stop: function stop(event) {
+			RecordController.stopMedia();
 		},
 		render: function render() {
 			return React.createElement(
 				'div',
 				null,
-				React.createElement(FloatingActionButton, { onClick: this.startRecord, iconClassName: 'muidocs-icon-action-grade' }),
-				React.createElement(FloatingActionButton, { onClick: this.stopRecord, iconClassName: 'muidocs-icon-action-grade' })
+				React.createElement(
+					FloatingActionButton,
+					{ onClick: this.startRecord, width: this.props.buttonwidth },
+					React.createElement(
+						'i',
+						{ className: 'material-icons' },
+						''
+					)
+				),
+				React.createElement(
+					FloatingActionButton,
+					{ onClick: this.stopRecord },
+					React.createElement(
+						'i',
+						{ className: 'material-icons' },
+						''
+					)
+				),
+				React.createElement(
+					FloatingActionButton,
+					{ onClick: this.play },
+					React.createElement(
+						'i',
+						{ className: 'material-icons' },
+						''
+					)
+				),
+				React.createElement(
+					FloatingActionButton,
+					{ onClick: this.stop },
+					React.createElement(
+						'i',
+						{ className: 'material-icons' },
+						''
+					)
+				)
 			);
 		}
 	});
@@ -5338,21 +5379,42 @@ webpackJsonp([0],[
 
 	module.exports = {
 		startRecording: function startRecording(fileName) {
-			recordButtonMedia = new Media(cordova.file.applicationStorageDirectory + '/' + fileName);
+			recordButtonMedia = new Media(fileName, success, failure, status);
 			recordButtonMedia.startRecord();
-			alert(cordova.file.applicationStorageDirectory);
-			// var options = { limit: 1, duration: 10 };
-			// navigator.device.capture.captureAudio(function(mediaFiles){
-			// 	console.log(mediaFiles);
-			// }, function(error) {
-			// 	console.log(error);
-			// } , options);
 		},
 
 		stopRecording: function stopRecording() {
-			recordButtonMedia.stopRecord();
+			if (recordButtonMedia !== null) {
+				recordButtonMedia.stopRecord();
+				recordButtonMedia.release();
+				return recordButtonMedia.src;
+			}
+		},
+
+		playMedia: function playMedia(fileName) {
+			if (recordButtonMedia !== null) {
+				recordButtonMedia = new Media(fileName, success, failure, status);
+				recordButtonMedia.play();
+			}
+		},
+
+		stopMedia: function stopMedia() {
+			if (recordButtonMedia !== null) {
+				recordButtonMedia.stop();
+				recordButtonMedia.release();
+			}
 		}
 
+	};
+
+	var success = function success() {};
+
+	var failure = function failure(error) {
+		alert('error: ' + error.code + ' : ' + error.message);
+	};
+
+	var status = function status() {
+		alert(recordButtonMedia.src);
 	};
 
 /***/ },

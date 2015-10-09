@@ -18,6 +18,7 @@
     <platform name="android">
         <content src="index-android.html" />
         <allow-intent href="market:*" />
+        <preference name="AndroidPersistentFileLocation" value="Internal" />
     </platform>
     <platform name="ios">
         <content src="index-ios.html" />
@@ -30,7 +31,4 @@
     </platform>
     <hook src="scripts/appBeforePrepare.js" type="before_prepare" />
     <hook src="scripts/appAfterPrepare.js" type="after_prepare" />
-    <preference name="xwalkVersion" value="14+" />
-    <preference name="xwalkCommandLine" value="--disable-pull-to-refresh-effect" />
-    <preference name="xwalkMode" value="embedded" />
 </widget>

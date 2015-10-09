@@ -13,22 +13,6 @@
                             "count": 1
                         },
                         {
-                            "xml": "<preference name=\"webView\" value=\"org.crosswalk.engine.XWalkWebViewEngine\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<preference default=\"14+\" name=\"xwalkVersion\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<preference default=\"--disable-pull-to-refresh-effect\" name=\"xwalkCommandLine\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<preference default=\"embedded\" name=\"xwalkMode\" />",
-                            "count": 1
-                        },
-                        {
                             "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
                             "count": 1
                         },
@@ -63,13 +47,15 @@
                         {
                             "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
-                        },
+                        }
+                    ]
+                }
+            },
+            "config.xml": {
+                "parents": {
+                    "/*": [
                         {
-                            "xml": "<access origin=\"*://$SERVER_HOST\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<access origin=\"*://$LIVERELOAD_HOST\" />",
+                            "xml": "<preference name=\"AndroidPersistentFileLocation\" value=\"Internal\" />",
                             "count": 1
                         }
                     ]
@@ -78,14 +64,6 @@
             "AndroidManifest.xml": {
                 "parents": {
                     "/*": [
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
-                            "count": 2
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\" />",
-                            "count": 1
-                        },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
                             "count": 3
@@ -113,37 +91,9 @@
                         {
                             "xml": "<uses-permission android:name=\"android.permission.RECORD_VIDEO\" />",
                             "count": 1
-                        }
-                    ]
-                }
-            },
-            "config.xml": {
-                "parents": {
-                    "/*": [
-                        {
-                            "xml": "<preference name=\"AndroidPersistentFileLocation\" value=\"Internal\" />",
-                            "count": 1
-                        }
-                    ]
-                }
-            },
-            "../../plugins/pro.fing.cordova.gapreload/gapreload.xml": {
-                "parents": {
-                    "/*": [
-                        {
-                            "xml": "<param name=\"SERVER_HOST\" value=\"$SERVER_HOST\" />",
-                            "count": 1
                         },
                         {
-                            "xml": "<param name=\"SERVER_PORT\" value=\"$SERVER_PORT\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<param name=\"LIVERELOAD_HOST\" value=\"$LIVERELOAD_HOST\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<param name=\"LIVERELOAD_PORT\" value=\"$LIVERELOAD_PORT\" />",
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
                             "count": 1
                         }
                     ]
@@ -156,9 +106,6 @@
             "PACKAGE_NAME": "com.cs410.tuneline"
         },
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.cs410.tuneline"
-        },
-        "cordova-plugin-crosswalk-webview": {
             "PACKAGE_NAME": "com.cs410.tuneline"
         },
         "cordova-plugin-device": {
@@ -189,9 +136,6 @@
             "PACKAGE_NAME": "com.cs410.tuneline"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.cs410.tuneline"
-        },
-        "pro.fing.cordova.gapreload": {
             "PACKAGE_NAME": "com.cs410.tuneline"
         }
     },

@@ -21,30 +21,13 @@
             },
             "../../plugins/pro.fing.cordova.gapreload/gapreload.xml": {
                 "parents": {
-                    "/*": [
-                        {
-                            "xml": "<param name=\"SERVER_HOST\" value=\"$SERVER_HOST\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<param name=\"SERVER_PORT\" value=\"$SERVER_PORT\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<param name=\"LIVERELOAD_HOST\" value=\"$LIVERELOAD_HOST\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<param name=\"LIVERELOAD_PORT\" value=\"$LIVERELOAD_PORT\" />",
-                            "count": 1
-                        }
-                    ]
+                    "/*": []
                 }
             }
         }
     },
     "installed_plugins": {
-        "cordova-plugin-whitelist": {
+        "com.ququplay.websocket.WebSocket": {
             "PACKAGE_NAME": "com.cs410.tuneline"
         },
         "cordova-plugin-console": {
@@ -56,37 +39,30 @@
         "cordova-plugin-dialogs": {
             "PACKAGE_NAME": "com.cs410.tuneline"
         },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.cs410.tuneline"
+        },
         "cordova-plugin-geolocation": {
             "PACKAGE_NAME": "com.cs410.tuneline"
         },
         "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "com.cs410.tuneline"
         },
-        "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.cs410.tuneline"
-        },
-        "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "com.cs410.tuneline"
-        },
-        "pro.fing.cordova.gapreload": {
-            "PACKAGE_NAME": "com.cs410.tuneline"
-        },
-        "cordova-plugin-crosswalk-webview": {
+        "cordova-plugin-media": {
             "PACKAGE_NAME": "com.cs410.tuneline"
         },
         "cordova-plugin-media-capture": {
             "PACKAGE_NAME": "com.cs410.tuneline"
         },
-        "cordova-plugin-media": {
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.cs410.tuneline"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.cs410.tuneline"
+        },
+        "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.cs410.tuneline"
         }
     },
-    "dependent_plugins": {
-        "com.ququplay.websocket.WebSocket": {
-            "PACKAGE_NAME": "com.cs410.tuneline"
-        },
-        "cordova-plugin-file": {
-            "PACKAGE_NAME": "com.cs410.tuneline"
-        }
-    }
+    "dependent_plugins": {}
 }

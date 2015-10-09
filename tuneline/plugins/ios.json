@@ -162,12 +162,6 @@
         "cordova-plugin-network-information": {
             "PACKAGE_NAME": "com.cs410.tuneline"
         },
-        "pro.fing.cordova.gapreload": {
-            "PACKAGE_NAME": "com.cs410.tuneline"
-        },
-        "cordova-plugin-crosswalk-webview": {
-            "PACKAGE_NAME": "com.cs410.tuneline"
-        },
         "cordova-plugin-media-capture": {
             "PACKAGE_NAME": "com.cs410.tuneline"
         },

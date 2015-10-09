@@ -1,6 +1,7 @@
 const React = require('react');
 const FloatingActionButton = require('material-ui/lib/floating-action-button');
 const RaisedButton = require('material-ui/lib/raised-button');
+const FloatingActionButtonFlex = require('./floating-action-button-flex');
 
 const RecordController = require('./recordcontroller');
 
@@ -34,18 +35,18 @@ const RecordButton = React.createClass({
 	render() {
 	    return (
 	    	<div style={divStyle}>
-		        <FloatingActionButton onClick={this.startRecord} style={buttonStyle}>
+		        <FloatingActionButtonFlex onClick={this.startRecord} style={buttonStyle}>
 		        	<i className="fa fa-microphone"></i>
-		        </FloatingActionButton>
-		        <FloatingActionButton onClick={this.stopRecord}>
+		        </FloatingActionButtonFlex>
+		        <FloatingActionButtonFlex onClick={this.stopRecord} style={buttonStyle}>
 		        	<i className="fa fa-stop"></i>
-		        </FloatingActionButton>
-		        <FloatingActionButton onClick={this.play}>
+		        </FloatingActionButtonFlex>
+		        <FloatingActionButtonFlex onClick={this.play} style={buttonStyle}>
 		        	<i className="fa fa-play"></i>
-		        </FloatingActionButton>
-		        <FloatingActionButton onClick={this.stop}>
+		        </FloatingActionButtonFlex>
+		        <FloatingActionButtonFlex onClick={this.stop} style={buttonStyle}>
 		        	<i className="fa fa-stop"></i>
-		        </FloatingActionButton>
+		        </FloatingActionButtonFlex>
 	        </div>
 	    );
   },

@@ -308,7 +308,7 @@ webpackJsonp([0],[
 	var RaisedButton = __webpack_require__(217);
 	var FloatingActionButtonFlex = __webpack_require__(219);
 
-	var RecordController = __webpack_require__(220);
+	var RecordController = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./recordcontroller\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 	var buttonStyle = {
 		height: '500px',
@@ -5936,54 +5936,7 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 220 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var recordButtonMedia;
-
-	module.exports = {
-		startRecording: function startRecording(fileName) {
-			recordButtonMedia = new Media(fileName, success, failure, status);
-			recordButtonMedia.startRecord();
-		},
-
-		stopRecording: function stopRecording() {
-			if (recordButtonMedia !== null) {
-				recordButtonMedia.stopRecord();
-				recordButtonMedia.release();
-				return recordButtonMedia.src;
-			}
-		},
-
-		playMedia: function playMedia(fileName) {
-			if (recordButtonMedia !== null) {
-				recordButtonMedia = new Media(fileName, success, failure, status);
-				recordButtonMedia.play();
-			}
-		},
-
-		stopMedia: function stopMedia() {
-			if (recordButtonMedia !== null) {
-				recordButtonMedia.stop();
-				recordButtonMedia.release();
-			}
-		}
-
-	};
-
-	var success = function success() {};
-
-	var failure = function failure(error) {
-		alert('error: ' + error.code + ' : ' + error.message);
-	};
-
-	var status = function status() {
-		alert(recordButtonMedia.src);
-	};
-
-/***/ },
+/* 220 */,
 /* 221 */
 /***/ function(module, exports, __webpack_require__) {
 

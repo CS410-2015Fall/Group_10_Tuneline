@@ -1,23 +1,27 @@
 var recordButtonMedia;
 var currentStatus = 0;
+var currentAction = '';
 
 module.exports = {
 	startRecording: function(fileName){
 		recordButtonMedia = new Media(fileName, success, failure, status);
-		recordButtonMedia.startRecord();
+		currentAction = 'RECORDING'
+		recordButtonMedia.startRecord();		
 	},
 
 	stopRecording: function(){
 		if(recordButtonMedia !== null){
 			recordButtonMedia.stopRecord();
 			recordButtonMedia.release();
+			currentAction = '';
 		}
 	},
 
 	playMedia:  function(fileName){
 		if(recordButtonMedia !== null){
 			recordButtonMedia = new Media(fileName, success, failure, status);
-			recordButtonMedia.play();
+			currentAction = 'PLAYING';
+			recordButtonMedia.play();			
 		}
 	},
 
@@ -25,6 +29,7 @@ module.exports = {
 		if(recordButtonMedia !== null){
 			recordButtonMedia.stop();
 			recordButtonMedia.release();
+			currentAction = '';
 		}
 	},
 
@@ -32,19 +37,22 @@ module.exports = {
 		recordButtonMedia.release();
 		recordButtonMedia = null;
 		currentStatus = 0;
+		currentAction = '';
+		status();
 	},
 
 	mediaStatus: function(){
 		return {
 					file: recordButtonMedia?recordButtonMedia.src:null,
-					status: currentStatus
+					status: currentStatus,
+					action: currentAction
 				}
 	}
 
 };
 
 var success = function(){
-
+	//TODO: figure out if we need this function
 }
 
 var failure = function(error){
@@ -60,7 +68,7 @@ var status = function(mediaStatus){
 	document.dispatchEvent(event);
 }
 
-//	mediaStatus
+//	mediaStatus REFERENCE
 //     Media.MEDIA_NONE = 0;
 //     Media.MEDIA_STARTING = 1;
 //     Media.MEDIA_RUNNING = 2;

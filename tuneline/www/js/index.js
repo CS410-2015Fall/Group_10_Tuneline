@@ -321,19 +321,26 @@ webpackJsonp([0],[
 		textAlign: 'center'
 	};
 
+	var recordIcon = 'fa fa-microphone';
+	var playIcon = 'fa fa-play';
+	var stopIcon = 'fa fa-stop';
+
 	var RecordButton = React.createClass({
 		displayName: 'RecordButton',
 
 		//Add the event listener for status changes and setup the initial state of the button
 		getInitialState: function getInitialState() {
 			document.addEventListener('mediaChange', (function () {
-				this.update();
+				this.setButtonState();
 			}).bind(this));
 			return {
-				data: {
-					file: null,
-					status: 0
-				}
+				file: RecordController.recordButtonMedia ? RecordController.recordButtonMedia.src : null,
+				status: RecordController.currentStatus,
+				action: RecordController.currentAction,
+				buttonColour: '#ff5722',
+				iconStyle: recordIcon,
+				buttonFunction: this.startRecord
+
 			};
 		},
 		startRecord: function startRecord(event) {
@@ -344,45 +351,65 @@ webpackJsonp([0],[
 			RecordController.stopRecording();
 		},
 		play: function play(event) {
-			RecordController.playMedia(this.state.data.file);
+			RecordController.playMedia(this.state.file);
 		},
 		stop: function stop(event) {
 			RecordController.stopMedia();
 		},
-		reset: function reset(event) {},
-		update: function update(event) {
-			this.setState({
-				data: RecordController.mediaStatus()
-			});
+		reset: function reset(event) {
+			RecordController.resetMedia();
+		},
+		setButtonState: function setButtonState() {
+			this.setState(RecordController.mediaStatus());
+
+			if (this.state.status === 2 && this.state.action === 'RECORDING') {
+				//currently recording state
+				this.setState({
+					buttonColour: '#f44336',
+					iconStyle: stopIcon,
+					buttonFunction: this.stopRecord
+				});
+			} else if (this.state.status === 4 && this.state.file !== null) {
+				//ready to play state
+				this.setState({
+					buttonColour: '#4caf50',
+					iconStyle: playIcon,
+					buttonFunction: this.play
+				});
+			} else if (this.state.status === 2 && this.state.action === 'PLAYING') {
+				//currently playing state
+				this.setState({
+					buttonColour: '#f44336',
+					iconStyle: stopIcon,
+					buttonFunction: this.stop
+				});
+			} else if (this.state.status === 0) {
+				//ready to record state
+				this.setState({
+					buttonColour: '#ff5722',
+					iconStyle: recordIcon,
+					buttonFunction: this.startRecord
+				});
+			}
 		},
 		render: function render() {
 			return React.createElement(
 				'div',
 				{ style: divStyle },
 				'file: ',
-				this.state.data.file,
+				this.state.file,
 				React.createElement('br', null),
 				'status: ',
-				this.state.data.status,
+				this.state.status,
+				React.createElement('br', null),
+				'action: ',
+				this.state.action,
 				React.createElement(
 					FloatingActionButtonFlex,
-					{ onClick: this.startRecord, style: buttonStyle },
-					React.createElement('i', { className: 'fa fa-microphone' })
-				),
-				React.createElement(
-					FloatingActionButtonFlex,
-					{ onClick: this.stopRecord, style: buttonStyle },
-					React.createElement('i', { className: 'fa fa-stop' })
-				),
-				React.createElement(
-					FloatingActionButtonFlex,
-					{ onClick: this.play, style: buttonStyle },
-					React.createElement('i', { className: 'fa fa-play' })
-				),
-				React.createElement(
-					FloatingActionButtonFlex,
-					{ onClick: this.stop, style: buttonStyle },
-					React.createElement('i', { className: 'fa fa-stop' })
+					{ onClick: this.state.buttonFunction,
+						style: buttonStyle,
+						backgroundColor: this.state.buttonColour },
+					React.createElement('i', { className: this.state.iconStyle })
 				)
 			);
 		}
@@ -5968,10 +5995,12 @@ webpackJsonp([0],[
 
 	var recordButtonMedia;
 	var currentStatus = 0;
+	var currentAction = '';
 
 	module.exports = {
 		startRecording: function startRecording(fileName) {
 			recordButtonMedia = new Media(fileName, success, failure, status);
+			currentAction = 'RECORDING';
 			recordButtonMedia.startRecord();
 		},
 
@@ -5979,12 +6008,14 @@ webpackJsonp([0],[
 			if (recordButtonMedia !== null) {
 				recordButtonMedia.stopRecord();
 				recordButtonMedia.release();
+				currentAction = '';
 			}
 		},
 
 		playMedia: function playMedia(fileName) {
 			if (recordButtonMedia !== null) {
 				recordButtonMedia = new Media(fileName, success, failure, status);
+				currentAction = 'PLAYING';
 				recordButtonMedia.play();
 			}
 		},
@@ -5993,6 +6024,7 @@ webpackJsonp([0],[
 			if (recordButtonMedia !== null) {
 				recordButtonMedia.stop();
 				recordButtonMedia.release();
+				currentAction = '';
 			}
 		},
 
@@ -6000,18 +6032,23 @@ webpackJsonp([0],[
 			recordButtonMedia.release();
 			recordButtonMedia = null;
 			currentStatus = 0;
+			currentAction = '';
+			status();
 		},
 
 		mediaStatus: function mediaStatus() {
 			return {
 				file: recordButtonMedia ? recordButtonMedia.src : null,
-				status: currentStatus
+				status: currentStatus,
+				action: currentAction
 			};
 		}
 
 	};
 
-	var success = function success() {};
+	var success = function success() {
+		//TODO: figure out if we need this function
+	};
 
 	var failure = function failure(error) {
 		alert('error: ' + error.code + ' : ' + error.message);
@@ -6026,7 +6063,7 @@ webpackJsonp([0],[
 		document.dispatchEvent(event);
 	};
 
-	//	mediaStatus
+	//	mediaStatus REFERENCE
 	//     Media.MEDIA_NONE = 0;
 	//     Media.MEDIA_STARTING = 1;
 	//     Media.MEDIA_RUNNING = 2;

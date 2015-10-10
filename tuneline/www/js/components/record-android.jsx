@@ -16,20 +16,25 @@ var divStyle = {
 	textAlign: 'center'
 };
 
-
+const recordIcon = 'fa fa-microphone';
+const playIcon = 'fa fa-play';
+const stopIcon = 'fa fa-stop';
 
 const RecordButton = React.createClass({
 	//Add the event listener for status changes and setup the initial state of the button
 	getInitialState: function() {
 		document.addEventListener('mediaChange',function(){
-			this.update();
+			this.setButtonState();
 		}.bind(this));
-		return {
-				data: 	{
-							file: null,
-							status: 0
-						}
-			};
+		return {		
+					file: RecordController.recordButtonMedia?RecordController.recordButtonMedia.src:null,
+					status: RecordController.currentStatus,
+					action: RecordController.currentAction,
+					buttonColour: '#ff5722',
+					iconStyle: recordIcon,
+					buttonFunction: this.startRecord
+					
+				};
 	},
 	startRecord: function(event) {
 		var now = new Date();
@@ -41,37 +46,69 @@ const RecordButton = React.createClass({
 
 	},
 	play: function(event) {
-		RecordController.playMedia(this.state.data.file);
+		RecordController.playMedia(this.state.file);
 
 	},
 	stop: function(event) {
 		RecordController.stopMedia();
 	},
 	reset: function(event){
-
+		RecordController.resetMedia();
 	},
-	update: function(event){
-		this.setState({
-				data: RecordController.mediaStatus()
-			});
+	setButtonState: function(){
+		this.setState(
+			RecordController.mediaStatus()
+		);
+
+		if(this.state.status === 2 && this.state.action === 'RECORDING'){
+			//currently recording state
+			this.setState(
+							{
+								buttonColour: '#f44336',
+								iconStyle: stopIcon,
+								buttonFunction: this.stopRecord
+							}	
+			);
+		} else if(this.state.status === 4 && this.state.file !== null){
+			//ready to play state
+			this.setState(
+							{
+								buttonColour: '#4caf50',
+								iconStyle: playIcon,
+								buttonFunction: this.play
+							}
+			);		
+		} else if(this.state.status === 2 && this.state.action === 'PLAYING'){
+			//currently playing state
+			this.setState(
+							{
+								buttonColour: '#f44336',
+								iconStyle: stopIcon,
+								buttonFunction: this.stop
+							}
+			);		
+		} else if(this.state.status === 0){
+			//ready to record state
+			this.setState(
+							{
+								buttonColour: '#ff5722',
+								iconStyle: recordIcon,
+								buttonFunction: this.startRecord
+							}
+			);
+		}
 	},
 	render() {
 	    return (
 	    	<div style={divStyle}>
-	    		file: {this.state.data.file}<br/>
-				status: {this.state.data.status}
-		        <FloatingActionButtonFlex onClick={this.startRecord} style={buttonStyle}>
-		        	<i className="fa fa-microphone"></i>
-		        </FloatingActionButtonFlex>
-		        <FloatingActionButtonFlex onClick={this.stopRecord} style={buttonStyle}>
-		        	<i className="fa fa-stop"></i>
-		        </FloatingActionButtonFlex>
-		        <FloatingActionButtonFlex onClick={this.play} style={buttonStyle}>
-		        	<i className="fa fa-play"></i>
-		        </FloatingActionButtonFlex>
-		        <FloatingActionButtonFlex onClick={this.stop} style={buttonStyle}>
-		        	<i className="fa fa-stop"></i>
-		        </FloatingActionButtonFlex>		        
+	    		file: {this.state.file}<br/>
+				status: {this.state.status}<br/>
+				action: {this.state.action}
+		        <FloatingActionButtonFlex onClick={this.state.buttonFunction} 
+		        							style={buttonStyle} 
+		        							backgroundColor={this.state.buttonColour}>
+		        	<i className={this.state.iconStyle}></i>
+		        </FloatingActionButtonFlex>        
 	        </div>
 	    );
   },

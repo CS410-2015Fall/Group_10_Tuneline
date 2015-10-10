@@ -1,13 +1,13 @@
 const React = require('react');
 const FloatingActionButton = require('material-ui/lib/floating-action-button');
 const RaisedButton = require('material-ui/lib/raised-button');
-const FloatingActionButtonFlex = require('./floating-action-button-flex');
+const FloatingActionButtonFlex = require('./floating-action-button-flex'); //SOON TO BE DEPRECATED
 
 const RecordController = require('./recordcontroller');
 
 var buttonStyle = {
-    height: '500px',
-    width: '500px'
+    height: FloatingActionButtonFlex.buttonHeight,
+    width: FloatingActionButtonFlex.buttonHeight
 };
 
 var divStyle = {
@@ -19,22 +19,47 @@ var divStyle = {
 
 
 const RecordButton = React.createClass({
+	//Add the event listener for status changes and setup the initial state of the button
+	getInitialState: function() {
+		document.addEventListener('mediaChange',function(){
+			this.update();
+		}.bind(this));
+		return {
+				data: 	{
+							file: null,
+							status: 0
+						}
+			};
+	},
 	startRecord: function(event) {
 		var now = new Date();
 		RecordController.startRecording(now.getTime()+'.m4a');
+		
 	},
 	stopRecord: function(event) {
-		this.props.audioName = RecordController.stopRecording();
+		RecordController.stopRecording();
+
 	},
 	play: function(event) {
-		RecordController.playMedia(this.props.audioName);
+		RecordController.playMedia(this.state.data.file);
+
 	},
 	stop: function(event) {
 		RecordController.stopMedia();
 	},
+	reset: function(event){
+
+	},
+	update: function(event){
+		this.setState({
+				data: RecordController.mediaStatus()
+			});
+	},
 	render() {
 	    return (
 	    	<div style={divStyle}>
+	    		file: {this.state.data.file}<br/>
+				status: {this.state.data.status}
 		        <FloatingActionButtonFlex onClick={this.startRecord} style={buttonStyle}>
 		        	<i className="fa fa-microphone"></i>
 		        </FloatingActionButtonFlex>
@@ -46,7 +71,7 @@ const RecordButton = React.createClass({
 		        </FloatingActionButtonFlex>
 		        <FloatingActionButtonFlex onClick={this.stop} style={buttonStyle}>
 		        	<i className="fa fa-stop"></i>
-		        </FloatingActionButtonFlex>
+		        </FloatingActionButtonFlex>		        
 	        </div>
 	    );
   },

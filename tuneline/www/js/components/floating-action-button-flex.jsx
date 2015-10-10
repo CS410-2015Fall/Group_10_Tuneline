@@ -17,6 +17,8 @@ let getZDepth = function(disabled) {
   };
 };
 
+const buttonHeight = '300px';
+
 
 const FloatingActionButton = React.createClass({
 
@@ -116,14 +118,14 @@ const FloatingActionButton = React.createClass({
       container: {
         transition: Transitions.easeOut(),
         position: 'relative',
-        height: '100%',
-        width: '100%',
+        height: buttonHeight,
+        width: buttonHeight,
         padding: 0,
         overflow: 'hidden',
         backgroundColor: this._getBackgroundColor(),
         borderRadius: '50%',
         textAlign: 'center',
-        verticalAlign: 'bottom',
+        verticalAlign: 'middle',
         fontSize: '12em',
         //This is need so that ripples do not bleed
         //past border radius.
@@ -143,7 +145,7 @@ const FloatingActionButton = React.createClass({
       },
       icon: {
         height: '100%',
-        lineHeight: '500px',
+        lineHeight: buttonHeight,
         fill: themeVariables.iconColor,
         color: this._getIconColor(),
       },

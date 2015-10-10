@@ -306,13 +306,13 @@ webpackJsonp([0],[
 	var React = __webpack_require__(4);
 	var FloatingActionButton = __webpack_require__(172);
 	var RaisedButton = __webpack_require__(217);
-	var FloatingActionButtonFlex = __webpack_require__(219);
+	var FloatingActionButtonFlex = __webpack_require__(219); //SOON TO BE DEPRECATED
 
-	var RecordController = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./recordcontroller\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var RecordController = __webpack_require__(220);
 
 	var buttonStyle = {
-		height: '500px',
-		width: '500px'
+		height: FloatingActionButtonFlex.buttonHeight,
+		width: FloatingActionButtonFlex.buttonHeight
 	};
 
 	var divStyle = {
@@ -324,23 +324,46 @@ webpackJsonp([0],[
 	var RecordButton = React.createClass({
 		displayName: 'RecordButton',
 
+		//Add the event listener for status changes and setup the initial state of the button
+		getInitialState: function getInitialState() {
+			document.addEventListener('mediaChange', (function () {
+				this.update();
+			}).bind(this));
+			return {
+				data: {
+					file: null,
+					status: 0
+				}
+			};
+		},
 		startRecord: function startRecord(event) {
 			var now = new Date();
 			RecordController.startRecording(now.getTime() + '.m4a');
 		},
 		stopRecord: function stopRecord(event) {
-			this.props.audioName = RecordController.stopRecording();
+			RecordController.stopRecording();
 		},
 		play: function play(event) {
-			RecordController.playMedia(this.props.audioName);
+			RecordController.playMedia(this.state.data.file);
 		},
 		stop: function stop(event) {
 			RecordController.stopMedia();
+		},
+		reset: function reset(event) {},
+		update: function update(event) {
+			this.setState({
+				data: RecordController.mediaStatus()
+			});
 		},
 		render: function render() {
 			return React.createElement(
 				'div',
 				{ style: divStyle },
+				'file: ',
+				this.state.data.file,
+				React.createElement('br', null),
+				'status: ',
+				this.state.data.status,
 				React.createElement(
 					FloatingActionButtonFlex,
 					{ onClick: this.startRecord, style: buttonStyle },
@@ -5693,6 +5716,8 @@ webpackJsonp([0],[
 	  };
 	};
 
+	var buttonHeight = '300px';
+
 	var FloatingActionButton = React.createClass({
 	  displayName: 'FloatingActionButton',
 
@@ -5784,14 +5809,14 @@ webpackJsonp([0],[
 	      container: {
 	        transition: Transitions.easeOut(),
 	        position: 'relative',
-	        height: '100%',
-	        width: '100%',
+	        height: buttonHeight,
+	        width: buttonHeight,
 	        padding: 0,
 	        overflow: 'hidden',
 	        backgroundColor: this._getBackgroundColor(),
 	        borderRadius: '50%',
 	        textAlign: 'center',
-	        verticalAlign: 'bottom',
+	        verticalAlign: 'middle',
 	        fontSize: '12em',
 	        //This is need so that ripples do not bleed
 	        //past border radius.
@@ -5811,7 +5836,7 @@ webpackJsonp([0],[
 	      },
 	      icon: {
 	        height: '100%',
-	        lineHeight: '500px',
+	        lineHeight: buttonHeight,
 	        fill: themeVariables.iconColor,
 	        color: this._getIconColor()
 	      },
@@ -5936,7 +5961,79 @@ webpackJsonp([0],[
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 220 */,
+/* 220 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var recordButtonMedia;
+	var currentStatus = 0;
+
+	module.exports = {
+		startRecording: function startRecording(fileName) {
+			recordButtonMedia = new Media(fileName, success, failure, status);
+			recordButtonMedia.startRecord();
+		},
+
+		stopRecording: function stopRecording() {
+			if (recordButtonMedia !== null) {
+				recordButtonMedia.stopRecord();
+				recordButtonMedia.release();
+			}
+		},
+
+		playMedia: function playMedia(fileName) {
+			if (recordButtonMedia !== null) {
+				recordButtonMedia = new Media(fileName, success, failure, status);
+				recordButtonMedia.play();
+			}
+		},
+
+		stopMedia: function stopMedia() {
+			if (recordButtonMedia !== null) {
+				recordButtonMedia.stop();
+				recordButtonMedia.release();
+			}
+		},
+
+		resetMedia: function resetMedia() {
+			recordButtonMedia.release();
+			recordButtonMedia = null;
+			currentStatus = 0;
+		},
+
+		mediaStatus: function mediaStatus() {
+			return {
+				file: recordButtonMedia ? recordButtonMedia.src : null,
+				status: currentStatus
+			};
+		}
+
+	};
+
+	var success = function success() {};
+
+	var failure = function failure(error) {
+		alert('error: ' + error.code + ' : ' + error.message);
+	};
+
+	var status = function status(mediaStatus) {
+		//update the current status of the controller
+		currentStatus = mediaStatus;
+
+		//emit a mediaChange event for the components to listen to
+		var event = new Event('mediaChange');
+		document.dispatchEvent(event);
+	};
+
+	//	mediaStatus
+	//     Media.MEDIA_NONE = 0;
+	//     Media.MEDIA_STARTING = 1;
+	//     Media.MEDIA_RUNNING = 2;
+	//     Media.MEDIA_PAUSED = 3;
+	//     Media.MEDIA_STOPPED = 4;
+
+/***/ },
 /* 221 */
 /***/ function(module, exports, __webpack_require__) {
 

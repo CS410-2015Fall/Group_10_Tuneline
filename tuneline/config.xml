@@ -15,18 +15,16 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <content src="index.html" />
     <platform name="android">
-        <content src="index-android.html" />
         <allow-intent href="market:*" />
         <preference name="AndroidPersistentFileLocation" value="Internal" />
     </platform>
     <platform name="ios">
-        <content src="index-ios.html" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
     <platform name="browser">
-        <content src="index.html" />
         <allow-intent href="market:*" />
     </platform>
     <hook src="scripts/appBeforePrepare.js" type="before_prepare" />

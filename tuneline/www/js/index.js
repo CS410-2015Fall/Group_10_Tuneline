@@ -404,12 +404,19 @@ webpackJsonp([0],[
 				React.createElement('br', null),
 				'action: ',
 				this.state.action,
+				React.createElement(FloatingActionButtonFlex, { onClick: this.state.buttonFunction,
+					style: buttonStyle,
+					backgroundColor: this.state.buttonColour,
+					iconClassName: this.state.iconStyle }),
 				React.createElement(
-					FloatingActionButtonFlex,
-					{ onClick: this.state.buttonFunction,
-						style: buttonStyle,
-						backgroundColor: this.state.buttonColour },
-					React.createElement('i', { className: this.state.iconStyle })
+					RaisedButton,
+					null,
+					'Save'
+				),
+				React.createElement(
+					RaisedButton,
+					null,
+					'Reset'
 				)
 			);
 		}
@@ -5844,7 +5851,7 @@ webpackJsonp([0],[
 	        borderRadius: '50%',
 	        textAlign: 'center',
 	        verticalAlign: 'middle',
-	        fontSize: '12em',
+
 	        //This is need so that ripples do not bleed
 	        //past border radius.
 	        //See: http://stackoverflow.com/questions/17298739/css-overflow-hidden-not-working-in-chrome-when-parent-has-border-radius-and-chil
@@ -5865,7 +5872,9 @@ webpackJsonp([0],[
 	        height: '100%',
 	        lineHeight: buttonHeight,
 	        fill: themeVariables.iconColor,
-	        color: this._getIconColor()
+	        color: this._getIconColor(),
+	        fontSize: '12em',
+	        verticalAlign: 'middle'
 	      },
 	      iconWhenMini: {
 	        height: themeVariables.miniSize,

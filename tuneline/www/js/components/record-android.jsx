@@ -106,9 +106,15 @@ const RecordButton = React.createClass({
 				action: {this.state.action}
 		        <FloatingActionButtonFlex onClick={this.state.buttonFunction} 
 		        							style={buttonStyle} 
-		        							backgroundColor={this.state.buttonColour}>
-		        	<i className={this.state.iconStyle}></i>
-		        </FloatingActionButtonFlex>        
+		        							backgroundColor={this.state.buttonColour}
+		        							iconClassName={this.state.iconStyle}>
+		        </FloatingActionButtonFlex>
+		        <RaisedButton>
+		        	Save
+		        </RaisedButton>
+		        <RaisedButton>
+		        	Reset
+		        </RaisedButton> 
 	        </div>
 	    );
   },

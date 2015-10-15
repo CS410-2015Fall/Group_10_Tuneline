@@ -1,6 +1,6 @@
 import React from 'react'
 import App from './components/app'
-import RecordButton from './components/record-android'
+import MainLayout from './components/main-layout'
 
 let injectTapEventPlugin = require("react-tap-event-plugin");
 
@@ -27,7 +27,7 @@ window.onerror = (msg, url, line, column, e) => {
 try {
     document.addEventListener('deviceready', () => {
     	injectTapEventPlugin();
-        React.render(<RecordButton />, document.body);
+        React.render(<MainLayout />, document.body);
     }, false)
 } catch (e) {
     handleError(e);

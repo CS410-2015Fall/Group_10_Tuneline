@@ -21,6 +21,7 @@
     "alt-connect": "^1.0.6",
     "axios": "^0.5.4",
     "bluebird": "^2.10.0",
+    "css-loader": "^0.19.0",
     "debug": "^2.2.0",
     "fbjs": "^0.2.1",
     "material-ui": "^0.12.2",
@@ -30,6 +31,8 @@
     "react-tap-event-plugin": "^0.1.8",
     "reactcss": "^0.4.0",
     "reactcss-decorator": "^1.0.1",
-    "reapp-ui": "^0.12.54"
+    "reapp-ui": "^0.12.54",
+    "style-loader": "^0.12.4",
+    "touchstonejs": "^0.6.0"
   }
 }

@@ -1,0 +1,63 @@
+{
+  "name": "postcss-loader",
+  "version": "0.3.0",
+  "description": "PostCSS loader for webpack",
+  "keywords": [
+    "webpack",
+    "postcss",
+    "loader",
+    "css",
+    "postproccessor"
+  ],
+  "author": {
+    "name": "Andrey Sitnik",
+    "email": "andrey@sitnik.ru"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/postcss/postcss-loader.git"
+  },
+  "dependencies": {
+    "loader-utils": "^0.2.5",
+    "postcss": "^4.0.0"
+  },
+  "devDependencies": {
+    "jshint-stylish": "1.0.0",
+    "gulp-webpack": "1.1.2",
+    "gulp-jshint": "1.9.0",
+    "gulp-mocha": "2.0.0",
+    "raw-loader": "0.5.1",
+    "fs-extra": "0.13.0",
+    "chai": "1.10.0",
+    "gulp": "3.8.10"
+  },
+  "scripts": {
+    "test": "gulp"
+  },
+  "gitHead": "00dfc683875ba8f5601b3d697062e3914eeead1e",
+  "bugs": {
+    "url": "https://github.com/postcss/postcss-loader/issues"
+  },
+  "homepage": "https://github.com/postcss/postcss-loader",
+  "_id": "postcss-loader@0.3.0",
+  "_shasum": "5194b6f29737043a14fe804df9d5698e8118cb6d",
+  "_from": "postcss-loader@>=0.3.0 <0.4.0",
+  "_npmVersion": "2.0.0",
+  "_npmUser": {
+    "name": "ai",
+    "email": "andrey@sitnik.ru"
+  },
+  "maintainers": [
+    {
+      "name": "ai",
+      "email": "andrey@sitnik.ru"
+    }
+  ],
+  "dist": {
+    "shasum": "5194b6f29737043a14fe804df9d5698e8118cb6d",
+    "tarball": "http://registry.npmjs.org/postcss-loader/-/postcss-loader-0.3.0.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/postcss-loader/-/postcss-loader-0.3.0.tgz"
+}

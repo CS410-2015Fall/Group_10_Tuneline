@@ -1,13 +1,18 @@
 import {  Reapp, 
           React, 
-          Button } from 'reapp-kit';
+          Button,
+          Icon } from 'reapp-kit';
 
+var MediaPlayer = require('./MediaPlayer');
 var RecordController = require('./recordcontroller');
+
+var timerObj = null;
 
 var buttonStyle = {
     height: '300px',
     width: '300px',
-    borderRadius: '100%'
+    borderRadius: '100%',
+    alignSelf: 'center'
 };
 
 var divStyle = {
@@ -16,9 +21,9 @@ var divStyle = {
 	textAlign: 'center'
 };
 
-var recordIcon = 'ion-ios-mic-outline';
-var playIcon = 'ion-ios-play-outline';
-var stopIcon = 'ion-stop';
+var recordIcon = require('reapp-kit/node_modules/reapp-ui/assets/icons/mic2.svg');
+var playIcon = require('reapp-kit/node_modules/reapp-ui/assets/icons/play.svg');
+var stopIcon = require('reapp-kit/node_modules/reapp-ui/assets/icons/square.svg');
 
 var RecordButton = React.createClass({
 	//Add the event listener for status changes and setup the initial state of the button
@@ -32,10 +37,16 @@ var RecordButton = React.createClass({
 					action: RecordController.currentAction,
 					buttonColour: '#ff5722',
 					iconStyle: recordIcon,
-					buttonFunction: this.startRecord
+					buttonFunction: this.startRecord,
+					time: {
+						hours: 0,
+						minutes:0,
+						seconds:0
+					},
+					duration: 0
 					
 				};
-	},
+	},	
 	startRecord: function() {
 		var now = new Date();
 		RecordController.startRecording(now.getTime()+'.m4a');
@@ -43,7 +54,7 @@ var RecordButton = React.createClass({
 	},
 	stopRecord: function() {
 		RecordController.stopRecording();
-
+		this.stopTimer();
 	},
 	play: function() {
 		RecordController.playMedia(this.state.file);
@@ -54,8 +65,23 @@ var RecordButton = React.createClass({
 	},
 	reset: function(){
 		RecordController.resetMedia();
+	},	
+	timerInSeconds: 0,
+	startTimer: function(){
+		timerObj = window.setInterval(function(){
+			this.timerInSeconds++;
+
+			this.setState({
+				time: {
+					hours: Math.floor(this.timerInSeconds/3600),
+					minutes: Math.floor((this.timerInSeconds%3600)/60),
+					seconds: Math.floor((this.timerInSeconds%3600)%60)}
+			});
+		}.bind(this), 1000);
 	},
-	alertMe:function(){console.log('HI!!!')},
+	stopTimer: function(){
+		window.clearInterval(timerObj);
+	},
 	setButtonState: function(){
 		this.setState(
 			RecordController.mediaStatus()
@@ -70,14 +96,16 @@ var RecordButton = React.createClass({
 								buttonFunction: this.stopRecord
 							}	
 			);
+			this.startTimer();
 		} else if(this.state.status === 4 && this.state.file !== null){
 			//ready to play state
 			this.setState(
-							{
-								buttonColour: '#4caf50',
-								iconStyle: playIcon,
-								buttonFunction: this.play
-							}
+				{
+					buttonColour: '#4caf50',
+					iconStyle: playIcon,
+					buttonFunction: this.play,
+					duration: RecordController.getDuration()
+				}
 			);		
 		} else if(this.state.status === 2 && this.state.action === 'PLAYING'){
 			//currently playing state
@@ -100,25 +128,30 @@ var RecordButton = React.createClass({
 		}
 	},
 	render() {
+		var mediaPlayer = <MediaPlayer mediaLength={this.timerInSeconds}/>;
 	    return (
 	    	<div style={divStyle}>
 	    		file: {this.state.file}<br/>
-				status: {this.state.status}<br/>
-				action: {this.state.action}
+				duration: {this.state.duration}
+				<h1>{this.state.time.hours}h {this.state.time.minutes}m {this.state.time.seconds}s</h1>
 		        <Button 
 							style={buttonStyle} 
 							color={this.state.buttonColour}
 							onClick={this.state.buttonFunction}
 							rounded
 							>
-					{this.state.iconStyle}
+					<Icon file={this.state.iconStyle} size={250} stroke={0.1} color="#FFFFFF"/>
 		        </Button>
-		        <Button onTap={this.alertMe}>
-		        	Save
-		        </Button>
-		        <Button>
-		        	Reset
-		        </Button> 
+		        {mediaPlayer}
+		        <br/>
+		        <br/>
+		        <br/>
+		        <br/>
+		        <br/>
+		        <br/>
+		        <br/>
+		        <br/>
+		        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 	        </div>
 	    );
   },

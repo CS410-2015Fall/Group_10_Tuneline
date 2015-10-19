@@ -1,46 +1,48 @@
 import {  Reapp, 
           React, 
           NestedViewList, 
-          View, 
+          View,
+          ViewList,
           Button, 
           Bar, 
           BarItem, 
-          Container } from 'reapp-kit';
+          Container,
+          Scrollable } from 'reapp-kit';
 
-var RecordButton = require('./RecordButton');
+var RecordScreen = require('./RecordScreen');
 
-var tuneIcon = require('./icons/ios-musical-notes.svg');
-var recordIcon = require('./icons/ios-mic-outline.svg');
-var settingsIcon = require('./icons/ios-gear-outline.svg');
+var tuneIcon = require('reapp-kit/node_modules/reapp-ui/assets/icons/music-note.svg');
+var recordIcon = require('reapp-kit/node_modules/reapp-ui/assets/icons/mic2.svg');
+var settingsIcon = require('reapp-kit/node_modules/reapp-ui/assets/icons/gear.svg');
 
 class Home extends React.Component {
+
   render() {
-    var barStyle ={position:'fixed',
-                    bottom: '0px'};
+    var barStyle = {position:'fixed',
+                    bottom: '0px',
+                    };
+    var barItemStyle = {padding: '5px'};
     return (
       <div>
         <div>
-        <NestedViewList {...this.props.viewListProps}>
-          <View title="Tuneline">
-            <RecordButton/>
+          <NestedViewList {...this.props.viewListProps}>
 
-            <Button onTap={() => this.router().transitionTo('tuneline')}>
-              Go to Tuneline
-            </Button>
-          </View>
+            <View title="Tuneline" innerProps={Scrollable}>
+              <div style={{paddingBottom:'49px',height:'5000px'}}>
+                <RecordScreen/>
+              </div> 
+            </View>
 
-          {this.props.child()}
-                  
-
-        </NestedViewList>
+            {this.props.child()}
+          </NestedViewList>
         </div>
-        <div>
+
         <Bar style={barStyle} display='icon-text'>
-          <Bar.Item onTap={() => this.router().transitionTo('tuneline')} icon={tuneIcon}>Tuneline</Bar.Item>
-          <Bar.Item onTap={() => this.router().transitionTo('home')} icon={recordIcon}>Record</Bar.Item>
-          <Bar.Item onTap={() => this.router().transitionTo('settings')} icon={settingsIcon}>Settings</Bar.Item>
+          <Bar.Item style={barItemStyle} onTap={() => this.router().transitionTo('tuneline')} icon={tuneIcon}>Tuneline</Bar.Item>
+          <Bar.Item style={barItemStyle} onTap={() => this.router().transitionTo('home')} icon={recordIcon}>Record</Bar.Item>
+          <Bar.Item style={barItemStyle} onTap={() => this.router().transitionTo('settings')} icon={settingsIcon}>Settings</Bar.Item>
         </Bar>
-        </div>
+
         </div>
 
     );

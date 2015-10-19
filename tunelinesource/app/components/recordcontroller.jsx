@@ -41,6 +41,14 @@ module.exports = {
 		status();
 	},
 
+	getCurrentPosition: function(){
+		return recordButtonMedia.getCurrentPosition();
+	},
+
+	getDuration: function(){
+		return recordButtonMedia.getDuration();
+	},
+	
 	mediaStatus: function(){
 		return {
 					file: recordButtonMedia?recordButtonMedia.src:null,

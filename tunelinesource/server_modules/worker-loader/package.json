@@ -1,0 +1,40 @@
+{
+  "name": "worker-loader",
+  "version": "0.5.7",
+  "author": {
+    "name": "Tobias Koppers @sokra"
+  },
+  "description": "worker loader module for webpack",
+  "peerDependencies": {
+    "webpack": ">=0.9 <2"
+  },
+  "dependencies": {
+    "loader-utils": "0.2.x"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ],
+  "_id": "worker-loader@0.5.7",
+  "dist": {
+    "shasum": "b85ab0350ec478eb8dc4e2c9f6cc97a486880748",
+    "tarball": "http://registry.npmjs.org/worker-loader/-/worker-loader-0.5.7.tgz"
+  },
+  "_from": "worker-loader@>=0.5.7 <0.6.0",
+  "_npmVersion": "1.2.30",
+  "_npmUser": {
+    "name": "sokra",
+    "email": "tobias.koppers@googlemail.com"
+  },
+  "maintainers": [
+    {
+      "name": "sokra",
+      "email": "tobias.koppers@googlemail.com"
+    }
+  ],
+  "directories": {},
+  "_shasum": "b85ab0350ec478eb8dc4e2c9f6cc97a486880748",
+  "_resolved": "https://registry.npmjs.org/worker-loader/-/worker-loader-0.5.7.tgz"
+}

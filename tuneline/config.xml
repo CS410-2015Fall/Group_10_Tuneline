@@ -1,12 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.cs410.tuneline" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Tuneline</name>
+    <name>Tuneline 2</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
     </description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Apache Cordova Team
     </author>
+    <content src="index.html" />
     <plugin name="cordova-plugin-whitelist" version="1" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
@@ -15,10 +16,8 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <content src="index.html" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <preference name="AndroidPersistentFileLocation" value="Internal" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -61,9 +60,4 @@
         <splash src="res/ios/splash/Default-736h.png" width="1242" height="2208"/>
         <splash src="res/ios/splash/Default-Landscape-736h.png" width="2208" height="1242"/>
     </platform>
-    <platform name="browser">
-        <allow-intent href="market:*" />
-    </platform>
-    <hook src="scripts/appBeforePrepare.js" type="before_prepare" />
-    <hook src="scripts/appAfterPrepare.js" type="after_prepare" />
 </widget>

@@ -3,7 +3,7 @@
 node_modules
 
 tuneline/www/js/vendor/
-tuneline/www/js/
+tuneline/www/js/index.js
 
 platforms
 

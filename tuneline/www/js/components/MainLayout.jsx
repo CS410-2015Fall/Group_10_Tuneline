@@ -5,6 +5,7 @@ const Tab = require('material-ui/lib/tabs/tab');
 const AppBar = require('material-ui/lib/app-bar');
 
 const RecordScreen = require('./RecordScreen');
+const TunelineScreen = require('./TunelineScreen');
 
 const MainLayout = React.createClass({
 	
@@ -32,7 +33,7 @@ const MainLayout = React.createClass({
 	    	<AppBar title="Tuneline"/>
 			<Tabs initialSelectedIndex={1} style={tabBarStyle} inkBarStyle={inkBarStyle} contentContainerStyle={tabContainerStyle}>
 				<Tab label={<span><i className="ion-music-note"></i><br/>Tuneline</span>}>
-					****DAN: Insert your tuneline screen here****
+					<TunelineScreen/>
 				</Tab>
 				<Tab label={<span><i className="ion-android-microphone"></i><br/>Record</span>}>
 					<RecordScreen/>

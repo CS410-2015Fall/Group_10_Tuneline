@@ -2,8 +2,8 @@
 *.sublime-project
 node_modules
 
-www/js/vendor
-www/js/*.js
+tuneline/www/js/vendor/
+tuneline/www/js/
 
 platforms
 

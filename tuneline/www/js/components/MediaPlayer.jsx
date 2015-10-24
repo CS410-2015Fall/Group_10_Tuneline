@@ -1,25 +1,11 @@
-import {  Reapp, 
-          React, 
-          Button } from 'reapp-kit';
+const React = require('react');
 
-var Slider = require('react-slider');
+const RaisedButton = require('material-ui/lib/raised-button');
+const FlatButton = require('material-ui/lib/flat-button');
+const Slider = require('material-ui/lib/slider');
+const FontIcon = require('material-ui/lib/font-icon');
 
-var RecordController = require('./recordcontroller');
-
-var sliderTrackStyle = {
-	height: '4px',
-	background: '#DDDDDD'
-};
-
-var sliderHandleStyle = {
-	height: '16px',
-	width: '16px',
-	borderRadius: '100%',
-	background: '#4E4E4E',
-	position: 'relative',
-	bottom: '6px'
-
-};
+const RecordController = require('./recordController');
 
 var MediaPlayer = React.createClass({
 	//Add the event listener for status changes and setup the initial state of the button
@@ -31,13 +17,19 @@ var MediaPlayer = React.createClass({
 		
 	},
 	render() {
+		var mediaPlayerStyle = this.props.mediaPlayerStyle;
 	    return (
-	    	<div>
-	    	<div style={sliderTrackStyle}>
-	    	<Slider ref="mediaSlider" onAfterChange={this.updateTime} max={this.props.mediaLength}>
-	    		<div className="my-handle" style={sliderHandleStyle}></div>
-	    	</Slider>
-	    	</div>
+	    	<div style={mediaPlayerStyle}>
+	    		<Slider ref="mediaSlider" onDragStop={this.updateTime} max={this.props.mediaLength}/>
+				<FlatButton primary={true}>
+					<FontIcon className="ion-play" />
+				</FlatButton>
+				<FlatButton  >
+					<FontIcon className="ion-pause" />
+				</FlatButton>
+				<FlatButton >
+					<FontIcon className="ion-stop" />
+				</FlatButton>
 	    	{this.state.value}
 	    	</div>
 
@@ -46,5 +38,3 @@ var MediaPlayer = React.createClass({
 });
 
 module.exports = MediaPlayer;
-
-//Slider docs: https://github.com/mpowaga/react-slider

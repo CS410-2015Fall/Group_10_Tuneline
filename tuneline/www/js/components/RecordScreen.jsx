@@ -3,7 +3,7 @@ const React = require('react');
 const RaisedButton = require('material-ui/lib/raised-button');
 const FloatingActionButtonFlex = require('./floating-action-button-flex');
 
-//const MediaPlayer = require('./MediaPlayer');
+const MediaPlayer = require('./MediaPlayer');
 const RecordController = require('./recordController');
 
 var timerObj = null;
@@ -126,7 +126,7 @@ var RecordButton = React.createClass({
 		}
 	},
 	render() {
-		//var mediaPlayer = <MediaPlayer mediaLength={this.timerInSeconds}/>;
+		var mediaPlayer = <MediaPlayer mediaLength={this.timerInSeconds} mediaPlayerStyle={{margin:'0 25%'}} mediaLength={this.timerInSeconds}/>;
 	    return (
 	    	<div style={divStyle}>
 	    		file: {this.state.file}<br/>
@@ -138,6 +138,7 @@ var RecordButton = React.createClass({
 							onClick={this.state.buttonFunction}
 							iconClassName={this.state.iconStyle}>
 		        </FloatingActionButtonFlex>
+		        {mediaPlayer}
 	        </div>
 	    );
   },

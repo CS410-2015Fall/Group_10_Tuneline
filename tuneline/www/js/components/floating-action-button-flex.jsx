@@ -17,7 +17,7 @@ let getZDepth = function(disabled) {
   };
 };
 
-const buttonHeight = '300px';
+const buttonHeight = '200px';
 
 const FloatingActionButton = React.createClass({
 

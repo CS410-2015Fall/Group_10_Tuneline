@@ -18,23 +18,30 @@ module.exports = {
 	},
 
 	playMedia:  function(fileName){
-		if(recordButtonMedia !== null){
+		if(recordButtonMedia === null){
 			recordButtonMedia = new Media(fileName, success, failure, status);
+		}
 			currentAction = 'PLAYING';
-			recordButtonMedia.play();			
+			recordButtonMedia.play();
+	},
+
+	pauseMedia:  function(){
+		if(recordButtonMedia !== null){
+			currentAction = 'PAUSED';
+			recordButtonMedia.pause();			
 		}
 	},
 
 	stopMedia:  function(){
 		if(recordButtonMedia !== null){
 			recordButtonMedia.stop();
-			recordButtonMedia.release();
 			currentAction = '';
 		}
 	},
 
 	resetMedia: function(){
-		recordButtonMedia.release();
+		if(recordButtonMedia)
+			recordButtonMedia.release();
 		recordButtonMedia = null;
 		currentStatus = 0;
 		currentAction = '';
@@ -42,7 +49,17 @@ module.exports = {
 	},
 
 	getCurrentPosition: function(){
-		return recordButtonMedia.getCurrentPosition();
+		recordButtonMedia.getCurrentPosition(function(position){
+			if (position > -1) {
+                return position;
+            }
+		});
+	},
+
+	seekTo: function(position){
+		if(recordButtonMedia !== null){
+			recordButtonMedia.seekTo(position);
+		}
 	},
 
 	getDuration: function(){
@@ -72,8 +89,12 @@ var status = function(mediaStatus){
 	currentStatus = mediaStatus;
 
 	//emit a mediaChange event for the components to listen to
-	var event = new Event('mediaChange');
-	document.dispatchEvent(event);
+	//do not emit status for MEDIA_STARTING
+	if(mediaStatus !== 1){
+		var event = new Event('mediaChange');
+		document.dispatchEvent(event);
+	}
+	
 }
 
 //	mediaStatus REFERENCE

@@ -4,13 +4,15 @@ const RaisedButton = require('material-ui/lib/raised-button');
 const FloatingActionButtonFlex = require('./floating-action-button-flex');
 
 const MediaPlayer = require('./MediaPlayer');
+const MetaDataForm = require('./MetaDataForm');
+
 const RecordController = require('./recordController');
 
 var timerObj = null;
 
 var buttonStyle = {
-    height: '300px',
-    width: '300px',
+    height: '200px',
+    width: '200px',
 };
 
 var divStyle = {
@@ -46,36 +48,42 @@ var RecordButton = React.createClass({
 				};
 	},	
 	startRecord: function() {
+		this.reset();
 		var now = new Date();
 		RecordController.startRecording(now.getTime()+'.m4a');
+		//this.startTimer();
 		
 	},
 	stopRecord: function() {
 		RecordController.stopRecording();
 		this.stopTimer();
 	},
-	play: function() {
-		RecordController.playMedia(this.state.file);
-
-	},
-	stop: function() {
-		RecordController.stopMedia();
-	},
 	reset: function(){
+		this.timerInHundrethSeconds = 0;
+		this.setState(
+				{		
+					file: null,
+					time: {
+						hours: 0,
+						minutes:0,
+						seconds:0
+					},
+					duration: 0					
+				}
+		);
 		RecordController.resetMedia();
 	},	
-	timerInSeconds: 0,
+	timerInHundrethSeconds: 0,
 	startTimer: function(){
 		timerObj = window.setInterval(function(){
-			this.timerInSeconds++;
-
+			this.timerInHundrethSeconds++;
 			this.setState({
 				time: {
-					hours: Math.floor(this.timerInSeconds/3600),
-					minutes: Math.floor((this.timerInSeconds%3600)/60),
-					seconds: Math.floor((this.timerInSeconds%3600)%60)}
+					hours: Math.floor(this.timerInHundrethSeconds/(36000)),
+					minutes: Math.floor((this.timerInHundrethSeconds%(36000))/(600)),
+					seconds:( ((this.timerInHundrethSeconds%36000)%600)/10).toFixed(1)}
 			});
-		}.bind(this), 1000);
+		}.bind(this), 100);
 	},
 	stopTimer: function(){
 		window.clearInterval(timerObj);
@@ -96,25 +104,6 @@ var RecordButton = React.createClass({
 			);
 			this.startTimer();
 		} else if(this.state.status === 4 && this.state.file !== null){
-			//ready to play state
-			this.setState(
-				{
-					buttonColour: '#4caf50',
-					iconStyle: playIcon,
-					buttonFunction: this.play,
-					duration: RecordController.getDuration()
-				}
-			);		
-		} else if(this.state.status === 2 && this.state.action === 'PLAYING'){
-			//currently playing state
-			this.setState(
-							{
-								buttonColour: '#f44336',
-								iconStyle: stopIcon,
-								buttonFunction: this.stop
-							}
-			);		
-		} else if(this.state.status === 0){
 			//ready to record state
 			this.setState(
 							{
@@ -122,23 +111,41 @@ var RecordButton = React.createClass({
 								iconStyle: recordIcon,
 								buttonFunction: this.startRecord
 							}
-			);
+			);	
 		}
 	},
 	render() {
-		var mediaPlayer = <MediaPlayer mediaLength={this.timerInSeconds} mediaPlayerStyle={{margin:'0 25%'}} mediaLength={this.timerInSeconds}/>;
+		var mediaPlayer = <MediaPlayer
+								mediaPlayerStyle={{margin:'0 5%'}}
+								mediaLength={this.timerInHundrethSeconds}
+								disabled={true}/>;
+		var metaDataForm;
+		var saveButtons;
+
+		if(this.state.file != null){
+			mediaPlayer = <MediaPlayer
+								mediaPlayerStyle={{margin:'0 5%'}}
+								mediaLength={this.timerInHundrethSeconds}
+								disabled={false}
+								file={this.state.file}/>;
+			metaDataForm = <MetaDataForm ref="metaDataForm"/>;
+			saveButtons = <RaisedButton label="Save" primary={true} fullWidth={true}/>;
+		}
 	    return (
 	    	<div style={divStyle}>
-	    		file: {this.state.file}<br/>
-				duration: {this.state.duration}
-				<h1>{this.state.time.hours}h {this.state.time.minutes}m {this.state.time.seconds}s</h1>
+	    		<br/>
+	    		{saveButtons}
+	    		<br/>
 		        <FloatingActionButtonFlex 
 							style={buttonStyle} 
 							backgroundColor={this.state.buttonColour}
 							onClick={this.state.buttonFunction}
 							iconClassName={this.state.iconStyle}>
 		        </FloatingActionButtonFlex>
+		        <h1>{this.state.time.hours}h {this.state.time.minutes}m {this.state.time.seconds}s</h1>
 		        {mediaPlayer}
+		        {metaDataForm}
+		        {saveButtons}
 	        </div>
 	    );
   },

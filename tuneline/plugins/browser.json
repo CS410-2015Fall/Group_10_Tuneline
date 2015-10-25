@@ -57,6 +57,9 @@
         },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.cs410.tuneline"
+        },
+        "plugin.google.maps": {
+            "PACKAGE_NAME": "com.cs410.tuneline"
         }
     },
     "dependent_plugins": {}

@@ -12,7 +12,33 @@ var timerObj = null;
 var MediaPlayer = React.createClass({
 	//Add the event listener for status changes and setup the initial state of the button
 	getInitialState: function() {
-		return {value:0};
+		if(this.props.file){
+			RecordController.initPlayer(this.props.file);
+		}
+		document.addEventListener('mediaCreated',function(e){
+			if(this.state.mediaLength <= 0){
+				this.initMedia(e);
+			}			
+		}.bind(this));
+		document.addEventListener('updateMediaCurrentPosition',function(e){
+			if(e.detail.currentPosition < 0){
+				window.clearInterval(timerObj);
+				return;
+			}
+			this.setState({
+				value: e.detail.currentPosition
+			});
+		}.bind(this));
+
+		return {
+					value: 0,
+					mediaLength: 0
+				};
+	},
+	initMedia: function(data){
+		this.setState({
+			mediaLength: data.detail.mediaLength
+		});
 	},
 	play: function(event){
 		RecordController.playMedia(this.props.file);
@@ -26,41 +52,47 @@ var MediaPlayer = React.createClass({
 		window.clearInterval(timerObj);
 	},
 	seekTo: function(event,value){
-		RecordController.seekTo(value*100);
+		RecordController.seekTo(value*1000);
+		this.setState({
+			'value': value
+		});
 	},
 	updateTime: function(){
 		timerObj = window.setInterval(function(){
-			this.setState({
-				value: RecordController.getCurrentPosition()
-			});
-		}.bind(this), 1);
+			//Keep asking the RecordController what the current time is
+			RecordController.getCurrentPosition();
+		}.bind(this), 10);
 	},
 	render() {
 		var mediaPlayerStyle = this.props.mediaPlayerStyle;
-	    return (
-	    	<div style={mediaPlayerStyle}>
-	    	{this.state.value}
-	    	{this.props.file}
-	    		<Slider 
-	    			disabled={this.props.disabled}
+		var isDisabled = this.state.mediaLength>0?false:true;
+		var timeSlider = <Slider 
+	    			key="timeSlider"
+	    			disabled={isDisabled}
 	    			name="mediaSlider" 
 	    			ref="mediaSlider" onChange={this.seekTo}
-	    			max={this.props.mediaLength==0?1:this.props.mediaLength} 
+	    			max={this.state.mediaLength==0?1:this.state.mediaLength} 
 	    			min={0}
-	    			value={this.state.value}/>
+	    			value={this.state.value}/>;
+	    return (
+	    	<div style={mediaPlayerStyle}>
+	    	Length: {this.state.mediaLength} <br/>
+	    	Position: {this.state.value} <br/>
+	    	File: {this.props.file}
+	    		{timeSlider}
 				<FlatButton 
-					disabled={this.props.disabled}
+					disabled={isDisabled}
 					onClick={this.play}
 					primary={true}>
 					<FontIcon className="ion-play" />
 				</FlatButton>
 				<FlatButton
-					disabled={this.props.disabled}
+					disabled={isDisabled}
 					onClick={this.pause}>
 					<FontIcon className="ion-pause" />
 				</FlatButton>
 				<FlatButton
-					disabled={this.props.disabled}
+					disabled={isDisabled}
 					onClick={this.stop}>
 					<FontIcon className="ion-stop" />
 				</FlatButton>

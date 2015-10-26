@@ -103,7 +103,7 @@ var RecordButton = React.createClass({
 							}	
 			);
 			this.startTimer();
-		} else if(this.state.status === 4 && this.state.file !== null){
+		} else if(this.state.status === 4){
 			//ready to record state
 			this.setState(
 							{
@@ -114,28 +114,34 @@ var RecordButton = React.createClass({
 			);	
 		}
 	},
+	save: function(event){
+		//TODO: implement save function
+	},
 	render() {
 		var mediaPlayer = <MediaPlayer
-								mediaPlayerStyle={{margin:'0 5%'}}
-								mediaLength={this.timerInHundrethSeconds}
-								disabled={true}/>;
+								ref="mediaPlayer"
+								mediaPlayerStyle={{margin:'0 5%'}}/>;
 		var metaDataForm;
 		var saveButtons;
 
-		if(this.state.file != null){
+		if(this.state.file !== null && this.state.status === 4){
 			mediaPlayer = <MediaPlayer
+								key="mediaPlayer"
+								ref="mediaPlayer"
 								mediaPlayerStyle={{margin:'0 5%'}}
-								mediaLength={this.timerInHundrethSeconds}
-								disabled={false}
 								file={this.state.file}/>;
-			metaDataForm = <MetaDataForm ref="metaDataForm"/>;
-			saveButtons = <RaisedButton label="Save" primary={true} fullWidth={true}/>;
+			metaDataForm = <MetaDataForm
+								key="metaDataForm"
+								ref="metaDataForm"
+								media={this.state.file}/>;
+			saveButtons = <RaisedButton label="Save" primary={true} fullWidth={true} onClick={this.save}/>;
 		}
+
 	    return (
 	    	<div style={divStyle}>
 	    		<br/>
 	    		{saveButtons}
-	    		<br/>
+	    		<br/><br/>
 		        <FloatingActionButtonFlex 
 							style={buttonStyle} 
 							backgroundColor={this.state.buttonColour}

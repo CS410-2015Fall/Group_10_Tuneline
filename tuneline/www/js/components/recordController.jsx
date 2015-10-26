@@ -2,7 +2,29 @@ var recordButtonMedia;
 var currentStatus = 0;
 var currentAction = '';
 
+var mediaControllerRepeater; 
+
 module.exports = {
+	initPlayer: function(fileName){
+		recordButtonMedia = new Media(fileName);
+		if(recordButtonMedia){
+			recordButtonMedia.play();
+			recordButtonMedia.stop();
+		}
+		mediaControllerRepeater = window.setInterval(function(){
+			
+			var duration = recordButtonMedia.getDuration();
+			if(duration > 0){
+				var event = new CustomEvent('mediaCreated', { 
+															'detail':{'mediaLength': duration}
+														});
+				document.dispatchEvent(event);
+				window.clearInterval(mediaControllerRepeater);
+			}
+		},100);
+	
+	},
+
 	startRecording: function(fileName){
 		recordButtonMedia = new Media(fileName, success, failure, status);
 		currentAction = 'RECORDING'
@@ -50,8 +72,12 @@ module.exports = {
 
 	getCurrentPosition: function(){
 		recordButtonMedia.getCurrentPosition(function(position){
+			//alert(position);
 			if (position > -1) {
-                return position;
+            	var event = new CustomEvent('updateMediaCurrentPosition', { 
+												'detail': {'currentPosition':position}
+											});
+				document.dispatchEvent(event);
             }
 		});
 	},
@@ -76,8 +102,9 @@ module.exports = {
 
 };
 
+
 var success = function(){
-	//TODO: figure out if we need this function
+
 }
 
 var failure = function(error){

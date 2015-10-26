@@ -70,7 +70,7 @@ var MetaDataForm = React.createClass({
 	    			<FontIcon className="ion-camera" />
 	    			Add Photo
 	    		</RaisedButton>
-	    		<img src={'data:image/jpeg;base64,'+this.state.image}/>
+	    		<img src={'data:image/jpeg;base64,'+this.state.image} width="100%" height="auto"/>
 	    		<TextField ref="tags" hintText="Tags" multiLine={true} rows={5} floatingLabelText="Tags"/>
 	    	</div>		
 

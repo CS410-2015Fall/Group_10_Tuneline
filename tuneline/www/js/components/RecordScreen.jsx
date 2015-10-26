@@ -42,8 +42,7 @@ var RecordButton = React.createClass({
 						hours: 0,
 						minutes:0,
 						seconds:0
-					},
-					duration: 0
+					}
 					
 				};
 	},	
@@ -67,8 +66,7 @@ var RecordButton = React.createClass({
 						hours: 0,
 						minutes:0,
 						seconds:0
-					},
-					duration: 0					
+					}					
 				}
 		);
 		RecordController.resetMedia();
@@ -115,7 +113,10 @@ var RecordButton = React.createClass({
 		}
 	},
 	save: function(event){
-		//TODO: implement save function
+		if(this.refs.metaDataForm){
+			this.refs.metaDataForm.save();
+			this.reset();
+		}
 	},
 	render() {
 		var mediaPlayer = <MediaPlayer

@@ -7,8 +7,6 @@ const FontIcon = require('material-ui/lib/font-icon');
 const DatePicker = require('material-ui/lib/date-picker/date-picker');
 const TimePicker = require('material-ui/lib/time-picker');
 
-
-
 const RecordController = require('./recordController');
 
 var MetaDataForm = React.createClass({
@@ -16,19 +14,36 @@ var MetaDataForm = React.createClass({
 	getInitialState: function() {
 		return {value:0};
 	},
-	updateTime:function(event, value){
-		this.setState({value:value});
-		
+	updateTime: function(event, value){
+		this.setState({
+			value:value,
+			image: null
+			});		
+	},
+	takePicture: function(event){
+		navigator.camera.getPicture(
+			function(imageData){
+				this.setState({image: imageData});
+			}.bind(this), 
+			function(message){
+				alert(message);
+			}, 
+			{	
+				quality: 50,
+		    	destinationType: Camera.DestinationType.DATA_URL
+			});
 	},
 	save: function(event){
+		var soundByteDate = new Date(this.refs.date.getValue());
+			soundByteDate.setTime(this.refs.time.getTime());
 		var soundByte = {
 			type: 'default',
-			name: 'My soundbyte',
-			datetime: new Date(),
-			filename: this.props.fileName,
-			url: 'http://example.com',
-			tags: ['#tags','#yoloswaggy','#fomo'],
-			photo: 'some photo name',
+			name: this.refs.name.getValue(),
+			datetime: soundByteDate,
+			filename: this.props.media,
+			url: this.refs.url.getValue(),
+			tags: this.refs.tags.getValue(),
+			photo: 'placeholder photo',
 			author: 'some author id',
 			location: {
 				lat: 49.2602007,
@@ -38,6 +53,8 @@ var MetaDataForm = React.createClass({
 				name: 'location name'
 			}
 		};
+		alert(JSON.stringify(soundByte));
+		return soundByte;
 	},
 	render() {
 		var formStyle = this.props.formStyle;
@@ -45,11 +62,16 @@ var MetaDataForm = React.createClass({
 	    return (
 	    	<div>
 	    		<TextField ref="name" hintText="SoundByte Name" floatingLabelText="Name"/>
-	    		<TextField ref="type" hintText="Date" type="date" floatingLabelText="Date"/>
-	    		<TimePicker format="ampm" hintText="Time" floatingLabelText="Time" defaultTime={currentDate}/>
-	    		<TextField ref="type" hintText="Type" floatingLabelText="Type"/>	    		
+	    		<TextField ref="date" hintText="Date" type="date" floatingLabelText="Date" defaultValue={currentDate}/>
+	    		<TextField ref="url" hintText="Media URL" type="url" floatingLabelText="Medial URL"/>
+	    		<TimePicker ref="time" format="ampm" hintText="Time" floatingLabelText="Time" defaultTime={currentDate}/>
+	    		<TextField ref="type" hintText="Type" floatingLabelText="Type"/>
+	    		<RaisedButton onClick={this.takePicture} fullWidth={true}>
+	    			<FontIcon className="ion-camera" />
+	    			Add Photo
+	    		</RaisedButton>
+	    		<img src={'data:image/jpeg;base64,'+this.state.image}/>
 	    		<TextField ref="tags" hintText="Tags" multiLine={true} rows={5} floatingLabelText="Tags"/>
-
 	    	</div>		
 
 	    );

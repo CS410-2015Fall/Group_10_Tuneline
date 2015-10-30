@@ -15,10 +15,6 @@
                         {
                             "xml": "<preference name=\"AndroidPersistentFileLocation\" value=\"Internal\" />",
                             "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Camera\"><param name=\"browser-package\" value=\"Camera\" /></feature>",
-                            "count": 1
                         }
                     ]
                 }
@@ -60,12 +56,6 @@
             "PACKAGE_NAME": "com.cs410.tuneline"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.cs410.tuneline"
-        },
-        "plugin.google.maps": {
-            "PACKAGE_NAME": "com.cs410.tuneline"
-        },
-        "cordova-plugin-camera": {
             "PACKAGE_NAME": "com.cs410.tuneline"
         }
     },

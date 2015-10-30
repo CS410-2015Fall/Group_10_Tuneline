@@ -22,13 +22,9 @@ const MainLayout = React.createClass({
 
 		var tabContainerStyle = {
 			position: 'fixed',
+			top: '74px',
 			width: '100%',
-			zIndex: '-999',
-			overflowY: 'auto',
-			marginTop: '68px',
-			marginBottom: '48px',
-			top: '0px',
-			height: '80vh'
+			zIndex: '-999'
 		};
 		
 	    return (

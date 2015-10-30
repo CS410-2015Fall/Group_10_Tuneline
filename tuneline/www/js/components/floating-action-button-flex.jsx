@@ -17,7 +17,7 @@ let getZDepth = function(disabled) {
   };
 };
 
-const buttonHeight = '200px';
+const buttonHeight = '300px';
 
 const FloatingActionButton = React.createClass({
 
@@ -147,7 +147,7 @@ const FloatingActionButton = React.createClass({
         lineHeight: buttonHeight,
         fill: themeVariables.iconColor,
         color: this._getIconColor(),
-        fontSize: '8em',
+        fontSize: '12em',
         verticalAlign: 'middle'
       },
       iconWhenMini: {

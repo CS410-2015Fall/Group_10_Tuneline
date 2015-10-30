@@ -9,6 +9,3 @@ platforms
 
 plugins/*
 !plugins/fetch.json
-
-tunelinesource/
-tunelinesource/*

@@ -118,6 +118,9 @@ var RecordButton = React.createClass({
 			this.reset();
 		}
 	},
+	changeTabs:function(tabIdx){
+		this.props.callbackParent(tabIdx);
+	},
 	render() {
 		var mediaPlayer = <MediaPlayer
 								ref="mediaPlayer"
@@ -134,7 +137,8 @@ var RecordButton = React.createClass({
 			metaDataForm = <MetaDataForm
 								key="metaDataForm"
 								ref="metaDataForm"
-								media={this.state.file}/>;
+								media={this.state.file}
+								callbackParent={this.changeTabs}/>;
 			saveButtons = <RaisedButton label="Save" primary={true} fullWidth={true} onClick={this.save}/>;
 		}
 

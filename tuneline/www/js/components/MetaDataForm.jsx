@@ -8,6 +8,7 @@ const DatePicker = require('material-ui/lib/date-picker/date-picker');
 const TimePicker = require('material-ui/lib/time-picker');
 
 const RecordController = require('./recordController');
+const Database = require('./Database');
 
 var MetaDataForm = React.createClass({
 	getInitialState: function() {
@@ -52,7 +53,8 @@ var MetaDataForm = React.createClass({
 				name: 'location name'
 			}
 		};
-		alert(JSON.stringify(soundByte));
+		Database.saveSound(soundByte);
+		this.props.callbackParent(0);
 		return soundByte;
 	},
 	render() {

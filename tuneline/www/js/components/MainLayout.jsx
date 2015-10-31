@@ -7,7 +7,9 @@ const AppBar = require('material-ui/lib/app-bar');
 const RecordScreen = require('./RecordScreen');
 
 const MainLayout = React.createClass({
-	
+	changeTabs: function(tabIdx){
+		this.props.value = tabIdx;
+	},
 	render() {
 		var tabBarStyle = {
 			position: 'fixed',
@@ -35,13 +37,13 @@ const MainLayout = React.createClass({
 	    	<div>
 	    	<AppBar title="Tuneline"/>
 			<Tabs initialSelectedIndex={1} style={tabBarStyle} inkBarStyle={inkBarStyle} contentContainerStyle={tabContainerStyle}>
-				<Tab label={<span><i className="ion-music-note"></i><br/>Tuneline</span>}>
+				<Tab value={0} label={<span><i className="ion-music-note"></i><br/>Tuneline</span>}>
 					****DAN: Insert your tuneline screen here****
 				</Tab>
-				<Tab label={<span><i className="ion-android-microphone"></i><br/>Record</span>}>
-					<RecordScreen/>
+				<Tab value={1} label={<span><i className="ion-android-microphone"></i><br/>Record</span>}>
+					<RecordScreen callbackParent={this.changeTabs}/>
 				</Tab>
-				<Tab label={<span><i className="ion-android-person"></i><br/>Profile</span>}>
+				<Tab value={2} label={<span><i className="ion-android-person"></i><br/>Profile</span>}>
 					****PROFILE/SETTINGS**
 				</Tab>
 			</Tabs>

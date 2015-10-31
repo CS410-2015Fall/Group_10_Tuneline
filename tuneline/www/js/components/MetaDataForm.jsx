@@ -10,7 +10,6 @@ const TimePicker = require('material-ui/lib/time-picker');
 const RecordController = require('./recordController');
 
 var MetaDataForm = React.createClass({
-	//Add the event listener for status changes and setup the initial state of the button
 	getInitialState: function() {
 		return {value:0};
 	},

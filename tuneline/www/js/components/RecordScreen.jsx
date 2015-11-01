@@ -115,6 +115,7 @@ var RecordButton = React.createClass({
 	save: function(event){
 		if(this.refs.metaDataForm){
 			this.refs.metaDataForm.save();
+			this.refs.mediaPlayer.stop();
 			this.reset();
 		}
 	},

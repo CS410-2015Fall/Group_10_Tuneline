@@ -7,7 +7,7 @@ module.exports = {
 	saveSound: function(jsonObj) {
 		db.transaction(
 			function(tx) {
-				tx.executeSql("INSERT INTO 'Soundbytes' (type,name,datetime,filename,url,tags,photo,author,location) VALUES (?,?,?,?,?,?,?,?,?)",[jsonObj.type, jsonObj.name, jsonObj.datetime, jsonObj.filename, jsonObj.url, jsonObj.tags, jsonObj.photo, jsonObj.author, JSON.stringify(jsonObj.location)], sqlSuccessCB, sqlErrorCB)}, txSuccessCB, txErrorCB);
+				tx.executeSql("INSERT INTO 'Soundbytes' (type,name,datetime,filename,url,tags,photo,author,location) VALUES (?,?,?,?,?,?,?,?,?)",[jsonObj.type, jsonObj.name, jsonObj.datetime, jsonObj.filename, jsonObj.url, jsonObj.tags, jsonObj.photo, jsonObj.author, JSON.stringify(jsonObj.location)], sqlSuccessCB, sqlErrorCB)}, txErrorCB, txSuccessCB);
 	},
 
 	getSounds: function(callback) {

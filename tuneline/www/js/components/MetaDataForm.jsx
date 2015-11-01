@@ -34,12 +34,12 @@ var MetaDataForm = React.createClass({
 			});
 	},
 	save: function(event){
-		var soundByteDate = new Date(this.refs.date.getValue());
-			soundByteDate.setTime(this.refs.time.getTime());
-		var soundByte = {
+		var soundBiteDate = new Date(this.refs.date.getValue());
+			soundBiteDate.setTime(this.refs.time.getTime());
+		var soundBite = {
 			type: 'default',
 			name: this.refs.name.getValue(),
-			datetime: soundByteDate,
+			datetime: soundBiteDate,
 			filename: this.props.media,
 			url: this.refs.url.getValue(),
 			tags: this.refs.tags.getValue(),
@@ -53,16 +53,16 @@ var MetaDataForm = React.createClass({
 				name: 'location name'
 			}
 		};
-		Database.saveSound(soundByte);
+		Database.saveSound(soundBite);
 		this.props.callbackParent(0);
-		return soundByte;
+		return soundBite;
 	},
 	render() {
 		var formStyle = this.props.formStyle;
 		var currentDate = new Date();
 	    return (
 	    	<div>
-	    		<TextField ref="name" hintText="SoundByte Name" floatingLabelText="Name"/>
+	    		<TextField ref="name" hintText="Soundbite Name" floatingLabelText="Name"/>
 	    		<TextField ref="date" hintText="Date" type="date" floatingLabelText="Date" defaultValue={currentDate}/>
 	    		<TextField ref="url" hintText="Media URL" type="url" floatingLabelText="Medial URL"/>
 	    		<TimePicker ref="time" format="ampm" hintText="Time" floatingLabelText="Time" defaultTime={currentDate}/>

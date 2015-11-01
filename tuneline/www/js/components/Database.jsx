@@ -31,7 +31,7 @@ var getSounds = function(tx, callback) {
 		console.log("Rows in successCB: %o", rows);
 		callback(rows);
 	}
-	tx.executeSql("SELECT * FROM Soundbytes", [], function(tx,r){successCB(tx,r,callback)}, sqlErrorCB);
+	tx.executeSql("SELECT * FROM Soundbytes ORDER BY datetime DESC", [], function(tx,r){successCB(tx,r,callback)}, sqlErrorCB);
 }
 
 // Takes SQLResultSet, returns rows as a list of JSON objects

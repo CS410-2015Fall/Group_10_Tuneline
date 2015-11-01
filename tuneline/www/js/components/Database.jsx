@@ -1,6 +1,7 @@
 // Database.js
 
 var db;
+var prepop = false;
 
 module.exports = {
 
@@ -15,8 +16,8 @@ module.exports = {
 		if (id.constructor === Array) {
 			// is array
 			console.log("Soundbit IDs requested: %o", id);
-		} else if ()
-		db.transaction(function(tx){getSounds(tx, callback)}, txErrorCB, txSuccessCB);
+		}
+		// db.transaction(function(tx){getSounds(tx, callback)}, txErrorCB, txSuccessCB);
 	},
 
 	saveSound: function(jsonObj) {
@@ -67,6 +68,15 @@ var resultSetToList = function(results) {
 // Create the table if not present
 var createTable = function(tx) {
 	tx.executeSql('CREATE TABLE IF NOT EXISTS "Soundbits" ("id" INTEGER PRIMARY KEY,"type" TEXT NOT NULL,"name" TEXT,"datetime" TEXT NOT NULL,"filename" TEXT,"url" INTEGER,"tags" TEXT,"photo" TEXT,"author" TEXT,"location" TEXT NOT NULL);');
+	if (prepop) {
+		populate(tx);
+	}
+}
+
+var populate = function(tx) {
+	tx.executeSql("INSERT INTO 'Soundbytes' (type,name,datetime,filename,url,tags,photo,author,location) VALUES (?,?,?,?,?,?,?,?,?)", ["default", "some name #1", "Thu Oct 29 2015 01:35:15 GMT-0700 (PDT)", "NULL", "NULL", "#yoloswag", "NULL", "NULL", '{"lat":49.2602007,"lng":-123.2501255,"accuracy":5,"altitude":0,"name":"location name"}'], testQuerySuccess, testQueryError);
+	tx.executeSql("INSERT INTO 'Soundbytes' (type,name,datetime,filename,url,tags,photo,author,location) VALUES (?,?,?,?,?,?,?,?,?)", ["default", "test name #2", "Thu Oct 30 2015 11:35:15 GMT-0700 (PDT)", "NULL", "NULL", "#swaggeroni", "NULL", "NULL", '{"lat":49.2602007,"lng":-123.2501255,"accuracy":5,"altitude":0,"name":"location name"}'], testQuerySuccess, testQueryError);
+	tx.executeSql("INSERT INTO 'Soundbytes' (type,name,datetime,filename,url,tags,photo,author,location) VALUES (?,?,?,?,?,?,?,?,?)", ["default", "testing #3", "Thu Oct 28 2015 00:35:15 GMT-0700 (PDT)", "NULL", "NULL", "#heylisten", "NULL", "NULL", '{"lat":49.2602007,"lng":-123.2501255,"accuracy":5,"altitude":0,"name":"location name"}'], testQuerySuccess, testQueryError);
 }
 
 // Generic SQL error callback

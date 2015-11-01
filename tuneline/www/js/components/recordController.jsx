@@ -2,7 +2,29 @@ var recordButtonMedia;
 var currentStatus = 0;
 var currentAction = '';
 
+var mediaControllerRepeater; 
+
 module.exports = {
+	initPlayer: function(fileName){
+		recordButtonMedia = new Media(fileName);
+		if(recordButtonMedia){
+			recordButtonMedia.play();
+			recordButtonMedia.stop();
+		}
+		mediaControllerRepeater = window.setInterval(function(){
+			
+			var duration = recordButtonMedia.getDuration();
+			if(duration > 0){
+				var event = new CustomEvent('mediaCreated', { 
+															'detail':{'mediaLength': duration}
+														});
+				document.dispatchEvent(event);
+				window.clearInterval(mediaControllerRepeater);
+			}
+		},100);
+	
+	},
+
 	startRecording: function(fileName){
 		recordButtonMedia = new Media(fileName, success, failure, status);
 		currentAction = 'RECORDING'
@@ -18,23 +40,30 @@ module.exports = {
 	},
 
 	playMedia:  function(fileName){
-		if(recordButtonMedia !== null){
+		if(recordButtonMedia === null){
 			recordButtonMedia = new Media(fileName, success, failure, status);
+		}
 			currentAction = 'PLAYING';
-			recordButtonMedia.play();			
+			recordButtonMedia.play();
+	},
+
+	pauseMedia:  function(){
+		if(recordButtonMedia !== null){
+			currentAction = 'PAUSED';
+			recordButtonMedia.pause();			
 		}
 	},
 
 	stopMedia:  function(){
 		if(recordButtonMedia !== null){
 			recordButtonMedia.stop();
-			recordButtonMedia.release();
 			currentAction = '';
 		}
 	},
 
 	resetMedia: function(){
-		recordButtonMedia.release();
+		if(recordButtonMedia)
+			recordButtonMedia.release();
 		recordButtonMedia = null;
 		currentStatus = 0;
 		currentAction = '';
@@ -42,7 +71,21 @@ module.exports = {
 	},
 
 	getCurrentPosition: function(){
-		return recordButtonMedia.getCurrentPosition();
+		recordButtonMedia.getCurrentPosition(function(position){
+			//alert(position);
+			if (position > -1) {
+            	var event = new CustomEvent('updateMediaCurrentPosition', { 
+												'detail': {'currentPosition':position}
+											});
+				document.dispatchEvent(event);
+            }
+		});
+	},
+
+	seekTo: function(position){
+		if(recordButtonMedia !== null){
+			recordButtonMedia.seekTo(position);
+		}
 	},
 
 	getDuration: function(){
@@ -59,8 +102,9 @@ module.exports = {
 
 };
 
+
 var success = function(){
-	//TODO: figure out if we need this function
+
 }
 
 var failure = function(error){
@@ -72,8 +116,12 @@ var status = function(mediaStatus){
 	currentStatus = mediaStatus;
 
 	//emit a mediaChange event for the components to listen to
-	var event = new Event('mediaChange');
-	document.dispatchEvent(event);
+	//do not emit status for MEDIA_STARTING
+	if(mediaStatus !== 1){
+		var event = new Event('mediaChange');
+		document.dispatchEvent(event);
+	}
+	
 }
 
 //	mediaStatus REFERENCE

@@ -28,8 +28,10 @@ module.exports = {
 				tx.executeSql("UPDATE 'Soundbites' SET name=?, datetime=?,tags=?,photo=?,location=?) WHERE id=?",[jsonObj.name, jsonObj.datetime, jsonObj.tags, jsonObj.photo, JSON.stringify(jsonObj.location), jsonObj.id], sqlSuccessCB, sqlErrorCB)}, txErrorCB, txSuccessCB);	
 	},
 	
-	resetTable: function(tx) {
-		tx.executeSql("DROP TABLE Soundbites", [], function(){createTable(tx)}, sqlErrorCB);
+	resetTable: function() {
+		db.transaction(function(tx) {
+			tx.executeSql("DROP TABLE Soundbites", [], function(){createTable(tx)}, sqlErrorCB)
+		}
 	}
 }
 

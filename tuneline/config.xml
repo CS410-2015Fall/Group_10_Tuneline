@@ -2,10 +2,10 @@
 <widget id="com.cs410.tuneline" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Tuneline</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        Tuneline App
     </description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+        Alex, Ben, Dan, Jon
     </author>
     <plugin name="cordova-plugin-whitelist" version="1" />
     <access origin="*" />
@@ -29,4 +29,5 @@
     </platform>
     <hook src="scripts/appBeforePrepare.js" type="before_prepare" />
     <hook src="scripts/appAfterPrepare.js" type="after_prepare" />
+    <icon src="www/img/icon.png" />
 </widget>

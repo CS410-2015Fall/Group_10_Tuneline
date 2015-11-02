@@ -49,25 +49,41 @@ var RecordButton = React.createClass({
 	startRecord: function() {
 		this.reset();
 		var now = new Date();
-		RecordController.startRecording(now.getTime()+'.m4a');
-		//this.startTimer();
-		
+		var fileName = now.getTime().toString();
+		if(device.platform === 'Android'){
+			fileName = cordova.file.externalApplicationStorageDirectory + 
+							'files/' + fileName + '.m4a';
+		} else if(device.platform === 'iOS'){
+			fileName = cordova.file.documentsDirectory+'NoCloud/'+fileName + '.wav';
+		} else{
+			fileName = fileName + '.mp3';
+		}
+		RecordController.startRecording(fileName);		
 	},
 	stopRecord: function() {
 		RecordController.stopRecording();
 		this.stopTimer();
+		this.setState(
+			{		
+				time: {
+					hours: 0,
+					minutes:0,
+					seconds:0
+				}					
+			}
+		);
 	},
 	reset: function(){
 		this.timerInHundrethSeconds = 0;
 		this.setState(
-				{		
-					file: null,
-					time: {
-						hours: 0,
-						minutes:0,
-						seconds:0
-					}					
-				}
+			{		
+				file: null,
+				time: {
+					hours: 0,
+					minutes:0,
+					seconds:0
+				}					
+			}
 		);
 		RecordController.resetMedia();
 	},	
@@ -115,13 +131,35 @@ var RecordButton = React.createClass({
 	save: function(event){
 		if(this.refs.metaDataForm){
 			this.refs.metaDataForm.save();
+			this.refs.mediaPlayer.stop();
 			this.reset();
 		}
+	},
+	changeTabs: function(tabIdx){
+		this.props.callbackParent(tabIdx);
+	},
+	updatePlayTimer: function(timeInSeconds){
+		var hours = Math.floor(timeInSeconds/3600);
+
+		var minutes = Math.floor((timeInSeconds%3600)/60);
+
+		var seconds = ((timeInSeconds%3600)%60).toFixed(1);
+
+		this.setState({
+					time: {
+						hours: hours,
+						minutes:minutes,
+						seconds:seconds
+					}
+				});
+
 	},
 	render() {
 		var mediaPlayer = <MediaPlayer
 								ref="mediaPlayer"
-								mediaPlayerStyle={{margin:'0 5%'}}/>;
+								mediaPlayerStyle={{margin:'0 5%'}}
+								updateParentTime={this.updatePlayTimer}
+								/>;
 		var metaDataForm;
 		var saveButtons;
 
@@ -130,11 +168,15 @@ var RecordButton = React.createClass({
 								key="mediaPlayer"
 								ref="mediaPlayer"
 								mediaPlayerStyle={{margin:'0 5%'}}
-								file={this.state.file}/>;
+								file={this.state.file}
+								updateParentTime={this.updatePlayTimer}
+								/>;
 			metaDataForm = <MetaDataForm
 								key="metaDataForm"
 								ref="metaDataForm"
-								media={this.state.file}/>;
+								media={this.state.file}
+								callbackParent={this.changeTabs}							
+								/>;
 			saveButtons = <RaisedButton label="Save" primary={true} fullWidth={true} onClick={this.save}/>;
 		}
 

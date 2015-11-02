@@ -8,10 +8,28 @@ const DatePicker = require('material-ui/lib/date-picker/date-picker');
 const TimePicker = require('material-ui/lib/time-picker');
 
 const RecordController = require('./recordController');
+const Database = require('./Database');
 
 var MetaDataForm = React.createClass({
 	getInitialState: function() {
+		this.getLocation();
 		return {value:0};
+	},
+	getLocation: function(callbackFunction){
+		navigator.geolocation.getCurrentPosition(function(position){
+			if(position){
+				this.currentPosition={
+					lat: position.coords.latitude,
+					lng: position.coords.longitude,
+					accuracy: position.coords.accuracy,
+					altitude: position.coords.altitude,
+					name: 'default location name'
+				};
+			}
+			if(callbackFunction){
+				callbackFunction();
+			}
+		}.bind(this));
 	},
 	updateTime: function(event, value){
 		this.setState({
@@ -32,35 +50,48 @@ var MetaDataForm = React.createClass({
 		    	destinationType: Camera.DestinationType.DATA_URL
 			});
 	},
+	currentPosition:null,
 	save: function(event){
-		var soundByteDate = new Date(this.refs.date.getValue());
-			soundByteDate.setTime(this.refs.time.getTime());
-		var soundByte = {
+		if(this.currentPosition){
+			var soundBite = this.createSoundbite();
+			Database.saveSound(soundBite);
+			this.props.callbackParent(0);
+		} else{
+			this.getLocation(this.save);
+		}		
+	},
+	createSoundbite:function(){
+		var soundBiteDate = new Date(this.refs.date.getValue());
+			soundBiteDate.setTime(this.refs.time.getTime());
+		var name = this.refs.name.getValue();
+		if(!name){
+			name = soundBiteDate.toLocaleString()
+		}
+
+		var soundBite = {
 			type: 'default',
-			name: this.refs.name.getValue(),
-			datetime: soundByteDate,
+			name: name,
+			datetime: soundBiteDate,
 			filename: this.props.media,
 			url: this.refs.url.getValue(),
 			tags: this.refs.tags.getValue(),
-			photo: 'placeholder photo',
+			photo: this.state.image,
 			author: 'some author id',
-			location: {
-				lat: 49.2602007,
-				lng: -123.2501255,
-				accuracy: 5,
-				altitude: 0,
-				name: 'location name'
-			}
+			location: this.currentPosition
 		};
-		alert(JSON.stringify(soundByte));
-		return soundByte;
+
+		return soundBite;
 	},
 	render() {
 		var formStyle = this.props.formStyle;
 		var currentDate = new Date();
+		var image;
+		if(this.state.image){
+			image = <img src={'data:image/jpeg;base64,'+this.state.image} width="100%" height="auto"/>;
+		}
 	    return (
 	    	<div>
-	    		<TextField ref="name" hintText="SoundByte Name" floatingLabelText="Name"/>
+	    		<TextField ref="name" hintText="Soundbite Name" floatingLabelText="Name"/>
 	    		<TextField ref="date" hintText="Date" type="date" floatingLabelText="Date" defaultValue={currentDate}/>
 	    		<TextField ref="url" hintText="Media URL" type="url" floatingLabelText="Medial URL"/>
 	    		<TimePicker ref="time" format="ampm" hintText="Time" floatingLabelText="Time" defaultTime={currentDate}/>
@@ -69,7 +100,7 @@ var MetaDataForm = React.createClass({
 	    			<FontIcon className="ion-camera" />
 	    			Add Photo
 	    		</RaisedButton>
-	    		<img src={'data:image/jpeg;base64,'+this.state.image} width="100%" height="auto"/>
+	    		{image}
 	    		<TextField ref="tags" hintText="Tags" multiLine={true} rows={5} floatingLabelText="Tags"/>
 	    	</div>		
 

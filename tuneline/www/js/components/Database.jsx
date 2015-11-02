@@ -33,10 +33,8 @@ module.exports = {
 	resetTable: function() {
 		db.transaction(function(tx) {
 			tx.executeSql("DROP TABLE Soundbites", [], function(){createTable(tx)}, sqlErrorCB)
-		}
+		});
 	}
-}
-
 }
 
 // wait for load

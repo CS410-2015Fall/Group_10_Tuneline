@@ -63,14 +63,19 @@ var MetaDataForm = React.createClass({
 	createSoundbite:function(){
 		var soundBiteDate = new Date(this.refs.date.getValue());
 			soundBiteDate.setTime(this.refs.time.getTime());
+		var name = this.refs.name.getValue();
+		if(!name){
+			name = soundBiteDate.toLocaleString()
+		}
+
 		var soundBite = {
 			type: 'default',
-			name: this.refs.name.getValue(),
+			name: name,
 			datetime: soundBiteDate,
 			filename: this.props.media,
 			url: this.refs.url.getValue(),
 			tags: this.refs.tags.getValue(),
-			photo: 'placeholder photo',
+			photo: this.state.image,
 			author: 'some author id',
 			location: this.currentPosition
 		};
@@ -80,6 +85,10 @@ var MetaDataForm = React.createClass({
 	render() {
 		var formStyle = this.props.formStyle;
 		var currentDate = new Date();
+		var image;
+		if(this.state.image){
+			image = <img src={'data:image/jpeg;base64,'+this.state.image} width="100%" height="auto"/>;
+		}
 	    return (
 	    	<div>
 	    		<TextField ref="name" hintText="Soundbite Name" floatingLabelText="Name"/>
@@ -91,7 +100,7 @@ var MetaDataForm = React.createClass({
 	    			<FontIcon className="ion-camera" />
 	    			Add Photo
 	    		</RaisedButton>
-	    		<img src={'data:image/jpeg;base64,'+this.state.image} width="100%" height="auto"/>
+	    		{image}
 	    		<TextField ref="tags" hintText="Tags" multiLine={true} rows={5} floatingLabelText="Tags"/>
 	    	</div>		
 

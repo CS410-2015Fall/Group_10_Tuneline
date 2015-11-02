@@ -54,7 +54,7 @@ var RecordButton = React.createClass({
 			fileName = cordova.file.externalApplicationStorageDirectory + 
 							'files/' + fileName + '.m4a';
 		} else if(device.platform === 'iOS'){
-			fileName = cordova.file.documentsDirectory+fileName + '.wav';
+			fileName = cordova.file.applicationStorageDirectory+'Documents/'+fileName + '.wav';
 		} else{
 			fileName = fileName + '.wav';
 		}

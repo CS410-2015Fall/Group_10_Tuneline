@@ -29,7 +29,8 @@ var MediaPlayer = React.createClass({
 				value: e.detail.currentPosition
 			});
 			//Update the timer on the parent RecordScreen
-			this.props.updateParentTime(e.detail.currentPosition);
+			if(this.props.updateParentTime)
+				this.props.updateParentTime(e.detail.currentPosition);
 		}.bind(this));
 
 		return {

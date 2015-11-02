@@ -49,7 +49,16 @@ var RecordButton = React.createClass({
 	startRecord: function() {
 		this.reset();
 		var now = new Date();
-		RecordController.startRecording(now.getTime()+'.m4a');
+		var fileName = now.getTime().toString();
+		if(device.platform === 'Android'){
+			fileName = cordova.file.externalApplicationStorageDirectory + 
+							'files/' + fileName + '.mp4';
+		} else if(device.platform === 'iOS'){
+			fileName = cordova.file.documentsDirectory+'NoCloud/'+fileName + '.wav';
+		} else{
+			fileName = fileName + '.mp3';
+		}
+		RecordController.startRecording(fileName);
 		//this.startTimer();
 		
 	},

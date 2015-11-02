@@ -51,11 +51,10 @@ var SoundbiteList = React.createClass({
 });
 
 var TunelineHome = React.createClass({
-    /*getInitialState: function() {
-        var soundbiteList = SoundbiteData.getSounds(function(s));
-        window.alert(soundbiteList);
-        return {soundbites: soundbiteList}
+    getInitialState: function() {
+        return {sounds: []}
     },
+    /*
     searchHandler:function(key) {
         this.props.service.findByName(key).done(function(result) {
             this.setState({searchKey: key, soundbites: result});
@@ -64,23 +63,17 @@ var TunelineHome = React.createClass({
     getSoundBytes: function(){
         SoundbiteData.getSounds(function(soundbites){
             this.setState({
-                sounds: JSON.stringify(soundbites, null, 4)
+                sounds: soundbites
             });
         }.bind(this));
     },
 
     render: function () {
-        this.getSoundBytes;
-
-        var soundbitelistitems = [];
-
-        /*for(var i = 0; i < this.state.sounds.length ; i++){
-            soundbitelistitems.push(<soundbitelistitems>)
-        };*/
+        this.getSoundBytes();
 
         return (
             <div>
-                <SoundbiteList soundbites={this.state.sounds}/>
+                <SoundbiteList key="soundbyteList" soundbites={this.state.sounds}/>
             </div>
         );
     }

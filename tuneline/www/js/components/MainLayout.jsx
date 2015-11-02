@@ -57,12 +57,6 @@ const MainLayout = React.createClass({
 				contentContainerStyle={tabContainerStyle}>
 				<Tab label={<span><i className="ion-music-note"></i><br/>Tuneline</span>}>
 					<TunelineScreen/>
-					****DAN: Insert your tuneline screen here****
-
-					{this.state.sounds}
-					<RaisedButton onClick={this.getSoundBytes} fullWidth={true}>
-		    			Get Sounds
-		    		</RaisedButton>
 				</Tab>
 				<Tab label={<span><i className="ion-android-microphone"></i><br/>Record</span>}>
 					<RecordScreen callbackParent={this.changeTabs}/>

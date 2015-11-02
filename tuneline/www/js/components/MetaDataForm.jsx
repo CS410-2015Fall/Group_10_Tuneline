@@ -15,7 +15,7 @@ var MetaDataForm = React.createClass({
 		this.getLocation();
 		return {value:0};
 	},
-	getLocation: function(callbackFunction){
+	getLocation: function(){
 		navigator.geolocation.getCurrentPosition(function(position){
 			if(position){
 				this.currentPosition={
@@ -25,9 +25,6 @@ var MetaDataForm = React.createClass({
 					altitude: position.coords.altitude,
 					name: 'default location name'
 				};
-			}
-			if(callbackFunction){
-				callbackFunction();
 			}
 		}.bind(this));
 	},
@@ -50,18 +47,22 @@ var MetaDataForm = React.createClass({
 		    	destinationType: Camera.DestinationType.DATA_URL
 			});
 	},
-	currentPosition:null,
+	currentPosition:{
+						lat: 0,
+						lng: 0,
+						accuracy: 0,
+						altitude: 0,
+						name: 'default location name'
+	},
 	save: function(event){
-		if(this.currentPosition){
-			var soundBite = this.createSoundbite();
-			Database.saveSound(soundBite);
-			this.props.callbackParent(0);
-		} else{
-			this.getLocation(this.save);
-		}		
+
+		var soundBite = this.createSoundbite();
+		Database.saveSound(soundBite);
+		this.props.callbackParent(0);
+
 	},
 	createSoundbite:function(){
-		var soundBiteDate = new Date(this.refs.date.getValue());
+		var soundBiteDate = new Date(this.refs.dateField.getValue());
 			soundBiteDate.setTime(this.refs.time.getTime());
 		var name = this.refs.name.getValue();
 		if(!name){
@@ -92,7 +93,7 @@ var MetaDataForm = React.createClass({
 	    return (
 	    	<div>
 	    		<TextField ref="name" hintText="Soundbite Name" floatingLabelText="Name"/>
-	    		<TextField ref="date" hintText="Date" type="date" floatingLabelText="Date" defaultValue={currentDate}/>
+	    		<TextField ref="dateField" hintText="Date" type="date" floatingLabelText="Date" defaultValue={currentDate}/>
 	    		<TextField ref="url" hintText="Media URL" type="url" floatingLabelText="Medial URL"/>
 	    		<TimePicker ref="time" format="ampm" hintText="Time" floatingLabelText="Time" defaultTime={currentDate}/>
 	    		<TextField ref="type" hintText="Type" floatingLabelText="Type"/>

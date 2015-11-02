@@ -6,8 +6,22 @@ const AppBar = require('material-ui/lib/app-bar');
 
 const RecordScreen = require('./RecordScreen');
 
+const Database = require('./Database');
+
 const MainLayout = React.createClass({
-	
+	getInitialState: function() {
+		return {sounds:''};
+	},
+	changeTabs: function(tabIdx){
+		this.refs.tabBar.setState({selectedIndex: tabIdx});
+	},
+	getSoundBytes:function(){
+		Database.getSounds(function(soundbytes){
+			this.setState({
+				sounds: JSON.stringify(soundbytes)
+			});
+		}.bind(this));
+	},
 	render() {
 		var tabBarStyle = {
 			position: 'fixed',
@@ -34,15 +48,25 @@ const MainLayout = React.createClass({
 	    return (
 	    	<div>
 	    	<AppBar title="Tuneline"/>
-			<Tabs initialSelectedIndex={1} style={tabBarStyle} inkBarStyle={inkBarStyle} contentContainerStyle={tabContainerStyle}>
+			<Tabs 
+				ref="tabBar"
+				initialSelectedIndex={1} 
+				style={tabBarStyle} 
+				inkBarStyle={inkBarStyle} 
+				contentContainerStyle={tabContainerStyle}>
 				<Tab label={<span><i className="ion-music-note"></i><br/>Tuneline</span>}>
 					****DAN: Insert your tuneline screen here****
+
+					{this.state.sounds}
+					<RaisedButton onClick={this.getSoundBytes} fullWidth={true}>
+		    			Get Sounds
+		    		</RaisedButton>
 				</Tab>
 				<Tab label={<span><i className="ion-android-microphone"></i><br/>Record</span>}>
-					<RecordScreen/>
+					<RecordScreen callbackParent={this.changeTabs}/>
 				</Tab>
 				<Tab label={<span><i className="ion-android-person"></i><br/>Profile</span>}>
-					****PROFILE/SETTINGS**
+					
 				</Tab>
 			</Tabs>
 			</div>

@@ -17,9 +17,11 @@ module.exports = {
 	},
 
 	saveSound: function(jsonObj) {
+		var jsonObj = jsonObj;
 		db.transaction(
 			function(tx) {
 				tx.executeSql("INSERT INTO 'Soundbites' (type,name,datetime,filename,url,tags,photo,author,location) VALUES (?,?,?,?,?,?,?,?,?)",[jsonObj.type, jsonObj.name, jsonObj.datetime, jsonObj.filename, jsonObj.url, jsonObj.tags, jsonObj.photo, jsonObj.author, JSON.stringify(jsonObj.location)], sqlSuccessCB, sqlErrorCB)}, txErrorCB, txSuccessCB);
+
 	},
 
 	updateSound: function(jsonObj) {

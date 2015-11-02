@@ -28,6 +28,8 @@ var MediaPlayer = React.createClass({
 			this.setState({
 				value: e.detail.currentPosition
 			});
+			//Update the timer on the parent RecordScreen
+			this.props.updateParentTime(e.detail.currentPosition);
 		}.bind(this));
 
 		return {
@@ -63,6 +65,24 @@ var MediaPlayer = React.createClass({
 			RecordController.getCurrentPosition();
 		}.bind(this), 10);
 	},
+	parseMediaLength: function(timeInSeconds){
+		var hours = Math.floor(timeInSeconds/3600);
+		if(hours < 10){
+			hours = '0'+ hours.toString();
+		}
+
+		var minutes = Math.floor((timeInSeconds%3600)/60);
+		if(minutes < 10){
+			minutes = '0'+ minutes.toString();
+		}
+
+		var seconds = ((timeInSeconds%3600)%60).toFixed(1);
+		if(seconds < 10){
+			seconds = '0' + seconds.toString();
+		}
+
+		return {hours: hours, minutes: minutes, seconds: seconds};
+	},
 	render() {
 		var mediaPlayerStyle = this.props.mediaPlayerStyle;
 		var isDisabled = this.state.mediaLength>0?false:true;
@@ -73,31 +93,38 @@ var MediaPlayer = React.createClass({
 	    			ref="mediaSlider" onChange={this.seekTo}
 	    			max={this.state.mediaLength==0?1:this.state.mediaLength} 
 	    			min={0}
-	    			value={this.state.value}/>;
+	    			value={this.state.value}
+	    			/>;
+	    var iconColor = 'rgba(0, 0, 0, 0.87)';
+	    	if(isDisabled){
+	    		iconColor = 'rgba(0, 0, 0, 0.15)';
+	    	}
+
+	    var mediaLength = this.parseMediaLength(this.state.mediaLength);
 	    return (
 	    	<div style={mediaPlayerStyle}>
-	    	Length: {this.state.mediaLength} <br/>
-	    	Position: {this.state.value} <br/>
-	    	File: {this.props.file}
 	    		{timeSlider}
+	    		<div style={{width:'100%',textAlign:'center'}}>
+	    			{mediaLength.hours}:{mediaLength.minutes}:{mediaLength.seconds}
+	    		</div>
+	    		
 				<FlatButton 
 					disabled={isDisabled}
 					onClick={this.play}
 					primary={true}>
-					<FontIcon className="ion-play" />
+					<FontIcon className="ion-play" color={iconColor}/>
 				</FlatButton>
 				<FlatButton
 					disabled={isDisabled}
 					onClick={this.pause}>
-					<FontIcon className="ion-pause" />
+					<FontIcon className="ion-pause" color={iconColor}/>
 				</FlatButton>
 				<FlatButton
 					disabled={isDisabled}
 					onClick={this.stop}>
-					<FontIcon className="ion-stop" />
+					<FontIcon className="ion-stop" color={iconColor}/>
 				</FlatButton>
 				<br/>
-
 	    	</div>
 
 	    );

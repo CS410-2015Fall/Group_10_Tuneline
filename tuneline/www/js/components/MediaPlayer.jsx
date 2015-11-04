@@ -16,7 +16,7 @@ var MediaPlayer = React.createClass({
 			RecordController.initPlayer(this.props.file);
 		}
 		document.addEventListener('mediaCreated',function(e){
-			if(this.mediaLength <= 0){
+			if(this.state.mediaLength <= 0){
 				this.initMedia(e);
 			}			
 		}.bind(this));
@@ -34,15 +34,15 @@ var MediaPlayer = React.createClass({
 		}.bind(this));
 
 		return {
-					value: 0
+					value: 0,
+					mediaLength: 0
 				};
 	},
 	initMedia: function(data){
-		
-		this.mediaLength = data.detail.mediaLength
-
+		this.setState({
+			mediaLength: data.detail.mediaLength
+		});
 	},
-	mediaLength: 0,
 	play: function(event){
 		RecordController.playMedia(this.props.file);
 		this.updateTime();
@@ -86,13 +86,13 @@ var MediaPlayer = React.createClass({
 	},
 	render() {
 		var mediaPlayerStyle = this.props.mediaPlayerStyle;
-		var isDisabled = this.mediaLength>0?false:true;
+		var isDisabled = this.state.mediaLength>0?false:true;
 		var timeSlider = <Slider 
 	    			key="timeSlider"
 	    			disabled={isDisabled}
 	    			name="mediaSlider" 
 	    			ref="mediaSlider" onChange={this.seekTo}
-	    			max={this.mediaLength==0?1:this.mediaLength} 
+	    			max={this.state.mediaLength==0?1:this.state.mediaLength} 
 	    			min={0}
 	    			value={this.state.value}
 	    			/>;
@@ -101,7 +101,7 @@ var MediaPlayer = React.createClass({
 	    		iconColor = 'rgba(0, 0, 0, 0.15)';
 	    	}
 
-	    var mediaLength = this.parseMediaLength(this.mediaLength);
+	    var mediaLength = this.parseMediaLength(this.state.mediaLength);
 	    return (
 	    	<div style={mediaPlayerStyle}>
 	    		{timeSlider}

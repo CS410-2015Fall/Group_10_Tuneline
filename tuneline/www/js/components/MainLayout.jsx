@@ -62,7 +62,7 @@ const MainLayout = React.createClass({
 				<Tab label={<span><i className="ion-music-note"></i><br/>Tuneline</span>} onActive={this.setSounds}>
 					<TunelineScreen ref="tl"/>
 				</Tab>
-				<Tab label={<span><i classN	ame="ion-android-microphone"></i><br/>Record</span>}>
+				<Tab label={<span><i className="ion-android-microphone"></i><br/>Record</span>}>
 					<RecordScreen callbackParent={this.changeTabs}/>
 				</Tab>
 				<Tab label={<span><i className="ion-android-person"></i><br/>Profile</span>}>

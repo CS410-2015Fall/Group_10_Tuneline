@@ -13,6 +13,10 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"Camera\"><param name=\"android-package\" value=\"org.apache.cordova.camera.CameraLauncher\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
                             "count": 1
                         },
@@ -58,20 +62,6 @@
                         },
                         {
                             "xml": "<feature name=\"Geocoder\"><param name=\"android-package\" value=\"plugin.google.maps.MyGeocoder\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Camera\"><param name=\"android-package\" value=\"org.apache.cordova.camera.CameraLauncher\" /></feature>",
-                            "count": 1
-                        }
-                    ]
-                }
-            },
-            "config.xml": {
-                "parents": {
-                    "/*": [
-                        {
-                            "xml": "<preference name=\"AndroidPersistentFileLocation\" value=\"Internal\" />",
                             "count": 1
                         }
                     ]
@@ -154,11 +144,24 @@
                         }
                     ]
                 }
+            },
+            "config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<preference name=\"AndroidPersistentFileLocation\" value=\"Internal\" />",
+                            "count": 1
+                        }
+                    ]
+                }
             }
         }
     },
     "installed_plugins": {
         "com.ququplay.websocket.WebSocket": {
+            "PACKAGE_NAME": "com.cs410.tuneline"
+        },
+        "cordova-plugin-camera": {
             "PACKAGE_NAME": "com.cs410.tuneline"
         },
         "cordova-plugin-console": {
@@ -196,9 +199,6 @@
         },
         "plugin.google.maps": {
             "API_KEY_FOR_ANDROID": "AIzaSyA-8P8qNNl9FITkjxrnVuGhDizNSQd1yk4",
-            "PACKAGE_NAME": "com.cs410.tuneline"
-        },
-        "cordova-plugin-camera": {
             "PACKAGE_NAME": "com.cs410.tuneline"
         }
     },

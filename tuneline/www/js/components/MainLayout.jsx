@@ -58,9 +58,8 @@ const MainLayout = React.createClass({
 				initialSelectedIndex={1} 
 				style={tabBarStyle} 
 				inkBarStyle={inkBarStyle} 
-				contentContainerStyle={tabContainerStyle}
-				onChange={this.setSounds}>
-				<Tab label={<span><i className="ion-music-note"></i><br/>Tuneline</span>}>
+				contentContainerStyle={tabContainerStyle}>
+				<Tab label={<span><i className="ion-music-note"></i><br/>Tuneline</span>} onActive={this.setSounds}>
 					<TunelineScreen ref="tl"/>
 				</Tab>
 				<Tab label={<span><i classN	ame="ion-android-microphone"></i><br/>Record</span>}>

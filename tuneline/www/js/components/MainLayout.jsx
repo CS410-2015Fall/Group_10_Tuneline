@@ -24,7 +24,7 @@ const MainLayout = React.createClass({
 			});
 		}.bind(this));
 	},
-	setSounds:function(){
+	setSounds:function(value, e, tab){
 		this.refs.tl.getSoundBytes();
 	},
 	render() {

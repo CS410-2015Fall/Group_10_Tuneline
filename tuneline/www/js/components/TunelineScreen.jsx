@@ -1,8 +1,10 @@
-
 const React = require('react');
 const SoundbiteData = require('./Database');
 const List = require('material-ui/lib/lists/list');
 const ListItem = require('material-ui/lib/lists/list-item');
+const Avatar = require('material-ui/lib/avatar');
+
+const MediaPlayer = require('./MediaPlayer');
 
 var SearchBar = React.createClass({
     getInitialState: function() {
@@ -25,28 +27,38 @@ var SearchBar = React.createClass({
 
 
 var SoundbiteListItem = React.createClass({
+    loadMedia: function(){
+        this.props.callbackParent(this.props.soundbite.filename);
+    },
     render: function () {
+        var locationObj = JSON.stringify(this.props.soundbite.location);
         return (
-            <ListItem>
-                <a href={"#soundbites/" + this.props.soundbite.datetime}>
+            <li>
+                <Avatar src={'data:image/jpeg;base64,'+ this.props.soundbite.photo} />
+                <a href={"#soundbites/" + this.props.soundbite.datetime} onClick={this.loadMedia}>
                     {this.props.soundbite.name}
                 </a>
-            </ListItem>
+                <p>{locationObj}</p>
+            </li>
         );
     }
 });
 
 var SoundbiteList = React.createClass({
+    loadMedia: function(mediaFilePath){
+        this.props.callbackParent(mediaFilePath);
+    },
     render: function () {
         var items = this.props.soundbites.map(function (soundbite) {
             return (
-                <SoundbiteListItem key={soundbite.datetime} soundbite={soundbite} />
+                <SoundbiteListItem key={soundbite.datetime} soundbite={soundbite} callbackParent={this.loadMedia}/>
             );
-        });
+        }.bind(this));
         return (
-            <List>
+            <ul>
                 {items}
-            </List>
+            </ul>
+
         );
     }
 });
@@ -54,7 +66,9 @@ var SoundbiteList = React.createClass({
 var TunelineHome = React.createClass({
 
     getInitialState: function() {
-        return {sounds: []}
+        return {sounds: [],
+                file: null,
+                player: null}
     },
 
     /*
@@ -63,6 +77,17 @@ var TunelineHome = React.createClass({
             this.setState({searchKey: key, soundbites: result});
         }.bind(this));
     },*/
+    loadMedia: function(mediaFilePath){
+        this.setState({player:null});
+        this.forceUpdate();
+        this.setState({
+            player: (<MediaPlayer       key="tunelineMediaPlayer"
+                                        mediaPlayerStyle={{margin:'0 5%'}}
+                                        file={mediaFilePath}
+                                        />)
+        });
+        this.forceUpdate();
+    },
     getSoundBytes: function(){
         SoundbiteData.getSounds(function(soundbites){
             this.setState({
@@ -72,11 +97,15 @@ var TunelineHome = React.createClass({
     },
 
     render: function () {
-        // this.getSoundBytes();
-
+        var mediaPlayer;
+        if(this.state.player)
+            mediaPlayer = this.state.player;
+        else
+            mediaPlayer = null;
         return (
             <div>
-                <SoundbiteList key="soundbyteList" soundbites={this.state.sounds}/>
+                <SoundbiteList key="soundbyteList" soundbites={this.state.sounds} callbackParent={this.loadMedia}/>
+                {mediaPlayer}
             </div>
         );
     }

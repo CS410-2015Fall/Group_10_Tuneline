@@ -39,7 +39,7 @@ var MediaPlayer = React.createClass({
 	},
 	initMedia: function(data){
 		
-		this.mediaLength: data.detail.mediaLength
+		this.mediaLength = data.detail.mediaLength
 
 	},
 	mediaLength: 0,

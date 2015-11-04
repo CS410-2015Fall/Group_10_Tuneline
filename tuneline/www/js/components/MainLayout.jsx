@@ -24,8 +24,10 @@ const MainLayout = React.createClass({
 			});
 		}.bind(this));
 	},
-	setSounds:function(){
-		this.refs.tl.getSoundBytes();
+	setSounds:function(value, e, tab){
+		if (e.target.textContent == "Tuneline"){
+			this.refs.tl.getSoundBytes();
+		}
 	},
 	render() {
 		var tabBarStyle = {

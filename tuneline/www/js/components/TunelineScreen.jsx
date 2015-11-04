@@ -69,7 +69,7 @@ var TunelineHome = React.createClass({
     },
 
     render: function () {
-        this.getSoundBytes();
+        // this.getSoundBytes();
 
         return (
             <div>

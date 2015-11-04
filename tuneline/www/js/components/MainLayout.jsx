@@ -14,6 +14,7 @@ const MainLayout = React.createClass({
 		return {sounds:''};
 	},
 	changeTabs: function(tabIdx){
+		this.refs.tl.getSoundBytes();
 		this.refs.tabBar.setState({selectedIndex: tabIdx});
 	},
 	getSoundBytes:function(){
@@ -22,6 +23,9 @@ const MainLayout = React.createClass({
 				sounds: JSON.stringify(soundbytes)
 			});
 		}.bind(this));
+	},
+	setSounds:function(){
+		this.refs.tl.getSoundBytes();
 	},
 	render() {
 		var tabBarStyle = {
@@ -54,11 +58,12 @@ const MainLayout = React.createClass({
 				initialSelectedIndex={1} 
 				style={tabBarStyle} 
 				inkBarStyle={inkBarStyle} 
-				contentContainerStyle={tabContainerStyle}>
+				contentContainerStyle={tabContainerStyle}
+				onChange={this.setSounds}>
 				<Tab label={<span><i className="ion-music-note"></i><br/>Tuneline</span>}>
-					<TunelineScreen/>
+					<TunelineScreen ref="tl"/>
 				</Tab>
-				<Tab label={<span><i className="ion-android-microphone"></i><br/>Record</span>}>
+				<Tab label={<span><i classN	ame="ion-android-microphone"></i><br/>Record</span>}>
 					<RecordScreen callbackParent={this.changeTabs}/>
 				</Tab>
 				<Tab label={<span><i className="ion-android-person"></i><br/>Profile</span>}>

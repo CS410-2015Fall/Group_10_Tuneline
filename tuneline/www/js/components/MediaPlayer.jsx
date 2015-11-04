@@ -86,13 +86,13 @@ var MediaPlayer = React.createClass({
 	},
 	render() {
 		var mediaPlayerStyle = this.props.mediaPlayerStyle;
-		var isDisabled = this.state.mediaLength>0?false:true;
+		var isDisabled = this.mediaLength>0?false:true;
 		var timeSlider = <Slider 
 	    			key="timeSlider"
 	    			disabled={isDisabled}
 	    			name="mediaSlider" 
 	    			ref="mediaSlider" onChange={this.seekTo}
-	    			max={this.state.mediaLength==0?1:this.state.mediaLength} 
+	    			max={this.mediaLength==0?1:this.mediaLength} 
 	    			min={0}
 	    			value={this.state.value}
 	    			/>;
@@ -101,7 +101,7 @@ var MediaPlayer = React.createClass({
 	    		iconColor = 'rgba(0, 0, 0, 0.15)';
 	    	}
 
-	    var mediaLength = this.parseMediaLength(this.state.mediaLength);
+	    var mediaLength = this.parseMediaLength(this.mediaLength);
 	    return (
 	    	<div style={mediaPlayerStyle}>
 	    		{timeSlider}

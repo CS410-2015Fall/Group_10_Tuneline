@@ -1,7 +1,8 @@
 
 const React = require('react');
 const SoundbiteData = require('./Database');
-
+const List = require('material-ui/lib/lists/list');
+const ListItem = require('material-ui/lib/lists/list-item');
 
 var SearchBar = React.createClass({
     getInitialState: function() {
@@ -26,11 +27,11 @@ var SearchBar = React.createClass({
 var SoundbiteListItem = React.createClass({
     render: function () {
         return (
-            <li>
+            <ListItem>
                 <a href={"#soundbites/" + this.props.soundbite.datetime}>
                     {this.props.soundbite.name}
                 </a>
-            </li>
+            </ListItem>
         );
     }
 });
@@ -43,17 +44,19 @@ var SoundbiteList = React.createClass({
             );
         });
         return (
-            <ul>
+            <List>
                 {items}
-            </ul>
+            </List>
         );
     }
 });
 
 var TunelineHome = React.createClass({
+
     getInitialState: function() {
         return {sounds: []}
     },
+
     /*
     searchHandler:function(key) {
         this.props.service.findByName(key).done(function(result) {

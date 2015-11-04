@@ -17,7 +17,8 @@ module.exports = {
 	},
 
 	saveSound: function(jsonObj) {
-		var timestamp = Math.round(jsonObj.datetime.getTime()/1000);
+		// var timestamp = Math.round(jsonObj.datetime.getTime()/1000);
+		var timestamp = new Date();
 		console.log("Timestamp: " + timestamp);
 		db.transaction(
 			function(tx) {
@@ -97,14 +98,15 @@ var resultSetToList = function(results) {
     	rows.push(results.rows.item(i));
     	var locObj = JSON.parse(results.rows.item(i).location);
     	rows[rows.length-1].location = locObj;
-    	var datetime = new Date(results.rows.item(i).datetime*1000);
+    	// var datetimeObj = new Date(results.rows.item(i).datetime*1000);
+    	// rows[rows.length-1].datetime = datetimeObj;
     }
     return rows;
 }
 
 // Create the table if not present
 var createTable = function(tx) {
-	tx.executeSql('CREATE TABLE IF NOT EXISTS "Soundbites" ("id" INTEGER PRIMARY KEY,"type" TEXT NOT NULL,"name" TEXT,"datetime" TEXT NOT NULL,"filename" TEXT,"url" INTEGER,"tags" TEXT,"photo" TEXT,"author" TEXT,"location" TEXT NOT NULL);');
+	tx.executeSql('CREATE TABLE IF NOT EXISTS "Soundbites" ("id" INTEGER PRIMARY KEY,"type" TEXT NOT NULL,"name" TEXT,"datetime" INTEGER NOT NULL,"filename" TEXT,"url" INTEGER,"tags" TEXT,"photo" TEXT,"author" TEXT,"location" TEXT NOT NULL);');
 	if (prepop) {
 		populate(tx);
 	}

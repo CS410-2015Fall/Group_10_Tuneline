@@ -85,7 +85,11 @@ var MetaDataForm = React.createClass({
 	},
 	render() {
 		var formStyle = this.props.formStyle;
-		var currentDate = new Date();
+		var now = new Date();
+		var month = (now.getMonth()<10) ? "0"+now.getMonth() : now.getMonth();
+		var day = (now.getDate()<10) ? "0"+now.getDate() : now.getDate();
+		var currentDate = now.getFullYear() + "-" + month + "-" + day;
+		
 		var image;
 		if(this.state.image){
 			image = <img src={'data:image/jpeg;base64,'+this.state.image} width="100%" height="auto"/>;
@@ -95,7 +99,7 @@ var MetaDataForm = React.createClass({
 	    		<TextField ref="name" hintText="Soundbite Name" floatingLabelText="Name"/>
 	    		<TextField ref="dateField" hintText="Date" type="date" floatingLabelText="Date" defaultValue={currentDate}/>
 	    		<TextField ref="url" hintText="Media URL" type="url" floatingLabelText="Medial URL"/>
-	    		<TimePicker ref="time" format="ampm" hintText="Time" floatingLabelText="Time" defaultTime={currentDate}/>
+	    		<TimePicker ref="time" format="ampm" hintText="Time" floatingLabelText="Time" defaultTime={now}/>
 	    		<TextField ref="type" hintText="Type" floatingLabelText="Type"/>
 	    		<RaisedButton onClick={this.takePicture} fullWidth={true}>
 	    			<FontIcon className="ion-camera" />

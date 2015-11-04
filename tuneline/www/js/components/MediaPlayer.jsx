@@ -16,7 +16,7 @@ var MediaPlayer = React.createClass({
 			RecordController.initPlayer(this.props.file);
 		}
 		document.addEventListener('mediaCreated',function(e){
-			if(this.state.mediaLength <= 0){
+			if(this.mediaLength <= 0){
 				this.initMedia(e);
 			}			
 		}.bind(this));
@@ -34,15 +34,15 @@ var MediaPlayer = React.createClass({
 		}.bind(this));
 
 		return {
-					value: 0,
-					mediaLength: 0
+					value: 0
 				};
 	},
 	initMedia: function(data){
-		this.setState({
-			mediaLength: data.detail.mediaLength
-		});
+		
+		this.mediaLength: data.detail.mediaLength
+
 	},
+	mediaLength: 0,
 	play: function(event){
 		RecordController.playMedia(this.props.file);
 		this.updateTime();

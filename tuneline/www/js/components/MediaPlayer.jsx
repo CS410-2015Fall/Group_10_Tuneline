@@ -27,6 +27,9 @@ var MediaPlayer = React.createClass({
 	},
 	play: function(event){
 		RecordController.playMedia(this.props.file);
+		if(this.state.value > 0){
+			RecordController.seekTo(this.state.value);
+		}
 		timerObj = window.setInterval(function(){
 			//Keep asking the RecordController what the current time is
 			RecordController.getCurrentPosition(this.updateTime);

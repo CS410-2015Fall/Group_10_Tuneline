@@ -26,13 +26,11 @@ var playIcon = 'ion-play';
 var stopIcon = 'ion-stop';
 
 var RecordButton = React.createClass({
-	//Add the event listener for status changes and setup the initial state of the button
+	
 	getInitialState: function() {
-		document.addEventListener('mediaChange',function(){
-			this.setButtonState();
-		}.bind(this));
 		return {		
 					file: RecordController.recordButtonMedia?RecordController.recordButtonMedia.src:null,
+					tempFileName: null,
 					status: RecordController.currentStatus,
 					action: RecordController.currentAction,
 					buttonColour: '#ff5722',
@@ -58,7 +56,10 @@ var RecordButton = React.createClass({
 		} else{
 			fileName = fileName + '.wav';
 		}
-		RecordController.startRecording(fileName);		
+		RecordController.startRecording(fileName,this.setButtonState);
+		this.setState({
+			tempFileName: fileName
+		});	
 	},
 	stopRecord: function() {
 		RecordController.stopRecording();
@@ -78,6 +79,7 @@ var RecordButton = React.createClass({
 		this.setState(
 			{		
 				file: null,
+				tempFileName: null,
 				time: {
 					hours: 0,
 					minutes:0,
@@ -102,28 +104,30 @@ var RecordButton = React.createClass({
 	stopTimer: function(){
 		window.clearInterval(timerObj);
 	},
-	setButtonState: function(){
-		this.setState(
-			RecordController.mediaStatus()
-		);
-
-		if(this.state.status === 2 && this.state.action === 'RECORDING'){
+	//Callback function to set the state of the button
+	setButtonState: function(mediaState){
+		console.log('RECORD CALLBACK - mediaState: ' + mediaState);
+		if(mediaState === 2){
 			//currently recording state
 			this.setState(
 							{
 								buttonColour: '#f44336',
 								iconStyle: stopIcon,
-								buttonFunction: this.stopRecord
+								buttonFunction: this.stopRecord,
+								status: mediaState
 							}	
 			);
 			this.startTimer();
-		} else if(this.state.status === 4){
+		} else if(mediaState === 4){
 			//ready to record state
+			console.log('this.state.tempFileName: ' + this.state.tempFileName);
 			this.setState(
 							{
 								buttonColour: '#ff5722',
 								iconStyle: recordIcon,
-								buttonFunction: this.startRecord
+								buttonFunction: this.startRecord,
+								file: this.state.tempFileName,
+								status: mediaState
 							}
 			);	
 		}

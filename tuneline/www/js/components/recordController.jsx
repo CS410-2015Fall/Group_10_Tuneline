@@ -5,7 +5,7 @@ var currentAction = '';
 var mediaControllerRepeater; 
 
 module.exports = {
-	initPlayer: function(fileName){
+	initPlayer: function(fileName, returnDurationFunction){
 		recordButtonMedia = new Media(fileName);
 		if(recordButtonMedia){
 			recordButtonMedia.play();
@@ -15,11 +15,7 @@ module.exports = {
 			
 			var duration = recordButtonMedia.getDuration();
 			if(duration > 0){
-				var event = new CustomEvent('mediaCreated', { 
-															'detail':{'mediaLength': duration}
-														});
-				document.dispatchEvent(event);
-				window.clearInterval(mediaControllerRepeater);
+				returnDurationFunction(duration);
 			}
 		},100);
 	
@@ -70,14 +66,10 @@ module.exports = {
 		status();
 	},
 
-	getCurrentPosition: function(){
+	getCurrentPosition: function(updateTimeFunction){
 		recordButtonMedia.getCurrentPosition(function(position){
-			//alert(position);
 			if (position > -1) {
-            	var event = new CustomEvent('updateMediaCurrentPosition', { 
-												'detail': {'currentPosition':position}
-											});
-				document.dispatchEvent(event);
+				updateTimeFunction(position);
             }
 		});
 	},

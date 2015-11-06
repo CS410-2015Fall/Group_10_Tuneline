@@ -14,6 +14,7 @@ module.exports = {
 			var duration = mediaObject.getDuration();
 			if(duration > 0){
 				returnDurationFunction(duration);
+				window.clearInterval(mediaControllerRepeater);
 			}
 		},100);
 	

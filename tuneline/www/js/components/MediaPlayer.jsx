@@ -13,39 +13,24 @@ var MediaPlayer = React.createClass({
 	//Add the event listener for status changes and setup the initial state of the button
 	getInitialState: function() {
 		if(this.props.file){
-			RecordController.initPlayer(this.props.file);
+			RecordController.initPlayer(this.props.file,this.setMediaLength);
 		}
-		document.addEventListener('mediaCreated',function(e){
-			if(this.state.mediaLength <= 0){
-				this.initMedia(e);
-			}			
-		}.bind(this));
-		document.addEventListener('updateMediaCurrentPosition',function(e){
-			if(e.detail.currentPosition < 0){
-				window.clearInterval(timerObj);
-				return;
-			}
-			this.setState({
-				value: e.detail.currentPosition
-			});
-			//Update the timer on the parent RecordScreen
-			if(this.props.updateParentTime)
-				this.props.updateParentTime(e.detail.currentPosition);
-		}.bind(this));
-
 		return {
 					value: 0,
 					mediaLength: 0
 				};
 	},
-	initMedia: function(data){
+	setMediaLength: function(duration){
 		this.setState({
-			mediaLength: data.detail.mediaLength
+			mediaLength: duration
 		});
 	},
 	play: function(event){
 		RecordController.playMedia(this.props.file);
-		this.updateTime();
+		timerObj = window.setInterval(function(){
+			//Keep asking the RecordController what the current time is
+			RecordController.getCurrentPosition(this.updateTime);
+		}.bind(this), 10);
 	},
 	pause: function(event){
 		RecordController.pauseMedia();
@@ -60,11 +45,20 @@ var MediaPlayer = React.createClass({
 			'value': value
 		});
 	},
-	updateTime: function(){
-		timerObj = window.setInterval(function(){
-			//Keep asking the RecordController what the current time is
-			RecordController.getCurrentPosition();
-		}.bind(this), 10);
+	updateTime: function(position){
+		//If the position is unknown( < 0) then stop asking for time
+		if(position < 0){
+			window.clearInterval(timerObj);
+		} else{
+			//If the position is know, set the value of the slider
+			this.setState({
+				value: position
+			});
+			//Update the parent timer if needed
+			if(this.props.updateParentTime)
+				this.props.updateParentTime(position);
+		}
+		
 	},
 	parseMediaLength: function(timeInSeconds){
 		var hours = Math.floor(timeInSeconds/3600);

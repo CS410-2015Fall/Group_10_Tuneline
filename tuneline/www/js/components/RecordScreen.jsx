@@ -75,7 +75,6 @@ var RecordButton = React.createClass({
 		);
 	},
 	reset: function(){
-		this.timerInHundrethSeconds = 0;
 		this.setState(
 			{		
 				file: null,
@@ -89,15 +88,15 @@ var RecordButton = React.createClass({
 		);
 		RecordController.resetMedia();
 	},	
-	timerInHundrethSeconds: 0,
 	startTimer: function(){
+		var timerInHundrethSeconds = 0;
 		timerObj = window.setInterval(function(){
-			this.timerInHundrethSeconds++;
+			timerInHundrethSeconds++;
 			this.setState({
 				time: {
-					hours: Math.floor(this.timerInHundrethSeconds/(36000)),
-					minutes: Math.floor((this.timerInHundrethSeconds%(36000))/(600)),
-					seconds:( ((this.timerInHundrethSeconds%36000)%600)/10).toFixed(1)}
+					hours: Math.floor(timerInHundrethSeconds/(36000)),
+					minutes: Math.floor((timerInHundrethSeconds%(36000))/(600)),
+					seconds:( ((timerInHundrethSeconds%36000)%600)/10).toFixed(1)}
 			});
 		}.bind(this), 100);
 	},

@@ -27,7 +27,7 @@ var MediaPlayer = React.createClass({
 	},
 	play: function(event){
 		RecordController.playMedia(this.props.file,this.setPosition);
-		if(this.state.value > 0){
+		if(this.state.value > 0  && (this.state.value*1000 < this.state.mediaLength)){
 			RecordController.seekTo(this.state.value);
 		}
 		timerObj = window.setInterval(function(){

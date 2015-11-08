@@ -1,103 +1,80 @@
-var recordButtonMedia;
-var currentStatus = 0;
-var currentAction = '';
+var mediaObject;
 
 var mediaControllerRepeater; 
 
 module.exports = {
-	initPlayer: function(fileName){
-		recordButtonMedia = new Media(fileName);
-		if(recordButtonMedia){
-			recordButtonMedia.play();
-			recordButtonMedia.stop();
+	initPlayer: function(fileName, returnDurationFunction){
+		mediaObject = new Media(fileName);
+		if(mediaObject){
+			mediaObject.play();
+			mediaObject.stop();
 		}
 		mediaControllerRepeater = window.setInterval(function(){
 			
-			var duration = recordButtonMedia.getDuration();
+			var duration = mediaObject.getDuration();
 			if(duration > 0){
-				var event = new CustomEvent('mediaCreated', { 
-															'detail':{'mediaLength': duration}
-														});
-				document.dispatchEvent(event);
+				returnDurationFunction(duration);
 				window.clearInterval(mediaControllerRepeater);
 			}
 		},100);
 	
 	},
-
-	startRecording: function(fileName){
-		recordButtonMedia = new Media(fileName, success, failure, status);
-		currentAction = 'RECORDING'
-		recordButtonMedia.startRecord();		
+	/*
+	fileName: string
+		full path to where the file will be stored
+	statusCallbackFunction: function(status)
+		will be called when the media status changes, status is an int
+	*/
+	startRecording: function(fileName, statusCallbackFunction){
+		mediaObject = new Media(fileName, success, failure, statusCallbackFunction);
+		console.log('mediaObject: '+JSON.stringify(mediaObject));
+		mediaObject.startRecord();		
 	},
 
 	stopRecording: function(){
-		if(recordButtonMedia !== null){
-			recordButtonMedia.stopRecord();
-			recordButtonMedia.release();
-			currentAction = '';
+		if(mediaObject){
+			mediaObject.stopRecord();
+			mediaObject.release();
 		}
 	},
 
-	playMedia:  function(fileName){
-		if(recordButtonMedia === null){
-			recordButtonMedia = new Media(fileName, success, failure, status);
+	playMedia:  function(fileName,statusCallbackFunction){
+		if(!mediaObject){
+			mediaObject = new Media(fileName, success, failure, statusCallbackFunction);
 		}
-			currentAction = 'PLAYING';
-			recordButtonMedia.play();
+			mediaObject.play();
 	},
 
 	pauseMedia:  function(){
-		if(recordButtonMedia !== null){
-			currentAction = 'PAUSED';
-			recordButtonMedia.pause();			
+		if(mediaObject){
+			mediaObject.pause();			
 		}
 	},
 
 	stopMedia:  function(){
-		if(recordButtonMedia !== null){
-			recordButtonMedia.stop();
-			currentAction = '';
+		if(mediaObject){
+			mediaObject.stop();
 		}
 	},
 
 	resetMedia: function(){
-		if(recordButtonMedia)
-			recordButtonMedia.release();
-		recordButtonMedia = null;
-		currentStatus = 0;
-		currentAction = '';
-		status();
+		if(mediaObject)
+			mediaObject.release();
+		mediaObject = null;
 	},
 
-	getCurrentPosition: function(){
-		recordButtonMedia.getCurrentPosition(function(position){
-			//alert(position);
+	getCurrentPosition: function(updateTimeFunction){
+		mediaObject.getCurrentPosition(function(position){
 			if (position > -1) {
-            	var event = new CustomEvent('updateMediaCurrentPosition', { 
-												'detail': {'currentPosition':position}
-											});
-				document.dispatchEvent(event);
+				updateTimeFunction(position);
             }
 		});
 	},
 
 	seekTo: function(position){
-		if(recordButtonMedia !== null){
-			recordButtonMedia.seekTo(position);
+		if(mediaObject !== null){
+			mediaObject.seekTo(position);
 		}
-	},
-
-	getDuration: function(){
-		return recordButtonMedia.getDuration();
-	},
-	
-	mediaStatus: function(){
-		return {
-					file: recordButtonMedia?recordButtonMedia.src:null,
-					status: currentStatus,
-					action: currentAction
-				}
 	}
 
 };
@@ -108,20 +85,7 @@ var success = function(){
 }
 
 var failure = function(error){
-	alert('error: '+error.code+' : ' + error.message);
-}
-
-var status = function(mediaStatus){
-	//update the current status of the controller
-	currentStatus = mediaStatus;
-
-	//emit a mediaChange event for the components to listen to
-	//do not emit status for MEDIA_STARTING
-	if(mediaStatus !== 1){
-		var event = new Event('mediaChange');
-		document.dispatchEvent(event);
-	}
-	
+	alert('RecordController error: '+error.code+' : ' + error.message);
 }
 
 //	mediaStatus REFERENCE

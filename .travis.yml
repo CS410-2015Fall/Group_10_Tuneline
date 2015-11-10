@@ -1,3 +1,7 @@
 language: node_js
 node_js:
-  - 4.1.2
+	- 4.1.2
+before_script:
+# Commands to excecute before running tests
+	- echo "Before script stage"
+	- cd tuneline

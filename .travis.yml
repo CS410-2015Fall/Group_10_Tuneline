@@ -8,7 +8,7 @@ before_install:
   - cd tuneline
 install:
   - echo "Install stage"
-  - sudo npm install
+  - npm install
 script:
   - echo "Running tests"
   - npm test

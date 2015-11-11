@@ -138,7 +138,7 @@ var getTagQuery = function(tags) {
 }
 
 // TODO: make sure the engine provides length variable in jsonObj
-var saveSound(tx, jsonObj) {
+var saveSound = function(tx, jsonObj) {
 	// length is/should be provided
 
 	// change datetime to unix timestamp, get day of the week

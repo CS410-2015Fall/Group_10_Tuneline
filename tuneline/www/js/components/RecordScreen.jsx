@@ -32,6 +32,7 @@ var RecordButton = React.createClass({
 		return {		
 					file: RecordController.recordButtonMedia?RecordController.recordButtonMedia.src:null,
 					tempFileName: null,
+					tempUrl: null,
 					status: RecordController.currentStatus,
 					action: RecordController.currentAction,
 					buttonColour: '#ff5722',
@@ -80,6 +81,7 @@ var RecordButton = React.createClass({
 			{		
 				file: null,
 				tempFileName: null,
+				tempUrl: null,
 				time: {
 					hours: 0,
 					minutes:0,
@@ -159,13 +161,18 @@ var RecordButton = React.createClass({
 
 	},
 	loadSite: function(event, selectedIndex, menuItem){
-		var ref = cordova.InAppBrowser.open(menuItem, '_blank', null);
+		var ref = cordova.InAppBrowser.open(menuItem.payload, '_blank', 'location=yes');
 		ref.addEventListener('exit', this.parseUrl);
+		ref.addEventListener('loadstop', function(event){
+			ref.executeScript({code:'window.location.href;'}, function(data){
+				this.setState({tempUrl: data});
+			}.bind(this));		
+		}.bind(this));
+
 	},
 	parseUrl:function(event){
-		alert(event.url);
+		this.refs.urlSelectMenu.setState({selectedIndex:0});
 	},
-
 	render() {
 		var mediaPlayer = <MediaPlayer
 								ref="mediaPlayer"
@@ -175,27 +182,31 @@ var RecordButton = React.createClass({
 		var metaDataForm;
 		var saveButtons;
 
+		var now = new Date();
+
 		if(this.state.file !== null && this.state.status === 4){
 			mediaPlayer = <MediaPlayer
 								key="mediaPlayer"
 								ref="mediaPlayer"
 								mediaPlayerStyle={{margin:'0 5%'}}
-								file={this.state.file}
+								file={this.state.file}								
 								updateParentTime={this.updatePlayTimer}
-								/>;
+								/>;			
+		}
+		if(this.state.tempUrl !== null || this.state.file !== null){
+			saveButtons = <RaisedButton label="Save" primary={true} fullWidth={true} onClick={this.saveButton}/>;
 			metaDataForm = <MetaDataForm
-								key="metaDataForm"
+								key={now}
 								ref="metaDataForm"
 								media={this.state.file}
+								url={this.state.tempUrl}
 								callbackParent={this.save}							
 								/>;
-			saveButtons = <RaisedButton label="Save" primary={true} fullWidth={true} onClick={this.saveButton}/>;
 		}
 
 		var menuItems = [
 		   { payload: '', text: 'Import Media From...' },
-		   { payload: 'https://youtube.com', text: 'YouTube' },
-		   { payload: 'https://soundcloud.com', text: 'SoundCloud' },
+		   { payload: 'https://youtube.com', text: 'YouTube' }
 		];
 	    return (
 	    	<div style={divStyle}>
@@ -208,7 +219,7 @@ var RecordButton = React.createClass({
 							onClick={this.state.buttonFunction}
 							iconClassName={this.state.iconStyle}>
 		        </FloatingActionButtonFlex>
-		        <DropDownMenu menuItems={menuItems} onChange={this.loadSite}/>
+		        <DropDownMenu ref="urlSelectMenu" menuItems={menuItems} onChange={this.loadSite}/>
 		        <h1>{this.state.time.hours}h {this.state.time.minutes}m {this.state.time.seconds}s</h1>
 		        {mediaPlayer}
 		        {metaDataForm}

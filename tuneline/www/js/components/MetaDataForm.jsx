@@ -68,12 +68,13 @@ var MetaDataForm = React.createClass({
 		}
 
 		var soundBite = {
+			id: null,
 			type: 'default',
 			name: name,
 			datetime: soundBiteDate,
 			filename: this.props.media,
 			length: null,
-			url: this.refs.url.getValue(),
+			url: this.props.url==null?this.props.url:this.refs.url.getValue(),
 			tags: this.refs.tags.getValue(),
 			photo: this.state.image,
 			author: 'some author id',
@@ -97,7 +98,7 @@ var MetaDataForm = React.createClass({
 	    	<div>
 	    		<TextField ref="name" hintText="Soundbite Name" floatingLabelText="Name"/>
 	    		<TextField ref="dateField" hintText="Date" type="date" floatingLabelText="Date" defaultValue={currentDate}/>
-	    		<TextField ref="url" hintText="Media URL" type="url" floatingLabelText="Medial URL"/>
+	    		<TextField ref="url" hintText="Media URL" type="url" floatingLabelText="Medial URL" defaultValue={this.props.url}/>
 	    		<TimePicker ref="time" format="ampm" hintText="Time" floatingLabelText="Time" defaultTime={now}/>
 	    		<TextField ref="type" hintText="Type" floatingLabelText="Type"/>
 	    		<RaisedButton onClick={this.takePicture} fullWidth={true}>

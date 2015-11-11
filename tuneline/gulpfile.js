@@ -6,10 +6,6 @@ var uglify = require('gulp-uglify');
 var cordova = require('cordova');
 var rimraf = require('rimraf');
 var runSequence = require('run-sequence');
-var browserSync = require('browser-sync');
-var browserify = require('browserify');
-var source = require('vinyl-source-stream');
-var mochaPhantomJS = require('gulp-mocha-phantomjs');
 
 var tasks = {
   webpack: function() {
@@ -56,11 +52,11 @@ gulp.task('hash', function() {
 gulp.task('uglify', function () {
     return gulp.src(['www/js/**/*.js'])
         .pipe(uglify({
-        	compress: {
-        		global_defs: {
-        		    DEBUG: false
-        		}
-        	}
+            compress: {
+                global_defs: {
+                    DEBUG: false
+                }
+            }
         }))
         .pipe(gulp.dest('www/js'));
 });
@@ -73,42 +69,3 @@ gulp.task('install', function(cb) {
     return cordova.platform('add', ['browser', 'ios', 'android'], cb)
 })
 
-
-
-gulp.task('browser-sync', function () {
-    'use strict';
-    browserSync({
-        server: {
-            //serve tests and the root as base dirs
-            baseDir: ['./test/', './'],
-            //make tests.html the index file
-            index: 'tests.html'
-        }
-    });
-});
-
-gulp.task('browserify', function() {
-    'use strict';
-    return browserify('./test/tests.js')
-        .bundle()
-        .on('error', function (err) {
-            console.log(err.toString());
-            this.emit('end');
-        })
-        .pipe(source('tests-browserify.js'))
-        .pipe(gulp.dest('test/'))
-        .pipe(browserSync.reload({stream:true}));
-});
-
-gulp.task('test', function () {
-    'use strict';
-    return gulp.src('./test/tests.html')
-        .pipe(mochaPhantomJS());
-});
-
-gulp.task('serve', ['browserify', 'browser-sync'], function () {
-    'use strict';
-    // when tests.js or Database.jsx changes, browserify code and execute tests
-    // add files you want to watch below
-    gulp.watch(['test/tests.js', './www/js/components/Database.jsx'], ['browserify', 'test']);
-});

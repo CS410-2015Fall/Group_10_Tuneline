@@ -2,7 +2,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var assert = chai.assert;
 
-var db = require('../www/js/components/Database.jsx');
+// var db = require('../www/js/components/Database.jsx');
 
 describe('test', function () {
 	it('should add 1+1 correctly', function (done) {

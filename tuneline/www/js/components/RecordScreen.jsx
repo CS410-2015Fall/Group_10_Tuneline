@@ -165,6 +165,7 @@ var RecordButton = React.createClass({
 		ref.addEventListener('exit', this.parseUrl);
 		ref.addEventListener('loadstop', function(event){
 			ref.executeScript({code:'window.location.href;'}, function(data){
+				//TODO: check if valid youtube url
 				this.setState({tempUrl: data});
 			}.bind(this));		
 		}.bind(this));

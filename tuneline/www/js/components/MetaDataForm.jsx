@@ -7,6 +7,9 @@ const FontIcon = require('material-ui/lib/font-icon');
 const DatePicker = require('material-ui/lib/date-picker/date-picker');
 const TimePicker = require('material-ui/lib/time-picker');
 
+//Should remove soon
+const DB = require('./Database.jsx');
+
 var MetaDataForm = React.createClass({
 	getInitialState: function() {
 		this.getLocation();
@@ -56,6 +59,7 @@ var MetaDataForm = React.createClass({
 	},
 	save: function(event){
 		var soundBite = this.createSoundbite();
+		//DB.saveSound(soundBite); this is for temp debugging
 		this.props.callbackParent(soundBite);
 
 	},
@@ -74,7 +78,7 @@ var MetaDataForm = React.createClass({
 			datetime: soundBiteDate,
 			filename: this.props.media,
 			length: null,
-			url: this.props.url==null?this.props.url:this.refs.url.getValue(),
+			url: this.refs.url.getValue(),
 			tags: this.refs.tags.getValue(),
 			photo: this.state.image,
 			author: 'some author id',

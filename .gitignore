@@ -9,5 +9,6 @@ tuneline/www/js/index.js
 
 platforms
 
+plugins/com.googlemaps.ios/
 plugins/*
 !plugins/fetch.json

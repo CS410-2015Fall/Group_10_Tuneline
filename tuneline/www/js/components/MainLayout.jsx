@@ -46,9 +46,10 @@ const MainLayout = React.createClass({
     //if(new String(devicePlatform).valueOf() == new String('iOS').valueOf()) {
 
     if(device.platform === 'iOS'){
-      console.log("########## Within iOS if statement")
+      console.log("########## Within iOS if statement");
       //Move from temp to cordova.file.documentsDirectory + fileName + '.wav'
 
+      /*
       console.log("filename: " + soundbite.filename);
       console.log("tempDirectory: " + cordova.file.tempDirectory);
       console.log("documentsDirectory: " + cordova.file.documentsDirectory);
@@ -60,29 +61,30 @@ const MainLayout = React.createClass({
       file.cordova.file.moveTo(cordova.file.documentDirectory, soundbite.filename, function() { console.log("Move Successful")}, function() { console.log("Move Failed")});
 
 
-      function moveFile(fileUri) {
-        window.resolveLocalFileSystemURL(
-          soundbite.filename ,
-          function(fileEntry){
-            newFileUri  = cordova.file.dataDirectory + "images/";
-            oldFileUri  = soundbite.filename;
-            fileExt     = "." + oldFileUri.split('.').pop();
-
-            newFileName = guid("car") + fileExt;
-            window.resolveLocalFileSystemURL(cordova.file.dataDirectory,
-              function(dirEntry) {
-                // move the file to a new directory and rename it
-                fileEntry.moveTo(dirEntry, newFileName, successCallback, errorCallback);
-              },
-              errorCallback);
-          },
-          errorCallback);
-      }
-
-      soundbite.filename = cordova.file.documentsDirectory + '/' + soundbite.filename;
+      //function moveFile(fileUri) {
+      //  window.resolveLocalFileSystemURL(
+      //    soundbite.filename ,
+      //    function(fileEntry){
+      //      newFileUri  = cordova.file.dataDirectory + "images/";
+      //      oldFileUri  = soundbite.filename;
+      //      fileExt     = "." + oldFileUri.split('.').pop();
+      //
+      //      newFileName = guid("car") + fileExt;
+      //      window.resolveLocalFileSystemURL(cordova.file.dataDirectory,
+      //        function(dirEntry) {
+      //          // move the file to a new directory and rename it
+      //          fileEntry.moveTo(dirEntry, newFileName, successCallback, errorCallback);
+      //        },
+      //        errorCallback);
+      //    },
+      //    errorCallback);
+      //}
+      //
+      //soundbite.filename = cordova.file.documentsDirectory + '/' + soundbite.filename;
 
 
       console.log("full filename: " + soundbite.filename);
+      */
     }
 
     if(sid) {

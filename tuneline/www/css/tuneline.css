@@ -1,0 +1,101 @@
+.timeline {
+  list-style: none;
+  position: relative;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAABCAYAAAAMwoR9AAAAEElEQVQIW2O866jyn4EAAABN6AJDG4v3ZAAAAABJRU5ErkJggg==);
+  background-size: .5em 100%;
+  background-repeat: repeat-y;
+  background-position: 1.5em;
+  padding-left: 4em;
+  margin: 3em 0;
+}
+.timeline:before, .timeline:after {
+  content: '';
+  background-color: #DD4124;
+  height: 0.5rem;
+  width: 0.5rem;
+  position: absolute;
+  left: 1.5em;
+}
+.timeline:before {
+  top: -0.5em;
+  border-radius: 50% 50% 0 0;
+}
+.timeline:after {
+  bottom: -0.5em;
+  border-radius: 0 0 50% 50%;
+}
+@media (min-width: 1000px) {
+  .timeline {
+    background-position: center;
+    padding-left: 0;
+  }
+  .timeline:before, .timeline:after {
+    left: calc(50% - .25rem);
+  }
+  .timeline > .event {
+    width: calc(50% - 3rem);
+    position: relative;
+  }
+  .timeline > .event:nth-child(odd):before {
+    left: calc(100% + 1.25rem);
+  }
+  .timeline > .event:nth-child(even) {
+    position: absolute;
+    right: 0;
+    margin-top: -8rem;
+  }
+  .timeline > .event:nth-child(even):before {
+    left: -4.75rem;
+  }
+}
+
+.event {
+  padding-bottom: 2em;
+  color: #000000;
+}
+.event:before {
+  content: '';
+  border: 0.25em solid #DD4124;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+  width: 1.5em;
+  height: 1.5em;
+  padding: .75em;
+  background-color: white;
+  background-origin: content-box;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.event .title {
+  font-weight: 600;
+}
+
+.event .company {
+  font-style: italic;
+  border-bottom: 1px solid #bbb;
+}
+.event .company:before {
+  content: 'at ';
+}
+
+.event .dates {
+  font-size: 80%;
+  line-height: 1.5rem;
+  float: right;
+}
+
+@media (min-width: 500px) {
+  .event .description {
+    margin-top: .5em;
+  }
+}
+
+.event .details {
+  font-size: 0;
+  text-indent: 2em;
+  -webkit-transition: font-size 0.5s;
+  transition: font-size 0.5s;
+}

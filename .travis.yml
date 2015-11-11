@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - 4.1.2
+sudo: required
+before_install:
+# Commands to excecute before running tests
+  - echo "Before install stage"
+  - cd tuneline
+install:
+  - echo "Install stage"
+  - npm install
+script:
+  - echo "Running tests"
+  - npm test

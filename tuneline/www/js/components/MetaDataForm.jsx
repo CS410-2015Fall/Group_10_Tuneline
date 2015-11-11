@@ -7,6 +7,9 @@ const FontIcon = require('material-ui/lib/font-icon');
 const DatePicker = require('material-ui/lib/date-picker/date-picker');
 const TimePicker = require('material-ui/lib/time-picker');
 
+//Should remove soon
+const DB = require('./Database.jsx');
+
 var MetaDataForm = React.createClass({
 	getInitialState: function() {
 		this.getLocation();
@@ -56,6 +59,7 @@ var MetaDataForm = React.createClass({
 	},
 	save: function(event){
 		var soundBite = this.createSoundbite();
+		//DB.saveSound(soundBite); this is for temp debugging
 		this.props.callbackParent(soundBite);
 
 	},
@@ -68,6 +72,7 @@ var MetaDataForm = React.createClass({
 		}
 
 		var soundBite = {
+			id: null,
 			type: 'default',
 			name: name,
 			datetime: soundBiteDate,
@@ -97,7 +102,7 @@ var MetaDataForm = React.createClass({
 	    	<div>
 	    		<TextField ref="name" hintText="Soundbite Name" floatingLabelText="Name"/>
 	    		<TextField ref="dateField" hintText="Date" type="date" floatingLabelText="Date" defaultValue={currentDate}/>
-	    		<TextField ref="url" hintText="Media URL" type="url" floatingLabelText="Medial URL"/>
+	    		<TextField ref="url" hintText="Media URL" type="url" floatingLabelText="Medial URL" defaultValue={this.props.url}/>
 	    		<TimePicker ref="time" format="ampm" hintText="Time" floatingLabelText="Time" defaultTime={now}/>
 	    		<TextField ref="type" hintText="Type" floatingLabelText="Type"/>
 	    		<RaisedButton onClick={this.takePicture} fullWidth={true}>

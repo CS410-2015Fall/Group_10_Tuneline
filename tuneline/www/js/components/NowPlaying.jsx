@@ -14,24 +14,31 @@ var NowPlaying = React.createClass({
 	},
 	
 	render() {
-		var filename = null;
-		if(this.props.soundbite)
-			filename= this.props.soundbite.filename;
 		var mediaPlayer = null;
+		var reactMediaPlayer = null;
+		var url;
 
-		if(filename){
-			mediaPlayer = <MediaPlayer
-					key={filename}
-					ref="nowPlayingMediaPlayer"
-					mediaPlayerStyle={{margin:'0 5%'}}
-					file={filename}
-					/>
+		if(this.props.soundbite){
+			if(this.props.soundbite.filename){
+				mediaPlayer = <MediaPlayer
+						key={this.props.soundbite.filename}
+						ref="nowPlayingMediaPlayer"
+						mediaPlayerStyle={{margin:'0 5%'}}
+						file={this.props.soundbite.filename}
+						/>
+			}
+
+			if(this.props.soundbite.url){
+				reactMediaPlayer =  null
+				url = this.props.soundbite.url;
+			}
 		}
+
 	    return (
 	    	<div >
 	    		{mediaPlayer}
-				{filename}
-	    		
+	    		{reactMediaPlayer}
+	    		{url} 		
 	    	</div>
 
 	    );

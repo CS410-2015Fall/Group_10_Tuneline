@@ -2,6 +2,7 @@ const React = require('react');
 
 const RaisedButton = require('material-ui/lib/raised-button');
 const FloatingActionButtonFlex = require('./floating-action-button-flex');
+const DropDownMenu = require('material-ui/lib/drop-down-menu');
 
 const MediaPlayer = require('./MediaPlayer');
 const MetaDataForm = require('./MetaDataForm');
@@ -133,11 +134,13 @@ var RecordButton = React.createClass({
 	},
 	save: function(soundbite){
 		if(this.refs.metaDataForm){
-			this.refs.metaDataForm.save();
 			this.refs.mediaPlayer.stop();
 			this.reset();
 			this.props.callbackParent(soundbite);
 		}
+	},
+	saveButton: function(event){
+		this.refs.metaDataForm.save();
 	},
 	updatePlayTimer: function(timeInSeconds){
 		var hours = Math.floor(timeInSeconds/3600);
@@ -155,6 +158,14 @@ var RecordButton = React.createClass({
 				});
 
 	},
+	loadSite: function(event, selectedIndex, menuItem){
+		var ref = cordova.InAppBrowser.open(menuItem, '_blank', null);
+		ref.addEventListener('exit', this.parseUrl);
+	},
+	parseUrl:function(event){
+		alert(event.url);
+	},
+
 	render() {
 		var mediaPlayer = <MediaPlayer
 								ref="mediaPlayer"
@@ -178,9 +189,14 @@ var RecordButton = React.createClass({
 								media={this.state.file}
 								callbackParent={this.save}							
 								/>;
-			saveButtons = <RaisedButton label="Save" primary={true} fullWidth={true} onClick={this.refs.metaDataForm.save}/>;
+			saveButtons = <RaisedButton label="Save" primary={true} fullWidth={true} onClick={this.saveButton}/>;
 		}
 
+		var menuItems = [
+		   { payload: '', text: 'Import Media From...' },
+		   { payload: 'https://youtube.com', text: 'YouTube' },
+		   { payload: 'https://soundcloud.com', text: 'SoundCloud' },
+		];
 	    return (
 	    	<div style={divStyle}>
 	    		<br/>
@@ -192,6 +208,7 @@ var RecordButton = React.createClass({
 							onClick={this.state.buttonFunction}
 							iconClassName={this.state.iconStyle}>
 		        </FloatingActionButtonFlex>
+		        <DropDownMenu menuItems={menuItems} onChange={this.loadSite}/>
 		        <h1>{this.state.time.hours}h {this.state.time.minutes}m {this.state.time.seconds}s</h1>
 		        {mediaPlayer}
 		        {metaDataForm}

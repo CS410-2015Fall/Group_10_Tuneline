@@ -131,15 +131,13 @@ var RecordButton = React.createClass({
 			);	
 		}
 	},
-	save: function(event){
+	save: function(soundbite){
 		if(this.refs.metaDataForm){
 			this.refs.metaDataForm.save();
 			this.refs.mediaPlayer.stop();
 			this.reset();
+			this.props.callbackParent(soundbite);
 		}
-	},
-	changeTabs: function(tabIdx){
-		this.props.callbackParent(tabIdx);
 	},
 	updatePlayTimer: function(timeInSeconds){
 		var hours = Math.floor(timeInSeconds/3600);
@@ -178,9 +176,9 @@ var RecordButton = React.createClass({
 								key="metaDataForm"
 								ref="metaDataForm"
 								media={this.state.file}
-								callbackParent={this.changeTabs}							
+								callbackParent={this.save}							
 								/>;
-			saveButtons = <RaisedButton label="Save" primary={true} fullWidth={true} onClick={this.save}/>;
+			saveButtons = <RaisedButton label="Save" primary={true} fullWidth={true} onClick={this.refs.metaDataForm.save}/>;
 		}
 
 	    return (

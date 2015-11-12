@@ -67,6 +67,12 @@
         },
         "cordova-plugin-camera": {
             "PACKAGE_NAME": "com.cs410.tuneline"
+        },
+        "com.bunkerpalace.cordova.YoutubeVideoPlayer": {
+            "PACKAGE_NAME": "com.cs410.tuneline"
+        },
+        "cordova-plugin-x-socialsharing": {
+            "PACKAGE_NAME": "com.cs410.tuneline"
         }
     },
     "dependent_plugins": {}

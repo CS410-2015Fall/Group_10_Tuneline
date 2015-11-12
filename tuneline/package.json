@@ -33,6 +33,7 @@
     "react-addons-transition-group": "^0.14.2",
     "react-addons-update": "^0.14.2",
     "react-dom": "^0.14.0",
+    "react-player": "^0.2.0",
     "react-router": "^0.13.5",
     "react-tap-event-plugin": "^0.2.1",
     "react-toolbox": "^0.11.4",

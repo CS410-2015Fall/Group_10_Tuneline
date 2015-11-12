@@ -45,8 +45,8 @@ var MetaDataForm = React.createClass({
 			{	
 				quality: 50,
 		    	destinationType: Camera.DestinationType.DATA_URL,
-		    	targetWidth: 300,
-		    	targetHeight: 300,
+		    	targetWidth: 1080,
+		    	targetHeight: 1080,
 		    	correctOrientation: true
 			});
 	},

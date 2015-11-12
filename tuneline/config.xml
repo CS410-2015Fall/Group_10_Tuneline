@@ -17,10 +17,14 @@
     <allow-intent href="geo:*" />
     <allow-navigation href="*://*.youtube.com/*" />
     <allow-navigation href="*://*.soundcloud.com/*" />
+    <access origin="http*://*.youtube.com" />
     <content src="index.html" />
     <platform name="android">
         <allow-intent href="market:*" />
         <preference name="AndroidPersistentFileLocation" value="Internal" />
+        <feature name="SocialSharing">
+          <param name="android-package" value="nl.xservices.plugins.SocialSharing" />
+        </feature>
     </platform>
     <platform name="ios">
         <preference name="BackupWebStorage" value="local"/>
@@ -63,6 +67,12 @@
         <splash src="res/ios/splash/Default-667h.png" width="750" height="1334"/>
         <splash src="res/ios/splash/Default-736h.png" width="1242" height="2208"/>
         <splash src="res/ios/splash/Default-Landscape-736h.png" width="2208" height="1242"/>
+
+        <preference name="iosPersistentFileLocation" value="Library" />
+
+        <feature name="SocialSharing">
+          <param name="ios-package" value="SocialSharing" />
+        </feature>
     </platform>
     <platform name="browser">
         <allow-intent href="market:*" />

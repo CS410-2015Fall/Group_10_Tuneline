@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - 4.1.2
-sudo: required
+sudo: false
 before_install:
 # Commands to excecute before running tests
   - echo "Before install stage"

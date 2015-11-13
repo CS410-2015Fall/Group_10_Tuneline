@@ -11,3 +11,5 @@ platforms
 
 plugins/*
 !plugins/fetch.json
+
+tuneline/test/tests-browserify.js

@@ -11,4 +11,5 @@ install:
   - npm install
 script:
   - echo "Running tests"
+  - gulp browserify
   - npm test

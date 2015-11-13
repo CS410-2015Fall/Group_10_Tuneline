@@ -1,5 +1,4 @@
 const React = require('react');
-const SoundbiteData = require('./Database');
 const List = require('material-ui/lib/lists/list');
 const ListItem = require('material-ui/lib/lists/list-item');
 const Avatar = require('material-ui/lib/avatar');
@@ -28,36 +27,46 @@ var SearchBar = React.createClass({
 
 var SoundbiteListItem = React.createClass({
     loadMedia: function(){
-        this.props.callbackParent(this.props.soundbite.filename);
+        this.props.callbackParent(this.props.soundbite);
     },
     render: function () {
         var locationObj = JSON.stringify(this.props.soundbite.location);
+        var avatarStyle ={
+            position: 'relative',
+            left: '0em'
+        };
         return (
-            <li>
-                <Avatar src={'data:image/jpeg;base64,'+ this.props.soundbite.photo} />
-                <a href={"#soundbites/" + this.props.soundbite.datetime} onClick={this.loadMedia}>
+
+            <li className="event" onClick={this.loadMedia}>
+            <Avatar src={'data:image/jpeg;base64,'+ this.props.soundbite.photo} style={avatarStyle}/>              
+                <p className="dates">{this.props.soundbite.datetime}</p>
+                <a className="title">
                     {this.props.soundbite.name}
                 </a>
+                <p className="description">{this.props.soundbite.tags}</p>
                 <p>{locationObj}</p>
             </li>
+            
         );
     }
 });
 
 var SoundbiteList = React.createClass({
-    loadMedia: function(mediaFilePath){
-        this.props.callbackParent(mediaFilePath);
+    loadMedia: function(soundbite){
+        this.props.callbackParent(soundbite);
     },
     render: function () {
+        if(!this.props.soundbites)
+            return null;
         var items = this.props.soundbites.map(function (soundbite) {
             return (
                 <SoundbiteListItem key={soundbite.datetime} soundbite={soundbite} callbackParent={this.loadMedia}/>
             );
         }.bind(this));
         return (
-            <ul>
+            <ol className="timeline">
                 {items}
-            </ul>
+            </ol>
 
         );
     }
@@ -66,9 +75,7 @@ var SoundbiteList = React.createClass({
 var TunelineHome = React.createClass({
 
     getInitialState: function() {
-        return {sounds: [],
-                file: null,
-                player: null}
+        return null;
     },
 
     /*
@@ -77,35 +84,14 @@ var TunelineHome = React.createClass({
             this.setState({searchKey: key, soundbites: result});
         }.bind(this));
     },*/
-    loadMedia: function(mediaFilePath){
-        this.setState({player:null});
-        this.forceUpdate();
-        this.setState({
-            player: (<MediaPlayer       key="tunelineMediaPlayer"
-                                        mediaPlayerStyle={{margin:'0 5%'}}
-                                        file={mediaFilePath}
-                                        />)
-        });
-        this.forceUpdate();
-    },
-    getSoundBytes: function(){
-        SoundbiteData.getSounds(function(soundbites){
-            this.setState({
-                sounds: soundbites
-            });
-        }.bind(this));
+    loadMedia: function(soundbite){
+        this.props.loadMediaToParent(soundbite);
     },
 
     render: function () {
-        var mediaPlayer;
-        if(this.state.player)
-            mediaPlayer = this.state.player;
-        else
-            mediaPlayer = null;
         return (
             <div>
-                <SoundbiteList key="soundbyteList" soundbites={this.state.sounds} callbackParent={this.loadMedia}/>
-                {mediaPlayer}
+                <SoundbiteList key="soundbiteList" soundbites={this.props.soundbites} callbackParent={this.loadMedia}/>
             </div>
         );
     }

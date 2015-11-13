@@ -1,11 +1,11 @@
 var gulp = require('gulp');
 var livereload = require('gulp-livereload');
-var webpack = require('webpack-stream')
+var webpack = require('webpack-stream');
 var staticHash = require('gulp-static-hash');
 var uglify = require('gulp-uglify');
-var cordova = require('cordova')
-var rimraf = require('rimraf')
-var runSequence = require('run-sequence')
+var cordova = require('cordova');
+var rimraf = require('rimraf');
+var runSequence = require('run-sequence');
 
 var tasks = {
   webpack: function() {
@@ -52,11 +52,11 @@ gulp.task('hash', function() {
 gulp.task('uglify', function () {
     return gulp.src(['www/js/**/*.js'])
         .pipe(uglify({
-        	compress: {
-        		global_defs: {
-        		    DEBUG: false
-        		}
-        	}
+            compress: {
+                global_defs: {
+                    DEBUG: false
+                }
+            }
         }))
         .pipe(gulp.dest('www/js'));
 });
@@ -68,3 +68,4 @@ gulp.task('clean', function(cb) {
 gulp.task('install', function(cb) {
     return cordova.platform('add', ['browser', 'ios', 'android'], cb)
 })
+

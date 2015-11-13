@@ -77,6 +77,7 @@ var MetaDataForm = React.createClass({
 			name: name,
 			datetime: soundBiteDate,
 			filename: this.props.media,
+			length: null,
 			url: this.refs.url.getValue(),
 			tags: this.refs.tags.getValue(),
 			photo: this.state.image,

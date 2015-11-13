@@ -26,8 +26,8 @@ var MediaPlayer = React.createClass({
 		});
 	},
 	play: function(event){
-		RecordController.playMedia(this.props.file);
-		if(this.state.value > 0){
+		RecordController.playMedia(this.props.file,this.setPosition);
+		if(this.state.value > 0  && (this.state.value*1000 < this.state.mediaLength)){
 			RecordController.seekTo(this.state.value);
 		}
 		timerObj = window.setInterval(function(){
@@ -47,6 +47,11 @@ var MediaPlayer = React.createClass({
 		this.setState({
 			'value': value
 		});
+	},
+	setPosition: function(status){
+		if(status === 2){
+			RecordController.seekTo(this.state.value*1000);
+		}
 	},
 	updateTime: function(position){
 		//If the position is unknown( < 0) then stop asking for time

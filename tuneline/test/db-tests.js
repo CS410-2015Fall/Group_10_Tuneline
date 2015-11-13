@@ -1,6 +1,7 @@
 var chai = require('chai');
-var expect = chai.expect;
 var assert = chai.assert;
+var expect = chai.expect;
+
 
 // var db = require('../www/js/components/Database.jsx');
 

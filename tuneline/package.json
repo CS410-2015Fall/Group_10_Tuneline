@@ -14,9 +14,7 @@
     "gulp-uglify": "^1.2.0",
     "rimraf": "^2.4.3",
     "react-map-styles": "^0.3.0",
-    "run-sequence": "^1.1.2",
-    "mocha": "*",
-    "chai": "3.4.1"
+    "run-sequence": "^1.1.2"
   },
   "dependencies": {
     "alt": "^0.17.3",
@@ -42,7 +40,9 @@
     "reactcss": "^0.4.0",
     "reactcss-decorator": "^1.0.1",
     "style-loader": "^0.12.4",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.0",
+    "mocha": "*",
+    "chai": "3.4.1"
   },
   "scripts": {
     "test": "gulp test"

@@ -12,4 +12,4 @@ install:
 script:
   - echo "Running tests"
   - gulp browserify
-  - npm test
+  - mocha-phantomjs ./test/tests.html

@@ -5,7 +5,7 @@ var expect = chai.expect;
 
 // var db = require('../www/js/components/Database.jsx');
 
-describe('test', function () {
+describe('db test', function () {
 	it('should add 1+1 correctly', function (done) {
 		var onePlusOne = 1 + 1;
 		assert.equal(onePlusOne, 2);

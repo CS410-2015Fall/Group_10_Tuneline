@@ -10,8 +10,7 @@ var runSequence = require('run-sequence');
 // testing
 var browserSync = require("browser-sync"),
     browserify = require("browserify"),
-    source = require("vinyl-source-stream"),
-    mochaPhantomJS = require("gulp-mocha-phantomjs");
+    source = require("vinyl-source-stream");
 
 var tasks = {
   webpack: function() {
@@ -75,14 +74,6 @@ gulp.task('install', function(cb) {
     return cordova.platform('add', ['browser', 'ios', 'android'], cb)
 })
 
-
-
-
-
-
-
-
-
 // testing
 
 gulp.task("browser-sync", function () {
@@ -108,12 +99,6 @@ gulp.task("browserify", function() {
         .pipe(source("tests-browserify.js"))
         .pipe(gulp.dest("test/"))
         .pipe(browserSync.reload({stream:true}));
-});
-
-gulp.task("test", function () {
-    "use strict";
-    return gulp.src("./test/tests.html")
-        .pipe(mochaPhantomJS());
 });
 
 gulp.task("serve", ["browserify", "browser-sync"], function () {

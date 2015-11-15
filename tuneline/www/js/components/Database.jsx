@@ -25,7 +25,10 @@ module.exports = {
 	// Returns all sounds which fall on and between the start/end dates
 	// filterObj: 	JSON object with filter parameters
 	getSoundsByFilter: function(callback, filterObj) {
-		db.transaction(function(tx){getSoundsByFilter(tx, callback, filterObj)}, txErrorCB, txSuccessCB);
+		// db.transaction(function(tx){getSoundsByFilter(tx, callback, filterObj)}, txErrorCB, txSuccessCB);
+		getSoundsByFilter("", callback, filterObj);
+		var filterQuery = getFilterQuery(filterObj);
+		db.transaction(function(tx){getSoundsByFilter(tx,callback,filterQuery)}, txErrorCB, txSuccessCB);
 	},
 
 	// Returns sound with given id to the callback function
@@ -49,7 +52,18 @@ module.exports = {
 		db.transaction(function(tx) {
 			tx.executeSql("DROP TABLE Soundbites", [], function(){createTable(tx)}, sqlErrorCB)
 		});
-	}
+	},
+	// testFunc: function() {
+	// 	return "SELECT * FROM Soundbites WHERE (timeofday > '0309') AND (timeofday > '0309') AND (length > '55') AND (length < '1750') AND (photo<>'undefined') AND (author LIKE '%@greg5050%') AND (name LIKE '%metrotown shopping%') AND (tags LIKE '%concert%') OR (tags LIKE '%fun%') OR (tags LIKE '%@bob90%')";
+	// },
+	testFunc: function(f){return getFilterQuery(f)},
+}
+
+if (process.env.NODE_ENV === 'test') {
+	console.log("NODE_ENV is 'test'");
+	module.exports._private = {
+		"getFilterQuery": function(f){getFilterQuery(f)}
+	};
 }
 
 // wait for load
@@ -68,18 +82,96 @@ var getSounds = function(tx, callback) {
 	tx.executeSql("SELECT * FROM Soundbites ORDER BY datetime DESC", [], function(tx,r){soundQuerySuccessCB(tx,r,callback)}, sqlErrorCB);
 }
 
-var getSoundsByFilter = function(tx, callback, filterObj) {
-	var startDate;
-	var endDate;
-	var days;
-	var times;
-	var minLength;
-	var maxLength;
-	var hasPhoto;
-	var author;
-	var name;
+var getSoundsByFilter = function(tx, callback, query) {
+	tx.executeSql(query, function(tx,r){soundQuerySuccessCB(tx,r,callback)}, sqlErrorCB);
+}
 
-	// build the query with if (!== undefined) && (!= "")
+var getFilterQuery = function(filterObj) {
+	if (filterObj.date.start) var startDate = filterObj.date.start;
+	if (filterObj.date.end) var endDate = filterObj.date.end;
+	if (filterObj.days) var days = filterObj.days;
+	if (filterObj.time.start) var startTime = filterObj.time.start;
+	if (filterObj.time.end) var endTime = filterObj.time.end;
+	if (filterObj.length.min) var minLength = filterObj.length.min;
+	if (filterObj.length.min) var maxLength = filterObj.length.max;
+	if (filterObj.tags) var tags = filterObj.tags; // tags is a string, separated by spaces
+	if (filterObj.photo) var hasPhoto = filterObj.photo;
+	if (filterObj.author) var author = filterObj.author;
+	if (filterObj.name) var name = filterObj.name;
+	var query = "SELECT * FROM Soundbites WHERE ";
+	var filtersApplied = 0;
+
+	//startdate
+	if (startDate) {
+		if (filtersApplied > 0) query += " AND ";
+		filtersApplied++;
+		query += getStartDateQuery(startDate);
+	}
+	//enddate
+	if (endDate) {
+		if (filtersApplied > 0) query += " AND ";
+		filtersApplied++;
+		query += getEndDateQuery(endDate);
+	}
+	//dayofweek
+	if (days) {
+		if (filtersApplied > 0) query += " AND "
+		filtersApplied++;
+		query += getDayQuery(days);
+	}
+	//starttime
+	if (startTime) {
+		if (filtersApplied > 0) query += " AND "
+		filtersApplied++;
+		query += getStartTimeQuery(startTime);
+	}
+	//endtime
+	if (endTime) {
+		if (filtersApplied > 0) query += " AND "
+		filtersApplied++;
+		query += getStartTimeQuery(startTime);
+	}
+	//minlength
+	if (minLength) {
+		if (filtersApplied > 0) query += " AND "
+		filtersApplied++;
+		query += getMinLengthQuery(minLength);
+	}
+	//maxLength
+	if (maxLength) {
+		if (filtersApplied > 0) query += " AND "
+		filtersApplied++;
+		query += getMaxLengthQuery(maxLength);
+	}
+	//photo
+	if (hasPhoto) {
+		if (filtersApplied > 0) query += " AND "
+		filtersApplied++;
+		query += getPhotoQuery(hasPhoto);
+	}
+	//author
+	if (author) {
+		if (filtersApplied > 0) query += " AND "
+		filtersApplied++;
+		query += getAuthorQuery(author);
+	}
+	//name
+	if (name) {
+		if (filtersApplied > 0) query += " AND "
+		filtersApplied++;
+		query += getNameQuery(name);
+	}
+	//tags
+	if (tags) {
+		if (filtersApplied > 0) query += " AND "
+		filtersApplied++;
+		query += getTagQuery(tags);
+	}
+	return query;
+}
+
+var saveFilter = function(tx, filter) {
+	/// do sql query to save filter object into the db
 }
 
 var getSoundsById = function(tx, callback, id) {
@@ -96,44 +188,87 @@ var getSoundsById = function(tx, callback, id) {
 // Takes:
 // 	start: 	must be defined (format: YYYY-MM-DD)
 // 	end: 	optional (format: YYYY-MM-DD)
-// Returns:
-//	sql query statement
-// TODO: test
-var getDateQuery = function(start, end) {
+// var getStartDateQuery = function(start, end) {
+// 	var explodeStart = start.split("-");
+// 	var explodeEnd;
+// 	var startInSeconds = new Date(explodeStart[0], explodeStart[1], explodeStart[2]);
+// 	var endInSeconds;
+// 	// check if end date is defined, else is end of day as end date
+// 	if (typeof end !== "undefined") {
+// 		// end date is defined!
+// 		explodeEnd = end.split("-");
+// 		endInSeconds = new Date(explodeEnd[0]. explodeEnd[1], explodeEnd[2], 23, 59, 59);
+// 	} else {
+// 		// end is undefined, so set the enddate as startdate plus (1 day minus 1 second)
+// 		endInSeconds = startInSeconds+86399;
+// 	}
+// 	return "(datetime BETWEEN " + startInSeconds + " AND " + endInSeconds + ")";
+// }
+
+var getStartDateQuery = function(start) {
 	var explodeStart = start.split("-");
-	var explodeEnd;
-	var startInSeconds = new Date(explodeStart[0], explodeStart[1], explodeStart[2]);
-	var endInSeconds;
+	var startDate = new Date(explodeStart[0], explodeStart[1], explodeStart[2]);
+	var startInSeconds = Math.round(startDate.getTime()/1000);
+	return "(datetime > " + startInSeconds + ")";
+}
 
-	// check if end date is defined, else is end of day as end date
-	if (typeof end !== "undefined") {
-		// end date is defined!
-		explodeEnd = end.split("-");
-		endInSeconds = new Date(explodeEnd[0]. explodeEnd[1], explodeEnd[2], 23, 59, 59);
+var getEndDateQuery = function(end) {
+	var explodeEnd = end.split("-");
+	var endDate = new Date(explodeEnd[0], explodeEnd[1], explodeEnd[2]);
+	var endInSeconds = Math.round(endDate.getTime()/1000);
+	// set endInSeconds = 1 second before midnight of next day
+	endInSeconds = endInSeconds+86399;
+	return "(datetime < " + endInSeconds + ")";
+}
+
+var getDayQuery = function(days) {
+	return "(dayofweek IN ('" + days.join() + "'))";
+}
+
+var getStartTimeQuery = function(dayStart) {
+	return "(timeofday > '" + dayStart + "')";
+}
+
+var getEndTimeQuery = function(dayEnd) {
+	return "(timeofday < '" + dayEnd + "')";
+}
+
+var getMinLengthQuery = function(minLength) {
+	return "(length > '" + minLength + "')";
+}
+
+var getMaxLengthQuery = function(maxLength) {
+	return "(length < '" + maxLength + "')";
+}
+
+var getPhotoQuery = function(hasPhoto) {
+	if (hasPhoto) {
+		return "(photo<>'undefined')";	
 	} else {
-		// end is undefined, so set the enddate as startdate plus (1 day minus 1 second)
-		endInSeconds = startInSeconds+86399;
+		return "(photo='undefined')";
 	}
+}
 
-	return "SELECT * FROM Soundbites ORDER BY datetime DESC WHERE datetime BETWEEN " + startInSeconds + " AND " + endInSeconds;
+var getAuthorQuery = function(author) {
+	return "(author LIKE '%" + author + "%')"
+}
+
+var getNameQuery = function(name) {
+	return "(name LIKE '%" + name + "%')"
 }
 
 // TODO: test
 var getTagQuery = function(tags) {
 	// remove hastags, keep @
-	tags.replace("#","");
-	var tagsArray = tags.split(" ");
-	var query;
-
-	query = "SELECT * FROM Soundbites ORDER BY datetime DESC WHERE ";
-
+	tags = replaceAll(tags, '#', '');
+	var tagsArray = tags.split(' ');
+	var query = "";
 	var len = tagsArray.length;
 	for (var i=0; i<len; i++) {
-		if (i>=1) query+= " AND ";
+		if (i>=1) query += " AND ";
 
-		query += "(tags LIKE %" + searchArray[i] + "%)"
+		query += "(tags LIKE '%" + tagsArray[i] + "%')"
 	}
-
 	return query;
 }
 
@@ -145,9 +280,10 @@ var saveSound = function(tx, jsonObj) {
 	var datetime = jsonObj.datetime;
 	var day = datetime.getDay();
 	var timestamp = Math.round(jsonObj.datetime.getTime()/1000);
+	var time = datetime.getHours()+datetime.getMinutes();
 	console.log("Timestamp: " + timestamp);
 
-	tx.executeSql("INSERT INTO 'Soundbites' (type,name,datetime,filename,url,tags,photo,author,location,dayofweek) VALUES (?,?,?,?,?,?,?,?,?,?)",[jsonObj.type, jsonObj.name, timestamp, jsonObj.filename, jsonObj.url, jsonObj.tags, jsonObj.photo, jsonObj.author, JSON.stringify(jsonObj.location), day], sqlSuccessCB, sqlErrorCB)
+	tx.executeSql("INSERT INTO 'Soundbites' (type,name,datetime,filename,url,tags,photo,author,location,dayofweek) VALUES (?,?,?,?,?,?,?,?,?,?,?)",[jsonObj.type, jsonObj.name, timestamp, jsonObj.filename, jsonObj.url, jsonObj.tags, jsonObj.photo, jsonObj.author, JSON.stringify(jsonObj.location), day, time, jsonObj.length], sqlSuccessCB, sqlErrorCB)
 }
 
 
@@ -159,6 +295,11 @@ var isInt = function(value) {
 	}
 	x = parseFloat(value);
 	return (x | 0) === x;
+}
+
+// replace all instances of 'find' with 'replace' in string 'str'
+function replaceAll(str, find, replace) {
+	return str.replace(new RegExp(find, 'g'), replace);
 }
 
 // Takes SQLResultSet, returns rows as a list of JSON objects
@@ -181,9 +322,9 @@ var resultSetToList = function(results, type) {
 
 // Create the table if not present
 var createTables = function(tx) {
-	tx.executeSql('CREATE TABLE IF NOT EXISTS "Soundbites" ("id" INTEGER PRIMARY KEY,"type" TEXT NOT NULL,"name" TEXT,"datetime" INTEGER NOT NULL,"filename" TEXT,"url" INTEGER,"tags" TEXT,"photo" TEXT,"author" TEXT,"location" TEXT NOT NULL,"dayofweek" INTEGER NOT NULL);');
+	tx.executeSql('CREATE TABLE IF NOT EXISTS "Soundbites" ("id" INTEGER PRIMARY KEY,"type" TEXT NOT NULL,"name" TEXT,"datetime" INTEGER NOT NULL,"filename" TEXT,"url" INTEGER,"tags" TEXT,"photo" TEXT,"author" TEXT,"location" TEXT NOT NULL,"dayofweek" INTEGER NOT NULL,"timeofday" INTEGER NOT NULL,"length" INTEGER NOT NULL);');
 	tx.executeSql('CREATE TABLE IF NOT EXISTS "Playlists" ("pid" INTEGER PRIMARY KEY,"name" TEXT)');
-	// tx.executeSql('CREATE TABLE IF NOT EXISTS "Filters" ()');
+	tx.executeSql('CREATE TABLE IF NOT EXISTS "Filters" ("fid" INTEGER PRIMARY KEY,"name" TEXT)');
 	tx.executeSql('CREATE TABLE IF NOT EXISTS "SoundbitesPlaylistMap" ("sid" INTEGER NOT NULL, "pid" INTEGER NOT NULL, FOREIGN KEY(sid) REFERENCES Soundbites(id), FOREGIN KEY(pid) REFERENCES Playlist(pid))');
 	if (prepop) {
 		populate(tx);
@@ -223,3 +364,6 @@ var txSuccessCB = function() {
     console.log("Transaction success");
 }
 
+var testFunc = function(message) {
+	console.log(message);
+}

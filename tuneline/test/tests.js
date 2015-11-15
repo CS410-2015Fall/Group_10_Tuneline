@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test'
+
 var db = require('./db-tests');
 
 var assert = require("assert");

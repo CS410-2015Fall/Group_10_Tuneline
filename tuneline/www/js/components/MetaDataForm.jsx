@@ -104,7 +104,6 @@ var MetaDataForm = React.createClass({
 	    		<TextField ref="dateField" hintText="Date" type="date" floatingLabelText="Date" defaultValue={currentDate}/>
 	    		<TextField ref="url" hintText="Media URL" type="url" floatingLabelText="Medial URL" defaultValue={this.props.url}/>
 	    		<TimePicker ref="time" format="ampm" hintText="Time" floatingLabelText="Time" defaultTime={now}/>
-	    		<TextField ref="type" hintText="Type" floatingLabelText="Type"/>
 	    		<RaisedButton onClick={this.takePicture} fullWidth={true}>
 	    			<FontIcon className="ion-camera" />
 	    			Add Photo

@@ -136,6 +136,7 @@ var RecordButton = React.createClass({
 	},
 	save: function(soundbite){
 		if(this.refs.metaDataForm){
+			soundbite.length = this.refs.mediaPlayer.state.mediaLength;
 			this.refs.mediaPlayer.stop();
 			this.reset();
 			this.props.callbackParent(soundbite);

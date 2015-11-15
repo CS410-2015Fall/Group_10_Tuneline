@@ -136,8 +136,7 @@ const MainLayout = React.createClass({
 				style={tabBarStyle}
 				inkBarStyle={inkBarStyle}
 				contentContainerStyle={tabContainerStyle}>
-				<Tab label={<span><i className="ion-music-note"></i><br/>Tuneline</span>}>
-					<FlatButton label="Now Playing" onClick={this.setSounds}/>
+				<Tab label={<span><i className="ion-music-note"></i><br/>Tuneline</span>} onActive={this.setSounds}>
 					<TunelineScreen soundbites={this.state.sounds} ref="tl" callbackParent={this.getSoundBytes} loadMediaToParent={this.playSoundbite}/>
 				</Tab>
 				<Tab label={<span><i className="ion-android-microphone"></i><br/>Record</span>}>

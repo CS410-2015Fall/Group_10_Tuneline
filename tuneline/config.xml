@@ -15,6 +15,7 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <allow-intent href="tuneline:*" />
     <allow-navigation href="*://*.youtube.com/*" />
     <allow-navigation href="*://*.soundcloud.com/*" />
     <access origin="http*://*.youtube.com" />

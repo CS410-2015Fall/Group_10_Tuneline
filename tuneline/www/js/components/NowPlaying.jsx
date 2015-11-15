@@ -2,8 +2,12 @@ const React = require('react');
 
 const RaisedButton = require('material-ui/lib/raised-button');
 const FlatButton = require('material-ui/lib/flat-button');
+const FloatingActionButton = require('material-ui/lib/floating-action-button');
 const Slider = require('material-ui/lib/slider');
 const FontIcon = require('material-ui/lib/font-icon');
+const IconMenu = require('material-ui/lib/menus/icon-menu');
+const MenuItem = require('material-ui/lib/menus/menu-item');
+const IconButton = require('material-ui/lib/icon-button');
 
 const MediaPlayer = require('./MediaPlayer');
 
@@ -50,17 +54,19 @@ var NowPlaying = React.createClass({
 			if(this.props.soundbite.url){
 				var youtubeId = this.getYoutubeId(this.props.soundbite.url);
 				youtubePlayer = <iframe 
-									width="100%" 
-									height="215" 
+									width="100vw"
 									src={'http://www.youtube.com/embed/'+youtubeId+'?rel=0&amp;controls=0&amp;showinfo=0'} frameborder="0" allowfullscreen></iframe>
 
 				url = youtubeId;
 			}
 
-			if(this.props.soundbite.photo){
-				//coverImage = this.props.soundbite.photo;
+			if(this.props.soundbite.photo && this.props.soundbite.photo != 'undefined'){
+				coverImage = this.props.soundbite.photo;
 			}
 		}
+		var iconButton = <IconButton tooltip="Add to Playlist">
+									<FontIcon className="ion-plus-circled"/>
+							</IconButton>;
 
 	    return (
 	    	<div >
@@ -68,6 +74,16 @@ var NowPlaying = React.createClass({
 	    		{mediaPlayer}
 	    		{youtubePlayer}
 	    		{url}
+
+					<IconMenu openDirection="top-right" iconButtonElement={iconButton}>
+						<MenuItem primaryText="Refresh" />
+						<MenuItem primaryText="Send feedback" />
+						<MenuItem primaryText="Settings" />
+						<MenuItem primaryText="Help" />
+						<MenuItem primaryText="Sign out" />
+					</IconMenu>
+
+				
 	    		<button onClick={this.shareFacebook}>msg via Facebook (with errcallback)</button>
 	    	</div>
 

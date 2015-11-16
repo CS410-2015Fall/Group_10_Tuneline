@@ -101,7 +101,7 @@ const MainLayout = React.createClass({
     this.refs.tabBar.setState({selectedIndex: 0});
 
   },
-  setSounds:function(value, e, tab){
+  setSounds:function(tab){
 		this.getSoundBytes();
   },
   render() {

@@ -125,6 +125,7 @@ const MainLayout = React.createClass({
 			top: '0px',
 			height: '80vh'
 		};
+		var soundbites = JSON.stringify(this.state.sounds);
 
 	    return (
 	    	<div>
@@ -137,7 +138,7 @@ const MainLayout = React.createClass({
 				inkBarStyle={inkBarStyle}
 				contentContainerStyle={tabContainerStyle}>
 				<Tab label={<span><i className="ion-music-note"></i><br/>Tuneline</span>} onActive={this.setSounds}>
-					<TunelineScreen soundbites={this.state.sounds} ref="tl" key="tuneline" callbackParent={this.getSoundBytes} loadMediaToParent={this.playSoundbite}/>
+					{soundbites}
 				</Tab>
 				<Tab label={<span><i className="ion-android-microphone"></i><br/>Record</span>}>
 					<RecordScreen callbackParent={this.saveSoundbite}/>

@@ -14,7 +14,7 @@ const Database = require('./Database');
 const MainLayout = React.createClass({
 	getInitialState: function() {
 		this.getSoundBytes();
-		return {sounds:'',
+		return {sounds: null,
 				nowPlayingScreen: <NowPlaying/>};
 	},
 	playSoundbite: function(soundbite){

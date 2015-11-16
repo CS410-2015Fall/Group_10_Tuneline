@@ -29,6 +29,7 @@ const MainLayout = React.createClass({
 			this.setState({
 				sounds: soundbites
 			});
+			alert(JSON.stringify(soundbites));
 		}.bind(this));
 	},
   saveSoundbite: function(soundbite){

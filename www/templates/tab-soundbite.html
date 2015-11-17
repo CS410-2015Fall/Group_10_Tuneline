@@ -1,18 +1,25 @@
 <ion-view view-title="Soundbite">
   <ion-content>
     <div class="row">
-        <div class="col">
-          
-        </div>
-        <div class="col col-50">
-          <button class="button button-block button-assertive" ng-click="{{record()}}">
-            <i class="ion-ios-mic" style="font-size: 10em;"></i><br>
-            Record
+        <div class="col" style="text-align: center;">
+          <button class="button" 
+                  ng-class="buttonState=='record'? 'button-assertive':'button-energized'" 
+                  ng-click="getButtonFunction(buttonState)"
+                  style="border-radius: 100%; height: 14em; width: 14em; ">
+            <i ng-class="buttonState=='record'?'ion-ios-mic':'ion-stop'" style="font-size: 10em;"></i>
           </button>
         </div>
-        <div class="col">
-          
-        </div>
+    </div>
+    <div class="row">
+    <div class="col" style="text-align: center;">
+      <div class="item range">
+      <input type="range" name="position">
+    </div>
+      <div class="button-bar">
+        <a class="button" ng-click="playMedia(fileName)"><i class="ion-play"></i></a>
+        <a class="button" ng-click="pauseMedia()"><i class="ion-pause"></i></a>
+        <a class="button" ng-click="stopMedia()"><i class="ion-stop"></i></a>
+      </div>
     </div>
   </ion-content>
 </ion-view>

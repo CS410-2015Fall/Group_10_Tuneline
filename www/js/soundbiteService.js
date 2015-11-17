@@ -2,7 +2,6 @@ angular.module('soundbiteService', [])
 
 .factory('SoundbiteService', function($cordovaMedia) {
   var mediaObject;
-
   return {
     initPlayer: function(fileName, returnDurationFunction){
         mediaObject = $cordovaMedia.newMedia(fileName);
@@ -26,23 +25,25 @@ angular.module('soundbiteService', [])
       statusCallbackFunction: function(status)
         will be called when the media status changes, status is an int
       */
-      startRecording: function(fileName, statusCallbackFunction){
+      startRecording: function(fileName){
         mediaObject = $cordovaMedia.newMedia(fileName);
         console.log('mediaObject: '+JSON.stringify(mediaObject));
-        mediaObject.startRecord();    
+        mediaObject.startRecord();
+        return mediaObject;
       },
 
-      stopRecording: function(){
+      stopRecording: function(mediaObject){
         if(mediaObject){
           mediaObject.stopRecord();
           mediaObject.release();
         }
       },
 
-      playMedia:  function(fileName,statusCallbackFunction){
-        if(!mediaObject){
-          mediaObject = new Media(fileName, success, failure, statusCallbackFunction);
-        }
+      playMedia:  function(fileName){
+          if(mediaObject){
+            mediaObject.stop();
+          }
+          mediaObject = $cordovaMedia.newMedia(fileName);
           mediaObject.play();
       },
 
@@ -59,21 +60,13 @@ angular.module('soundbiteService', [])
       },
 
       resetMedia: function(){
-        if(mediaObject)
+        if(mediaObject){
           mediaObject.release();
-        mediaObject = null;
-      },
-
-      getCurrentPosition: function(updateTimeFunction){
-        mediaObject.getCurrentPosition(function(position){
-          if (position > -1) {
-            updateTimeFunction(position);
-                }
-        });
+        }
       },
 
       seekTo: function(position){
-        if(mediaObject !== null){
+        if(mediaObject){
           mediaObject.seekTo(position);
         }
       }

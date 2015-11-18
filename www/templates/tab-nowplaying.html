@@ -20,13 +20,8 @@
     </div>
     <div class="row">
     <div class="col" style="text-align: center;" ng-if="mediaLength > 0">
-    Position: {{mediaPosition}}
       <div class="item range">
-        <div range-slider
-            ng-model-low="0"
-            step="1"
-            ceiling ="{{mediaLength*1000}}"
-            ng-model="mediaPosition*1000"></div> {{mediaLength.toFixed(2)}}
+        <slider floor="0" ceiling="400" step="1" precision="1" ng-model="mediaPosition"></slider> {{mediaLength.toFixed(2)}}
       </div>
       <div class="button-bar">
         <a class="button" ng-click="playMedia(fileName)"><i class="ion-play"></i></a>

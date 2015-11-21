@@ -21,7 +21,7 @@ angular.module('soundbiteCntl', [])
   $scope.timer = 0; //the timer that is shwon on the screen
   
   $scope.mediaLength = 0; //the length of the currently loaded file ($scope.mediaObject)
-  $scope.mediaPosition = 0; //the position within the file ($scope.mediaObject)
+  $scope.mediaPosition = {pos: "0"}; //the position within the file ($scope.mediaObject)
 
   var mediaPositionPromise; //for holding the promise for the position updater
   var timerInterval; //used for holding the promise for the timer updater
@@ -30,6 +30,11 @@ angular.module('soundbiteCntl', [])
     $scope.platform = $cordovaDevice.getPlatform();
   }, false);
 
+  //Bind an event to the changing of the slider
+  document.getElementById('mediaPositionSlider')
+  .addEventListener('touchend',function(){
+      $scope.seekTo(Number($scope.mediaPosition.pos));
+    }, false);
 
   $scope.getButtonFunction = function(stateString){
     if(stateString == 'record') $scope.record();
@@ -92,7 +97,8 @@ angular.module('soundbiteCntl', [])
           $interval.cancel(mediaPositionPromise);
          else if(status == 4){
           $interval.cancel(mediaPositionPromise);
-          $scope.mediaPosition = 0;
+          mediaPositionPromise = null;
+          $scope.mediaPosition.pos = 0;
          }
       });
 
@@ -110,11 +116,13 @@ angular.module('soundbiteCntl', [])
       },100);
   }
 
-  $scope.playMedia = function(){
-    //TODO:new to get slider position first 
-    $scope.mediaObject.play();    
+  $scope.playMedia = function(positionInMilliSeconds){
+    $scope.mediaObject.play();
+    if($scope.mediaStatus !== 3){
+      $scope.mediaObject.seekTo(positionInMilliSeconds);
+    }  
     //dynamically update the current position, used as the seeker position
-    getCurrentPosition();
+    $scope.getCurrentPosition();
   }
 
   $scope.pauseMedia = function(){
@@ -125,8 +133,14 @@ angular.module('soundbiteCntl', [])
     $scope.mediaObject.stop();
   }
 
-  $scope.seekTo = function(position){
-    $scope.mediaObject.seekTo(position);
+  $scope.seekTo = function(positionInMilliSeconds){
+    if($scope.mediaStatus === 4){
+      $scope.mediaObject.play();
+      $scope.mediaObject.pause();
+    }
+    $scope.mediaObject.seekTo(positionInMilliSeconds);
+
+    
   };
 
   $scope.startTimer = function(){
@@ -136,15 +150,25 @@ angular.module('soundbiteCntl', [])
   };
 
   //Private function that is used by $scope.play()
-  var getCurrentPosition = function(){
+  $scope.getCurrentPosition = function(){
+    if(mediaPositionPromise){
+      $interval.cancel(mediaPositionPromise);
+      mediaPositionPromise = null;
+    }
     var positionCallBack = function(position){       
-      if (position > 0) {
-        $scope.mediaPosition = position;
-        console.log('******************************** '+position+' ********************************');
+      if (position >= 0) {
+        $scope.mediaPosition.pos = position*1000;
       }
     };
     mediaPositionPromise = $interval(function(){
-      $scope.mediaObject.getCurrentPosition(positionCallBack);
+        if($scope.mediaStatus !== 4){
+          $scope.mediaObject.getCurrentPosition(positionCallBack); 
+        } else{
+          $scope.mediaStatus = 0;
+          mediaPositionPromise = null;
+          $scope.mediaPosition.pos = 0;
+        }
+             
     },50);
   }
 

@@ -2,7 +2,7 @@
   <ion-content>
     <div class="row">
       <div class="col" style="text-align: center;">
-      {{mediaStatus}}
+        <h1>Status:{{mediaStatus}}</h1>
         <h1>{{Math.floor(timer/(36000))}}:
         {{Math.floor((timer%(36000))/(600))}}:
         {{(((timer%36000)%600)/10).toFixed(1)}}</h1>
@@ -19,14 +19,12 @@
         </div>
     </div>
     <div class="row">
-    <div class="col" style="text-align: center;" ng-show="mediaLength >= 0">
-    Position: {{mediaPosition}}
+    <div class="col" style="text-align: center;" ng-if="mediaLength > 0">
       <div class="item range">
-        <input id="mediaPositionSlider" type="range" name="mediaPosition" min="0" max="{{mediaLength*1000}}" ng-model="mediaPosition.pos">
-        {{mediaLength.toFixed(2)}}
+        <slider floor="0" ceiling="400" step="1" precision="1" ng-model="mediaPosition"></slider> {{mediaLength.toFixed(2)}}
       </div>
       <div class="button-bar">
-        <a class="button" ng-click="playMedia(Number(mediaPosition.pos))"><i class="ion-play"></i></a>
+        <a class="button" ng-click="playMedia(fileName)"><i class="ion-play"></i></a>
         <a class="button" ng-click="pauseMedia()"><i class="ion-pause"></i></a>
         <a class="button" ng-click="stopMedia()"><i class="ion-stop"></i></a>
       </div>

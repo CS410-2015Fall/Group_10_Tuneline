@@ -19,7 +19,8 @@ angular.module('databaseService', ['databaseConfig'])
             });
 
             var queryString = 'CREATE TABLE IF NOT EXISTS ' + table.name + ' (' + columns.join(',') + ')';
-            query(queryString);
+            // query(queryString);
+            db.transaction(function(transaction){transaction.executeSql(queryString)});
             console.log('Table ' + table.name + ' initialized');
         });
     };

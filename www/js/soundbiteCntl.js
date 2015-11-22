@@ -217,6 +217,7 @@ angular.module('soundbiteCntl', [])
     soundbite.fileName = fileName;
     soundbite.mediaLength = mediaLength;
 
+    SaveService.save(soundbite);
     console.log('************SOUNDBITE: '+soundbite);
   };
 

@@ -2,9 +2,12 @@ angular.module('databaseService', ['databaseConfig'])
 // DB wrapper
 .factory('DatabaseService', function($q, DB_CONFIG) {
     var db = null;
+    var soundbiteResult = [];
+    var playlistResult = [];
+    var playlistSoundsResult = [];
 
     // opens a db, and inits the tables
-    init: function() {
+    var init = function() {
         // 10MB est size (limit for iOS is 50MB)
         db = window.openDatabase(DB_CONFIG.name, '1.0', 'Tuneline Database', 10 * 1024 * 1024);
 
@@ -23,9 +26,7 @@ angular.module('databaseService', ['databaseConfig'])
     init();
 
     return {
-        var soundbiteResult = [];
-        var playlistResult = [];
-        var playlistSoundsResult = [];
+        
 
         query: function(query, bindings, callback) {
             bindings = typeof bindings !== 'undefined' ? bindings : [];

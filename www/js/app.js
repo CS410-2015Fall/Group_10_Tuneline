@@ -8,7 +8,7 @@
 angular.module('starter', ['ionic', 'ngCordova',
                 'tunelineCntl','soundbiteCntl','profileCntl',
                 'tunelineService','soundbiteService','profileService',
-                'metaDataForm'])
+                'metaDataFormProvider'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

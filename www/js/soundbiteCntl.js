@@ -1,7 +1,7 @@
 angular.module('soundbiteCntl', [])
 
 .controller('SoundbiteCtrl', function($scope, $cordovaDevice, 
-                                        $cordovaFile, $cordovaMedia, $interval) {
+                                        $cordovaFile, $cordovaMedia, $cordovaGeolocation, $interval) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -13,8 +13,8 @@ angular.module('soundbiteCntl', [])
   
   $scope.buttonState = 'record';
   $scope.platform;
-  $scope.fileName; //The filename of the currently recording or loaded/playing file
 
+  $scope.fileName;
   $scope.mediaObject; //The media obj. (file) that we can record/play/pause etc.
   $scope.mediaStatus = 0; //the status of the media plugin
   
@@ -23,12 +23,22 @@ angular.module('soundbiteCntl', [])
   $scope.mediaLength = 0; //the length of the currently loaded file ($scope.mediaObject)
   $scope.mediaPosition = {pos: "0"}; //the position within the file ($scope.mediaObject)
 
+  $scope.soundbiteObj = {fileName: null};
+  $scope.gpsLocation = {
+            lat: 0,
+            lng: 0,
+            accuracy: 0,
+            altitude: 0,
+            name: 'default location name'
+  };
+
   var mediaPositionPromise; //for holding the promise for the position updater
   var timerInterval; //used for holding the promise for the timer updater
 
   document.addEventListener("deviceready", function() {
-    $scope.platform = $cordovaDevice.getPlatform();
+    $scope.platform = $cordovaDevice.getPlatform();    
   }, false);
+
 
   //Bind an event to the changing of the slider
   document.getElementById('mediaPositionSlider')
@@ -56,6 +66,7 @@ angular.module('soundbiteCntl', [])
     } else{
       fileName = fileName + '.wav';
     }
+
     $scope.fileName = fileName; //Our new media file name
 
     //Create the new media object so we can record to it
@@ -85,8 +96,8 @@ angular.module('soundbiteCntl', [])
 
   //Use this function to create a media player with duration
   //play/pause and stop will depend on this function being called first
-  $scope.initPlayer = function(filename){
-      $scope.mediaObject = new Media(filename,function(){
+  $scope.initPlayer = function(fileName){
+      $scope.mediaObject = new Media(fileName,function(){
         console.log('*#*#*#*#*#mediaObject SUCCESS');
       }, function(){
         console.log('*#*#*#*#*#mediaObject ERROR');
@@ -179,5 +190,26 @@ angular.module('soundbiteCntl', [])
       $scope.mediaObject = null;
     }
   }
+
+  $scope.getGpsLocation = function(){
+    var gpsOptions = {timeout: 5000, enableHighAccuracy: true, maximumAge:10000};
+    var gpsSuccess = function(position){
+       $scope.gpsLocation.lat = position.coords.latitude;
+       $scope.gpsLocation.lng = position.coords.longitude;
+       $scope.gpsLocation.accuracy = position.coords.accuracy;
+       $scope.gpsLocation.altitude = position.coords.altitude;
+
+       console.log('************GPS SUCCESS: '+ JSON.stringify(position.coords) );
+    };
+
+    var gpsError = function(){
+      console.log('************GPS ERROR');
+       $scope.getGpsLocation();
+    };
+
+    navigator.geolocation.getCurrentPosition(gpsSuccess, gpsError, gpsOptions);
+  };
+  $scope.getGpsLocation();
+
 
 });

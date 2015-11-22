@@ -1,6 +1,6 @@
 angular.module('soundbiteCntl', [])
 
-.controller('SoundbiteCtrl', function($scope, $cordovaDevice, 
+.controller('SoundbiteCtrl', function($scope, $cordovaDevice,
                                         $cordovaFile, $cordovaMedia, $cordovaGeolocation, $interval) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -10,16 +10,16 @@ angular.module('soundbiteCntl', [])
   //$scope.$on('$ionicView.enter', function(e) {
   //});
   $scope.Math = window.Math; //So i can use Math functions in the template
-  
+
   $scope.buttonState = 'record';
   $scope.platform;
 
   $scope.fileName;
   $scope.mediaObject; //The media obj. (file) that we can record/play/pause etc.
   $scope.mediaStatus = 0; //the status of the media plugin
-  
+
   $scope.timer = 0; //the timer that is shwon on the screen
-  
+
   $scope.mediaLength = 0; //the length of the currently loaded file ($scope.mediaObject)
   $scope.mediaPosition = {pos: "0"}; //the position within the file ($scope.mediaObject)
 
@@ -36,7 +36,7 @@ angular.module('soundbiteCntl', [])
   var timerInterval; //used for holding the promise for the timer updater
 
   document.addEventListener("deviceready", function() {
-    $scope.platform = $cordovaDevice.getPlatform();    
+    $scope.platform = $cordovaDevice.getPlatform();
   }, false);
 
 
@@ -48,21 +48,21 @@ angular.module('soundbiteCntl', [])
 
   $scope.getButtonFunction = function(stateString){
     if(stateString == 'record') $scope.record();
-    if(stateString == 'stop') $scope.stopRecording(); 
+    if(stateString == 'stop') $scope.stopRecording();
   };
 
   $scope.record = function() {
     if($scope.mediaObject){
       //TODO: check to see if already recording
-    }    
+    }
     var now = new Date();
     var fileName = now.getTime().toString();
- 
+
     if($scope.platform === 'Android'){
-      fileName = cordova.file.externalApplicationStorageDirectory + 
-              'files/' + fileName + '.m4a';
+      fileName = cordova.file.cache +
+        'files/' + fileName + '.m4a';
     } else if($scope.platform === 'iOS'){
-      fileName =  fileName + '.wav';
+      fileName =  cordova.file.cacheDirectory + '/' + fileName + '.wav';
     } else{
       fileName = fileName + '.wav';
     }
@@ -76,14 +76,14 @@ angular.module('soundbiteCntl', [])
       console.log('*#*#*#*#*#mediaObject ERROR');
     }, function(status){
       console.log('*#*#*#*#*#mediaObject STATUS (record): '+ status);
-      $scope.mediaStatus = status;       
+      $scope.mediaStatus = status;
       if(status === 2){
         $scope.buttonState = 'stop';
         $scope.startTimer();
-      }   
+      }
     });
     $scope.mediaObject.startRecord();
-      
+
   };
 
   $scope.stopRecording = function(){
@@ -131,7 +131,7 @@ angular.module('soundbiteCntl', [])
     $scope.mediaObject.play();
     if($scope.mediaStatus !== 3){
       $scope.mediaObject.seekTo(positionInMilliSeconds);
-    }  
+    }
     //dynamically update the current position, used as the seeker position
     $scope.getCurrentPosition();
   }
@@ -151,7 +151,7 @@ angular.module('soundbiteCntl', [])
     }
     $scope.mediaObject.seekTo(positionInMilliSeconds);
 
-    
+
   };
 
   $scope.startTimer = function(){
@@ -166,20 +166,20 @@ angular.module('soundbiteCntl', [])
       $interval.cancel(mediaPositionPromise);
       mediaPositionPromise = null;
     }
-    var positionCallBack = function(position){       
+    var positionCallBack = function(position){
       if (position >= 0) {
         $scope.mediaPosition.pos = position*1000;
       }
     };
     mediaPositionPromise = $interval(function(){
         if($scope.mediaStatus !== 4){
-          $scope.mediaObject.getCurrentPosition(positionCallBack); 
+          $scope.mediaObject.getCurrentPosition(positionCallBack);
         } else{
           $scope.mediaStatus = 0;
           mediaPositionPromise = null;
           $scope.mediaPosition.pos = 0;
         }
-             
+
     },50);
   }
 

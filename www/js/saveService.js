@@ -1,6 +1,6 @@
 angular.module('saveService', [])
 
-  .factory('SaveService', function($cordovaFile, databaseService) {
+  .factory('SaveService', function($cordovaFile, DatabaseService) {
     var mediaObject;
     var mediaLength;
     var mediaStatus = 0;

@@ -40,12 +40,12 @@ angular.module('metaDataFormProvider', [])
               name: '',
               datetime: null,
               fileName: '',
-              length: 0,
+              mediaLength: 0,
               url: '',
               tags: '',
               photo: '',
               author: 'some author id',
-              location: {}
+              position: {}
             };
 
             scope.createDatetime = function(){

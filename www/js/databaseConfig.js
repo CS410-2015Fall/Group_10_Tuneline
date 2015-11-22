@@ -14,10 +14,10 @@ angular.module('databaseConfig', [])
                 {name: 'tags', type: 'text'},
                 {name: 'photo', type: 'text'},
                 {name: 'author', type: 'text'},
-                {name: 'location', type: 'text'},
+                {name: 'position', type: 'text'},
                 {name: 'dayofweek', type: 'integer'},
                 {name: 'timeofday', type: 'integer'},
-                {name: 'length', type: 'integer'}
+                {name: 'mediaLength', type: 'integer'}
             ]
         },
         {

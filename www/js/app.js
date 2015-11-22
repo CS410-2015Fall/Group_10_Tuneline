@@ -7,7 +7,8 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ngCordova',
                 'tunelineCntl','soundbiteCntl','profileCntl',
-                'tunelineService','soundbiteService','profileService',
+                'tunelineService','soundbiteService','profileService','saveService',
+                'databaseService',
                 'metaDataFormProvider'])
 
 .run(function($ionicPlatform) {

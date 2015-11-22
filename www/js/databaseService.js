@@ -6,23 +6,7 @@ angular.module('databaseService', ['databaseConfig'])
     var playlistResult = [];
     var playlistSoundsResult = [];
 
-    // opens a db, and inits the tables
-    var init = function() {
-      // 10MB est size (limit for iOS is 50MB)
-      self.db = window.openDatabase(DB_CONFIG.name, '1.0', 'Tuneline Database', 10 * 1024 * 1024);
 
-      angular.forEach(DB_CONFIG.tables, function(table) {
-        var columns = [];
-
-        angular.forEach(table.columns, function(column) {
-          columns.push(column.name + ' ' + column.type);
-        });
-
-        var query = 'CREATE TABLE IF NOT EXISTS ' + table.name + ' (' + columns.join(',') + ')';
-        self.query(query);
-        console.log('Table ' + table.name + ' initialized');
-      });
-    };
 
     var query = function(query, bindings, callback) {
       bindings = typeof bindings !== 'undefined' ? bindings : [];
@@ -41,7 +25,7 @@ angular.module('databaseService', ['databaseConfig'])
     };
 
     // returns all rows of the query
-    self.fetchAll = function(result) {
+    var fetchAll = function(result) {
       var output = [];
 
       for (var i = 0; i < result.rows.length; i++) {
@@ -137,6 +121,24 @@ angular.module('databaseService', ['databaseConfig'])
     };
     var successCB = function() {
       console.log("Generic query success");
+    };
+
+        // opens a db, and inits the tables
+    var init = function() {
+      // 10MB est size (limit for iOS is 50MB)
+      db = window.openDatabase(DB_CONFIG.name, '1.0', 'Tuneline Database', 10 * 1024 * 1024);
+
+      angular.forEach(DB_CONFIG.tables, function(table) {
+        var columns = [];
+
+        angular.forEach(table.columns, function(column) {
+          columns.push(column.name + ' ' + column.type);
+        });
+
+        var queryString = 'CREATE TABLE IF NOT EXISTS ' + table.name + ' (' + columns.join(',') + ')';
+        query(queryString);
+        console.log('Table ' + table.name + ' initialized');
+      });
     };
 
     // initialize

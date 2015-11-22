@@ -1,10 +1,5 @@
 angular.module('saveService', [])
 
-  /*
-  * Goal: given a metadata file, find the filename, move the file, update the filename, and push to DB
-  * */
-
-
   .factory('SaveService', function($cordovaFile, databaseService) {
     var mediaObject;
     var mediaLength;
@@ -96,7 +91,7 @@ angular.module('saveService', [])
         return mediaStatus;
       },
 
-      saveMeta: function(soundbite){
+      save: function(soundbite){
 
         //soundbite = {
         //  id: null,

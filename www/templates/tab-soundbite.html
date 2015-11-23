@@ -20,24 +20,6 @@
           </button>
         </div>
     </div>
-
-    <div class="row">
-      <div class="col" style="text-align: center;">
-        <div class="list list-inset">
-          <label class="item item-input item-select">
-            <div class="input-label">
-            Or Import Media From: 
-            </div>
-            <select ng-model="targetUrl" ng-change="openBrowser(targetUrl)">
-              <option value="http://www.youtube.com">Youtube</option>
-              <option value="http://www.soundcloud.com">SoundCloud</option>
-            </select>
-          </label>
-        </div>
-        </div>
-    </div>
-
-
     <div class="row" ng-show="mediaLength >= 0 || soundbitObj != null">
       <div class="col" style="text-align: center;">
         <div class="item range">

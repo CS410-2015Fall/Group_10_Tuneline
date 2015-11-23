@@ -27,7 +27,7 @@ angular.module('soundbiteCntl', [])
   $scope.mediaLength = 0; //the length of the currently loaded file ($scope.mediaObject)
   $scope.mediaPosition = {pos: "0"}; //the position within the file ($scope.mediaObject)
 
-  $scope.soundbiteObj = {fileName: null, url: null};
+  $scope.soundbiteObj = {fileName: null};
   $scope.gpsLocation = {
             lat: 0,
             lng: 0,

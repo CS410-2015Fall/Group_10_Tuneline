@@ -32,7 +32,7 @@ angular.module('metaDataFormProvider', [])
             var now = new Date();
 
             scope.dateValue = now;
-            scope.timeValue = now; 
+            scope.timeValue = now;
 
             scope.soundbite = {
               id: null,

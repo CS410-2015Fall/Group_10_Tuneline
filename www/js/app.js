@@ -37,7 +37,7 @@ angular.module('starter', ['ionic', 'ngCordova',
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
+  .state('tab', {
     url: '/tab',
     abstract: true,
     templateUrl: 'templates/tabs.html'
@@ -60,6 +60,16 @@ angular.module('starter', ['ionic', 'ngCordova',
       views: {
         'tab-soundbite': {
           templateUrl: 'templates/tab-soundbite.html',
+          controller: 'SoundbiteCtrl'
+        }
+      }
+    })
+
+  .state('tab.nowplaying', {      
+      url: '/tuneline/:soundbiteId',
+      views: {
+        'tab-tuneline': {
+          templateUrl: 'templates/tab-nowplaying.html',
           controller: 'SoundbiteCtrl'
         }
       }

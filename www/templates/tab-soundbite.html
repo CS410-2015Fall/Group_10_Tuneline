@@ -2,6 +2,9 @@
   <ion-content>
     <div class="row">
       <div class="col" style="text-align: center;">
+        <button ng-show="mediaLength >= 0 || soundbitObj != null" class="button button-full button-balanced" ng-click="save(soundbiteObj,gpsLocation,fileName,mediaLength)">
+          Save
+        </button>
         <h1>{{Math.floor(timer/(36000))}}:
         {{Math.floor((timer%(36000))/(600))}}:
         {{(((timer%36000)%600)/10).toFixed(1)}}</h1>
@@ -17,8 +20,26 @@
           </button>
         </div>
     </div>
+
     <div class="row">
-      <div class="col" style="text-align: center;" ng-show="mediaLength >= 0">
+      <div class="col" style="text-align: center;">
+        <div class="list list-inset">
+          <label class="item item-input item-select">
+            <div class="input-label">
+            Or Import Media From: 
+            </div>
+            <select ng-model="targetUrl" ng-change="openBrowser(targetUrl)">
+              <option value="http://www.youtube.com">Youtube</option>
+              <option value="http://www.soundcloud.com">SoundCloud</option>
+            </select>
+          </label>
+        </div>
+        </div>
+    </div>
+
+
+    <div class="row" ng-show="mediaLength >= 0 || soundbitObj != null">
+      <div class="col" style="text-align: center;">
         <div class="item range">
           <input id="mediaPositionSlider" type="range" name="mediaPosition" min="0" max="{{mediaLength*1000}}" ng-model="mediaPosition.pos">
           {{mediaLength.toFixed(2)}}
@@ -27,18 +48,22 @@
           <a class="button" ng-click="playMedia(Number(mediaPosition.pos))"><i class="ion-play"></i></a>
           <a class="button" ng-click="pauseMedia()"><i class="ion-pause"></i></a>
           <a class="button" ng-click="stopMedia()"><i class="ion-stop"></i></a>
-           <a class="button" ng-click="save(soundbiteObj,gpsLocation,fileName,mediaLength)"><i class="ion-ios-download"></i></a>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col" style="text-align: center;" ng-show="mediaLength >= 0">
+    <div class="row" ng-show="mediaLength >= 0 || soundbitObj != null">
+      <div class="col" style="text-align: center;">
         <meta-data-form ng-model="soundbiteObj"/>
       </div>
     </div>
-    <div class="row">
-      <div class="col" style="text-align: center;" ng-show="mediaLength >= 0">
+    <div class="row" ng-show="mediaLength >= 0 || soundbitObj != null">
+      <div class="col" style="text-align: center;">
       {{soundbiteObj}}
+
+      {{soundbiteObj.url}}
+        <button ng-show="mediaLength >= 0 || soundbitObj != null" class="button button-full button-balanced" ng-click="save(soundbiteObj,gpsLocation,fileName,mediaLength)">
+          Save
+        </button>
       </div>
     </div>
   </ion-content>

@@ -27,7 +27,6 @@ angular.module('databaseService', ['databaseConfig'])
     init();
 
     return {
-        
 
         query: function(query, bindings, callback) {
             bindings = typeof bindings !== 'undefined' ? bindings : [];

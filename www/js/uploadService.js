@@ -9,7 +9,7 @@ app.controller("UploadService", function($scope, $cordovaFileTransfer) {
             // fileKey: "avatar",
             fileName: path.split("/").pop(),
             chunkedMode: false,
-            mimeType: "image/png",
+            mimeType: "audio/mpeg",
             headers: {"Access-Control-Allow-Origin": "*"}
         };
         $cordovaFileTransfer.upload(uri, path, options)

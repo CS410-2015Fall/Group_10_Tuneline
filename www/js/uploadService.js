@@ -1,6 +1,6 @@
 var app = angular.module('uploadService', []);
 
-app.controller("UploadService", function($scope, $cordovaFileTransfer) {
+app.factory("UploadService", function($cordovaFileTransfer) {
     var uri = "http://159.203.246.24/simpleUpload.php";
     var fac = {};
 

@@ -33,6 +33,15 @@ angular.module('databaseConfig', [])
                 {name: 'sid', type: 'integer'},
                 {name: 'pid', type: 'integer'}
             ]
+        },
+        {
+            name: 'UserInfo',
+            columns: [
+                {name: 'fbId', type: 'integer'},
+                {name: 'username', type: 'text'},
+                {name: 'firstName', type: 'text'}.
+                {name: 'lastName', type: 'text'}
+            ]
         }
     ]
 });

@@ -225,4 +225,15 @@ angular.module('soundbiteCntl', [])
   $scope.getGpsLocation();
 
 
-});
+})
+
+.controller('SoundbiteCtrlPlay', function($scope, soundbite){
+
+  $scope.soundbite = soundbite;
+  $scope.msg = "from SoundbiteCtrlPlay.msg";
+
+  console.log("SoundbiteCtrlPlay.soundbites = ");
+  console.log($scope.soundbite);
+
+  }
+);

@@ -1,32 +1,28 @@
-<ion-view view-title="Soundbite">
+<ion-view view-title="Now Playing">
   <ion-content>
-    <div class="row">
-      <div class="col" style="text-align: center;">
-        <h1>Status:{{mediaStatus}}</h1>
-        <h1>{{Math.floor(timer/(36000))}}:
-        {{Math.floor((timer%(36000))/(600))}}:
-        {{(((timer%36000)%600)/10).toFixed(1)}}</h1>
+  <p>Testing simple template! {{soundbite}}</p>
+    <div class="list card">
+      <div class="item">
+        <h3>{{soundbite.name}}</h3>
+        <h2>{{soundbite.datetime}}</h2>
+        <p>{{soundbite.filename}}</p>
       </div>
-    </div>
-    <div class="row">
-        <div class="col" style="text-align: center;">
-          <button class="button" 
-                  ng-class="buttonState=='record'? 'button-assertive':'button-energized'" 
-                  ng-click="getButtonFunction(buttonState)"
-                  style="border-radius: 100%; height: 14em; width: 14em; ">
-            <i ng-class="buttonState=='record'?'ion-ios-mic':'ion-stop'" style="font-size: 10em;"></i>
-          </button>
-        </div>
-    </div>
-    <div class="row">
-    <div class="col" style="text-align: center;" ng-if="mediaLength > 0">
-      <div class="item range">
-        <slider floor="0" ceiling="400" step="1" precision="1" ng-model="mediaPosition"></slider> {{mediaLength.toFixed(2)}}
+      <div class="item item-body">
+        <p>Is this even working?</p>
       </div>
-      <div class="button-bar">
-        <a class="button" ng-click="playMedia(fileName)"><i class="ion-play"></i></a>
-        <a class="button" ng-click="pauseMedia()"><i class="ion-pause"></i></a>
-        <a class="button" ng-click="stopMedia()"><i class="ion-stop"></i></a>
+      <div class="item tabs tabs-secondary tabs-icon-left">
+        <a class="tab-item">
+          <i class="icon ion-thumbsup"></i>
+          Like
+        </a>
+        <a class="tab-item">
+          <i class="icon ion-chatbox"></i>
+          Comment
+        </a>
+        <a class="tab-item">
+          <i class="icon ion-share"></i>
+          Share
+        </a>
       </div>
     </div>
   </ion-content>

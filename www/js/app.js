@@ -50,9 +50,16 @@ angular.module('starter', ['ionic', 'ngCordova',
     views: {
       'tab-tuneline': {
         templateUrl: 'templates/tab-tuneline.html',
-        controller: 'TunelineCntl as vm'
+        controller: 'TunelineCntl'
       }
-    }
+    },
+
+    resolve: {
+          soundbites: function(DatabaseService) {
+            return DatabaseService.getSoundbites()
+          }
+        }
+
   })
 
   .state('tab.soundbite', {
@@ -73,9 +80,20 @@ angular.module('starter', ['ionic', 'ngCordova',
         controller: 'ProfileCntl'
       }
     }
-  });
+  })
+
+  .state('nowplaying', {
+    url: '/nowplaying/:soundbiteId',
+    controller: 'SoundbiteCtrlPlay',
+    templateUrl: 'templates/tab-nowplaying.html', 
+    resolve: {
+      soundbite: function($stateParams, DatabaseService) {
+        return DatabaseService.getSoundbite($stateParams.soundbiteId)
+      }
+    }
+
+    });
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/soundbite');
-
-});
+  });

@@ -2,5 +2,17 @@
 # http://git-scm.com/docs/gitignore
 
 node_modules/
-platforms/
 *sublime*
+platforms/
+!platforms/
+platforms/*
+!platforms/android/
+
+platforms/android/*
+!platforms/android/res/
+
+platforms/android/res/*
+!platforms/android/res/values/
+
+platforms/android/res/values/*
+!platforms/android/res/values/facebookconnect.xml

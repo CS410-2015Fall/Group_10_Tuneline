@@ -50,7 +50,7 @@ angular.module('starter', ['ionic', 'ngCordova',
     views: {
       'tab-tuneline': {
         templateUrl: 'templates/tab-tuneline.html',
-        controller: 'TunelineCntl as vm'
+        controller: 'TunelineCntl'
       }
     }
   })

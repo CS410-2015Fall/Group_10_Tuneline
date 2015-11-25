@@ -30,7 +30,7 @@ angular.module('databaseService', ['databaseConfig'])
           transaction.executeSql(query, bindings, function(transaction, result) {
               deferred.resolve(result, callback);
               var rows = fetchAll(result);
-              callback(result);
+              callback(rows);
           }, function(transaction, error) {
               deferred.reject(error);
           });

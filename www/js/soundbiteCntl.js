@@ -3,7 +3,7 @@ angular.module('soundbiteCntl', [])
 .controller('SoundbiteCtrl', function($scope, $rootScope, $stateParams, $interval,
                                          $cordovaDevice, $cordovaFile, $cordovaMedia, 
                                          $cordovaGeolocation, $cordovaInAppBrowser, 
-                                        SaveService) {
+                                        SaveService,DatabaseService) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -65,8 +65,7 @@ angular.module('soundbiteCntl', [])
     var fileName = now.getTime().toString();
 
     if($scope.platform === 'Android'){
-      fileName = cordova.file.cache +
-        'files/' + fileName + '.m4a';
+      fileName = cordova.file.externalApplicationStorageDirectory + 'files/' + fileName + '.m4a';
     } else if($scope.platform === 'iOS'){
       fileName =  cordova.file.cacheDirectory + '/' + fileName + '.wav';
     } else{
@@ -222,7 +221,7 @@ angular.module('soundbiteCntl', [])
     soundbite.fileName = fileName;
     soundbite.mediaLength = mediaLength;
 
-    SaveService.save(soundbite);
+    DatabaseService.saveSound(soundbite);
     console.log('************SOUNDBITE: '+soundbite);
   };
 

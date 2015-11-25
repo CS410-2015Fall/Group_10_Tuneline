@@ -2,8 +2,7 @@
   <ion-content class="padding">
     <!-- {{testMessage}} -->
     <div class="list">
-      <a class="item item-icon-right" ng-repeat="soundbite in vm.soundbites"
-        ng-click="vm.selectSoundbite(soundbite.id)"> <!-- TODO: Check DB for correct schema. -->
+      <a class="item item-icon-right" ng-repeat="soundbite in soundbites" href='#/tab/tuneline/{{soundbite.id}}'>
         {{soundbite.name}}
         <i class="icon ion-chevron-right icon-accessory"></i>
       </a>

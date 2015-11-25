@@ -2,9 +2,6 @@ angular.module('databaseService', ['databaseConfig'])
 // DB wrapper
 .factory('DatabaseService', function($q, DB_CONFIG) {
     var db = null;
-    var soundbiteResult = [];
-    var playlistResult = [];
-    var playlistSoundsResult = [];
 
     // opens a db, and inits the tables
     var init = function() {
@@ -32,6 +29,7 @@ angular.module('databaseService', ['databaseConfig'])
       db.transaction(function(transaction) {
           transaction.executeSql(query, bindings, function(transaction, result) {
               deferred.resolve(result, callback);
+              var rows = fetchAll(result);
               callback(result);
           }, function(transaction, error) {
               deferred.reject(error);
@@ -68,20 +66,6 @@ angular.module('databaseService', ['databaseConfig'])
         return str.replace(new RegExp(find, 'g'), replace);
     }
 
-    // callbacks
-    var soundCB = function(result) {
-        soundbiteResult = fetchAll(result);
-    }
-
-    var playlistCB = function(result) {
-        playlistResult = fetchAll(result);
-    }
-
-    var playlistSoundsCB = function(result) {
-        // should be list of Soundbite metadata
-        playlistSoundsResult = fetchAll(result);
-    }
-
     var successCB = function() {
         console.log("Generic query success");
     }
@@ -90,30 +74,32 @@ angular.module('databaseService', ['databaseConfig'])
         console.log("Generic query error");
     }
 
-
-
     init();
 
     return {
 
-        getPlaylists: function() {
-            query("SELECT * FROM Playlists ORDER BY name ASC", [], playlistCB);
+        getPlaylists: function(cb) {
+            query("SELECT * FROM Playlists ORDER BY name ASC", [], cb, errorCB);
         },
 
-        getPlaylistSounds: function(pid) {
-            query("SELECT * FROM SoundbitesPlaylistMap as spm RIGHT JOIN Soundbites as sb ON spm.sid=sb.id WHERE pid=? ORDER BY sb.id DESC", [pid], playlistSoundsCB)
+        getPlaylistSounds: function(pid, cb) {
+            query("SELECT * FROM SoundbitesPlaylistMap as spm RIGHT JOIN Soundbites as sb ON spm.sid=sb.id WHERE pid=? ORDER BY sb.id DESC", [pid], cb, errorCB)
         },
 
-        getSounds: function() {
-            query("SELECT * FROM Soundbites ORDER BY datetime DESC", [], soundCB);
+        getSounds: function(cb) {
+            query("SELECT * FROM Soundbites ORDER BY datetime DESC", [], cb, errorCB);
         },
 
-        getSoundsById: function(id) {
+        getSoundsById: function(id, cb) {
             if (isInt(id)) {
-                query("SELECT * FROM Soundbites WHERE id=?", [id], function(tx,r){soundQuerySuccessCB(tx,r,callback)}, errorCB);
+                query("SELECT * FROM Soundbites WHERE id=?", [id], cb, errorCB);
             } else if (id.constructor === Array) {
-                query("SELECT * FROM Soundbites WHERE id IN ('?')", [id.join()], function(tx,r){soundQuerySuccessCB(tx,r,callback)}, errorCB);
+                query("SELECT * FROM Soundbites WHERE id IN ('?')", [id.join()], cb, errorCB);
             }
+        },
+
+        removeSound: function(id, cb) {
+            query("DELETE FROM 'Soundbites' WHERE id=?", [id]);
         },
 
         saveSound: function(jsonObj) { //public

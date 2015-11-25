@@ -1,5 +1,6 @@
 angular.module('metaDataFormProvider', [])
-.directive('metaDataForm', ['$cordovaCamera','$cordovaGeolocation',function($cordovaCamera,$cordovaGeolocation) {
+.directive('metaDataForm', ['$rootScope','$cordovaCamera','$cordovaGeolocation','$cordovaInAppBrowser',
+  function($rootScope,$cordovaCamera,$cordovaGeolocation,$cordovaInAppBrowser) {
     return {
         // can be used as attribute or element
         restrict: 'AE',
@@ -8,6 +9,15 @@ angular.module('metaDataFormProvider', [])
         },
         // which markup this directive generates
         template: '<div class="list list-inset">' +
+          '<label class="item item-input item-select">' +
+            '<div class="input-label">' +
+              'Or Import Media From: ' +
+            '</div>' +
+            '<select ng-model="targetUrl" ng-change="openBrowser(targetUrl)">' +
+              '<option value="http://www.youtube.com">Youtube</option>' +
+              '<option value="http://www.soundcloud.com">SoundCloud</option>' +
+            '</select>' +
+          '</label>' +
           '<label class="item item-input">' +
             '<input type="text" placeholder="Soundbite Name" ng-model="soundbite.name"/>' +
           '</label>' +
@@ -32,7 +42,7 @@ angular.module('metaDataFormProvider', [])
             var now = new Date();
 
             scope.dateValue = now;
-            scope.timeValue = now; 
+            scope.timeValue = now;
 
             scope.soundbite = {
               id: null,
@@ -41,7 +51,7 @@ angular.module('metaDataFormProvider', [])
               datetime: null,
               fileName: '',
               mediaLength: 0,
-              url: '',
+              url: 'http://',
               tags: '',
               photo: '',
               author: 'some author id',
@@ -72,6 +82,24 @@ angular.module('metaDataFormProvider', [])
               }, function(err) {
                 // error
               });
+            };
+
+            scope.targetUrl;
+            scope.openBrowser = function(targetUrl){
+              $cordovaInAppBrowser.open(targetUrl,'_blank',{});    
+            };
+
+            $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event){
+              // insert Javascript via code / file
+              $cordovaInAppBrowser.executeScript({
+                code: 'window.location.href;'
+              })
+              .then(fillUrl);
+            });
+
+            var fillUrl = function(siteUrl){
+              scope.soundbite.url = siteUrl;
+              console.log('*****************Site url:'+siteUrl);
             };
 
             scope.createDatetime();

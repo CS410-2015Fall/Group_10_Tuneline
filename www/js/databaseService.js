@@ -27,7 +27,6 @@ angular.module('databaseService', ['databaseConfig'])
     init();
 
     return {
-        
 
         query: function(query, bindings, callback) {
             bindings = typeof bindings !== 'undefined' ? bindings : [];
@@ -84,11 +83,11 @@ angular.module('databaseService', ['databaseConfig'])
             var day = datetime.getDay();
             var timestamp = Math.round(jsonObj.datetime.getTime()/1000);
             var time = datetime.getHours()+datetime.getMinutes();
-            query("INSERT INTO 'Soundbites' (type,name,datetime,filename,url,tags,photo,author,location,dayofweek) VALUES (?,?,?,?,?,?,?,?,?,?,?)", [jsonObj.type, jsonObj.name, timestamp, jsonObj.filename, jsonObj.url, jsonObj.tags, jsonObj.photo, jsonObj.author, JSON.stringify(jsonObj.location), day, time, jsonObj.length], sqlSuccessCB, sqlErrorCB)
+            query("INSERT INTO 'Soundbites' (type,name,datetime,filename,url,tags,photo,author,position,dayofweek,timeofday,mediaLength) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", [jsonObj.type, jsonObj.name, timestamp, jsonObj.filename, jsonObj.url, jsonObj.tags, jsonObj.photo, jsonObj.author, JSON.stringify(jsonObj.position), day, time, jsonObj.mediaLength], sqlSuccessCB, sqlErrorCB)
         },
 
         updateSound: function(jsonObj) {
-            query("UPDATE 'Soundbites' SET name=?, datetime=?,tags=?,photo=?,location=?) WHERE id=?", [jsonObj.name, jsonObj.datetime, jsonObj.tags, jsonObj.photo, JSON.stringify(jsonObj.location), jsonObj.id], successCB);
+            query("UPDATE 'Soundbites' SET (name=?,datetime=?,tags=?,photo=?,position=?) WHERE id=?", [jsonObj.name, jsonObj.datetime, jsonObj.tags, jsonObj.photo, JSON.stringify(jsonObj.position), jsonObj.id], successCB);
         },
 
         savePlaylist: function(jsonObj) {

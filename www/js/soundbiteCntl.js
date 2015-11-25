@@ -1,7 +1,8 @@
 angular.module('soundbiteCntl', [])
 
-.controller('SoundbiteCtrl', function($scope, $cordovaDevice,
-                                        $cordovaFile, $cordovaMedia, $cordovaGeolocation, $interval,
+.controller('SoundbiteCtrl', function($scope, $rootScope, $stateParams, $interval,
+                                         $cordovaDevice, $cordovaFile, $cordovaMedia, 
+                                         $cordovaGeolocation, $cordovaInAppBrowser, 
                                         SaveService) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -10,6 +11,8 @@ angular.module('soundbiteCntl', [])
   //
   //$scope.$on('$ionicView.enter', function(e) {
   //});
+  $scope.soundbiteId = $stateParams.soundbiteId;
+
   $scope.Math = window.Math; //So i can use Math functions in the template
 
   $scope.buttonState = 'record';
@@ -41,11 +44,13 @@ angular.module('soundbiteCntl', [])
   }, false);
 
 
-  //Bind an event to the changing of the slider
-  document.getElementById('mediaPositionSlider')
-  .addEventListener('touchend',function(){
-      $scope.seekTo(Number($scope.mediaPosition.pos));
-    }, false);
+  //Bind an event to the changing of the slider, but check to see if it is actually on the page
+  var sliderElement = document.getElementById('mediaPositionSlider');
+  if(sliderElement){
+    sliderElement.addEventListener('touchend',function(){
+        $scope.seekTo(Number($scope.mediaPosition.pos));
+      }, false);
+  }
 
   $scope.getButtonFunction = function(stateString){
     if(stateString == 'record') $scope.record();
@@ -219,6 +224,24 @@ angular.module('soundbiteCntl', [])
 
     SaveService.save(soundbite);
     console.log('************SOUNDBITE: '+soundbite);
+  };
+
+  $scope.targetUrl;
+  $scope.openBrowser = function(targetUrl){
+    $cordovaInAppBrowser.open(targetUrl,'_blank',{});    
+  };
+
+  $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event){
+    // insert Javascript via code / file
+    $cordovaInAppBrowser.executeScript({
+      code: 'window.location.href;'
+    })
+    .then(fillUrl);
+  });
+
+  var fillUrl = function(siteUrl){
+    $scope.soundbiteObj.url = siteUrl;
+    console.log('*****************Site url:'+siteUrl);
   };
 
 

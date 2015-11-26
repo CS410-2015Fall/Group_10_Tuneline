@@ -1,7 +1,6 @@
-describe('SoundbiteController', function() {
-    var d = document.querySelector('.box');
+describe('SoundbiteCntl', function() {
+it('sample unit test', function() {
 
-    it('Always ture', function() {
-        expect(true).toBe(true);
+      expect(true).toEqual(true);
     });
 });

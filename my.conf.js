@@ -15,7 +15,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'www/js/*.js , tests/*.js',
+      'www/js/*.js , tests/*.js'
     ],
 
 
@@ -64,6 +64,11 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultanous
-    concurrency: Infinity
+    concurrency: Infinity,
+
+    plugins: [
+    'karma-chrome-launcher',
+    'karma-jasmine'
+    ]
   })
 }

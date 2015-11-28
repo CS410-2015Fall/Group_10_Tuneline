@@ -1,9 +1,20 @@
 <ion-view view-title="Profile">
   <ion-content>
     <ion-list>
-    <ion-toggle  ng-model="settings.enableFriends">
+    <ion-toggle ng-model="settings.enableFriends" onclick="test()">
         Enable Friends
     </ion-toggle>
     </ion-list>
+    <div data-role="main" class="ui-content">
+        <p>You need to login to view your Facebook profile information</p>
+        <button ng-click="login()" style="height:20px;">Login using Facebook</button>
+        <button ng-click="getFriends()" style="height:20px;">Get friends list</button>
+        <button ng-click="getMe()" style="height:20px;">Get My Info</button>
+	</div>
+	<div>Result: {{result}}</div>
+	<br/>
+	<div>UserID: {{fbId}}</div>
+	<br/>
+	<div>Access Token: {{accessToken}}</div>
   </ion-content>
 </ion-view>

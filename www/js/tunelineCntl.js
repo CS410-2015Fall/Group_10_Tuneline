@@ -1,20 +1,11 @@
 angular.module('tunelineCntl', [])
 
-.controller('TunelineCntl', ['$scope', '$state', 'TunelineService', TunelineCntl]);
+.controller('TunelineCntl', ['$scope', 'TunelineService', TunelineCntl]);
 
-function TunelineCntl($scope, $state, TunelineService) {
-	var vm = this;
+function TunelineCntl($scope, TunelineService) {
+	$scope.soundbites = TunelineService.getSoundbites();
 
-	var soundbites = TunelineService.getSoundbites();
-	var soundbite = TunelineService.getSoundbiteData();
-
-	$scope.testMessage = "<Binding test using TunelineCntl>";
-
-	vm.soundbites = soundbites;
-
-	vm.selectSoundbite = function(soundbiteId){
-		$state.go("tab.soundbite"); //TODO: Change this to our UI specs. Placeholder for now.
-	};
-
-	console.log(soundbites, soundbite);
+	// Recommended by Ben...
+	// $scope.soundbites = null;
+	// TunelineService.getSoundbites().then(function(result){$scope.soundbites = result});
 };

@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngCordova',
+angular.module('starter', ['ionic','ionic.service.core', 'ngCordova',
                 'tunelineCntl','soundbiteCntl','profileCntl',
                 'tunelineService','soundbiteService','profileService','saveService',
                 'databaseService',
@@ -24,6 +24,17 @@ angular.module('starter', ['ionic', 'ngCordova',
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+    // Push notification registration
+    Ionic.io();
+    var push = new Ionic.Push({
+      "debug": true
+    });
+
+    push.register(function(token) {
+      console.log("Device token: ", token.token);
+    });
+    
   });
 })
 
@@ -50,7 +61,7 @@ angular.module('starter', ['ionic', 'ngCordova',
     views: {
       'tab-tuneline': {
         templateUrl: 'templates/tab-tuneline.html',
-        controller: 'TunelineCntl as vm'
+        controller: 'TunelineCntl'
       }
     }
   })

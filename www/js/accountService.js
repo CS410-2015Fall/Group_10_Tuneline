@@ -1,7 +1,7 @@
-angular.module("accountService", []) 
+angular.module('accountService', []) 
 
-.factory("AccountService", function() {
+.factory('AccountService', function() {
 	fac = {};
 	
 	return fac;
-}
+});

@@ -2,9 +2,6 @@ angular.module('databaseService', ['databaseConfig'])
 // DB wrapper
 .factory('DatabaseService', function($q, DB_CONFIG) {
     var db = null;
-    var soundbiteResult = [];
-    var playlistResult = [];
-    var playlistSoundsResult = [];
 
     // opens a db, and inits the tables
     var init = function() {
@@ -23,59 +20,89 @@ angular.module('databaseService', ['databaseConfig'])
             db.transaction(function(transaction){transaction.executeSql(queryString)});
             console.log('Table ' + table.name + ' initialized');
         });
-    };
+    }
+
+    var query = function(query, bindings, callback) {
+      bindings = typeof bindings !== 'undefined' ? bindings : [];
+      var deferred = $q.defer();
+
+      db.transaction(function(transaction) {
+          transaction.executeSql(query, bindings, function(transaction, result) {
+              deferred.resolve(result, callback);
+              var rows = fetchAll(result);
+              callback(rows);
+          }, function(transaction, error) {
+              deferred.reject(error);
+          });
+      });
+
+      return deferred.promise;
+    }
+
+    // returns all rows of the query
+    var fetchAll = function(result) {
+        var output = [];
+
+        for (var i = 0; i < result.rows.length; i++) {
+            output.push(result.rows.item(i));
+        }
+        
+        return output;
+    }
+
+    // returns true if value is an int or a string representation of an int
+    var isInt = function(value) {
+        var x;
+        if (isNaN(value)) {
+            return false;
+        }
+        x = parseFloat(value);
+        return (x | 0) === x;
+    }
+
+    // replace all instances of 'find' with 'replace' in string 'str'
+    // was used for tags : removing has symbols, preserving @ symbols
+    var replaceAll = function(str, find, replace) {
+        return str.replace(new RegExp(find, 'g'), replace);
+    }
+
+    var successCB = function() {
+        console.log("Generic query success");
+    }
+
+    var errorCB = function() {
+        console.log("Generic query error");
+    }
+
     init();
 
     return {
 
-        query: function(query, bindings, callback) {
-            bindings = typeof bindings !== 'undefined' ? bindings : [];
-            var deferred = $q.defer();
-
-            db.transaction(function(transaction) {
-                transaction.executeSql(query, bindings, function(transaction, result) {
-                    deferred.resolve(result, callback);
-                    callback(result);
-                }, function(transaction, error) {
-                    deferred.reject(error);
-                });
-            });
-
-            return deferred.promise;
+        getPlaylists: function(cb) {
+            query("SELECT * FROM Playlists ORDER BY name ASC", [], cb, errorCB);
         },
 
-        // returns all rows of the query
-        fetchAll: function(result) {
-            var output = [];
-
-            for (var i = 0; i < result.rows.length; i++) {
-                output.push(result.rows.item(i));
-            }
-            
-            return output;
+        getPlaylistSounds: function(pid, cb) {
+            query("SELECT * FROM SoundbitesPlaylistMap as spm RIGHT JOIN Soundbites as sb ON spm.sid=sb.id WHERE pid=? ORDER BY sb.id DESC", [pid], cb, errorCB)
         },
 
-        getPlaylists: function() {
-            query("SELECT * FROM Playlists ORDER BY name ASC", [], playlistCB);
+        getSounds: function(cb) {
+            query("SELECT * FROM Soundbites ORDER BY datetime DESC", [], cb, errorCB);
         },
 
-        getPlaylistSounds: function(pid) {
-            query("SELECT * FROM SoundbitesPlaylistMap as spm RIGHT JOIN Soundbites as sb ON spm.sid=sb.id WHERE pid=? ORDER BY sb.id DESC", [pid], playlistSoundsCB)
-        },
-
-        getSounds: function() {
-            query("SELECT * FROM Soundbites ORDER BY datetime DESC", [], soundCB);
-        },
-
-        getSoundsById: function(id) {
+        getSoundsById: function(id, cb) {
             if (isInt(id)) {
-                query("SELECT * FROM Soundbites WHERE id=?", [id], function(tx,r){soundQuerySuccessCB(tx,r,callback)}, sqlErrorCB);
+                query("SELECT * FROM Soundbites WHERE id=?", [id], cb, errorCB);
             } else if (id.constructor === Array) {
-                query("SELECT * FROM Soundbites WHERE id IN ('?')", [id.join()], function(tx,r){soundQuerySuccessCB(tx,r,callback)}, sqlErrorCB);
+                query("SELECT * FROM Soundbites WHERE id IN ('?')", [id.join()], cb, errorCB);
             }
         },
 
-        saveSound: function(jsonObj) {
+        removeSound: function(id, cb) {
+            query("DELETE FROM 'Soundbites' WHERE id=?", [id]);
+        },
+
+        saveSound: function(jsonObj) { //public
             // length is/should be provided
 
             // changes datetime to unix timestamp, get day of the week
@@ -83,49 +110,33 @@ angular.module('databaseService', ['databaseConfig'])
             var day = datetime.getDay();
             var timestamp = Math.round(jsonObj.datetime.getTime()/1000);
             var time = datetime.getHours()+datetime.getMinutes();
-            query("INSERT INTO 'Soundbites' (type,name,datetime,filename,url,tags,photo,author,position,dayofweek,timeofday,mediaLength) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", [jsonObj.type, jsonObj.name, timestamp, jsonObj.filename, jsonObj.url, jsonObj.tags, jsonObj.photo, jsonObj.author, JSON.stringify(jsonObj.position), day, time, jsonObj.mediaLength], sqlSuccessCB, sqlErrorCB)
+            query("INSERT INTO 'Soundbites' (type,name,datetime,filename,url,tags,photo,author,position,dayofweek,timeofday,mediaLength) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", [jsonObj.type, jsonObj.name, timestamp, jsonObj.filename, jsonObj.url, jsonObj.tags, jsonObj.photo, jsonObj.author, JSON.stringify(jsonObj.position), day, time, jsonObj.mediaLength], successCB, errorCB)
         },
 
-        updateSound: function(jsonObj) {
+        updateSound: function(jsonObj) { //public
             query("UPDATE 'Soundbites' SET (name=?,datetime=?,tags=?,photo=?,position=?) WHERE id=?", [jsonObj.name, jsonObj.datetime, jsonObj.tags, jsonObj.photo, JSON.stringify(jsonObj.position), jsonObj.id], successCB);
         },
 
-        savePlaylist: function(jsonObj) {
+        savePlaylist: function(jsonObj) { //public
             var name = jsonObj.name;
             query("INSERT INTO 'Playlists' (name) VALUES (?)", [name], successCB)
         },
 
-        updatePlaylist: function(pid, name) {
+        updatePlaylist: function(pid, name) { //public
             query("UPDATE 'Playlist' SET name=? WHERE pid=?", [name, pid]);
         },
 
-        removePlaylist: function(pid) {
+        removePlaylist: function(pid) { //public
             query("DELETE FROM 'Playlists' WHERE id=?", [pid]);
             query("DELETE FROM 'SoundbitesPlaylistMap' WHERE pid=?", [pid]);
         },
 
-        saveSoundToPlaylist: function(sid, pid) {
+        saveSoundToPlaylist: function(sid, pid) { //pubic
             query("INSERT INTO 'SoundbitesPlaylistMap' (sid, pid) VALUES (?,?)", [sid, pid]);
         },
 
-        removeSoundFromPlaylist: function(sid, pid) {
+        removeSoundFromPlaylist: function(sid, pid) { //public
             query("DELETE FROM 'SoundbitesPlaylistMap' WHERE sid=? AND pid=?", [sid, pid]);
-        },
-
-        // returns true if value is an int or a string representation of an int
-        isInt: function(value) {
-            var x;
-            if (isNaN(value)) {
-                return false;
-            }
-            x = parseFloat(value);
-            return (x | 0) === x;
-        },
-
-        // replace all instances of 'find' with 'replace' in string 'str'
-        // was used for tags: removing has symbols, preserving @ symbols
-        replaceAll: function(str, find, replace) {
-            return str.replace(new RegExp(find, 'g'), replace);
         },
 
         // gets
@@ -137,21 +148,8 @@ angular.module('databaseService', ['databaseConfig'])
         },
         getPlaylistSoundsResult: function() {
             return playlistSoundsResult;
-        },
-
-        // callbacks
-        soundCB: function(result) {
-            soundbiteResult = fetchAll(result);
-        },
-        playlistCB: function(result) {
-            playlistResult = fetchAll(result);
-        },
-        playlistSoundsCB: function(result) {
-            // should be list of Soundbite metadata
-            playlistSoundsResult = fetchAll(result);
-        },
-        successCB: function() {
-            console.log("Generic query success");
         }
+
+        
     }
 });

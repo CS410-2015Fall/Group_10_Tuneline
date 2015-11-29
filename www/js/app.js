@@ -71,7 +71,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ngCordova',
       views: {
         'tab-soundbite': {
           templateUrl: 'templates/tab-soundbite.html',
-          controller: 'SoundbiteCtrl'
+          controller: 'SoundbiteCntl'
         }
       }
     })
@@ -81,7 +81,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ngCordova',
       views: {
         'tab-tuneline': {
           templateUrl: 'templates/tab-nowplaying.html',
-          controller: 'SoundbiteCtrl'
+          controller: 'SoundbiteCntl'
         }
       }
     })

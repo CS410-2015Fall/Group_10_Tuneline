@@ -1,6 +1,6 @@
 angular.module('soundbiteCntl', [])
 
-.controller('SoundbiteCtrl', function($scope, $rootScope, $stateParams, $interval,
+.controller('SoundbiteCntl', function($scope, $rootScope, $stateParams, $interval,
                                          $cordovaDevice, $cordovaFile, $cordovaMedia, 
                                          $cordovaGeolocation, $cordovaInAppBrowser, 
                                         SaveService,DatabaseService) {

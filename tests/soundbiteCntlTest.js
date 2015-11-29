@@ -1,18 +1,64 @@
+//These are mocks for the globals defined by one of the cordova plugins
+var navigator = {	'geolocation': {
+    						getCurrentPosition : function(){ return null }
+    					}
+    				};
 describe('SoundbiteCntl', function() {
-  beforeEach(module('starter'));
+	
+	// The variable where we will create our controller that we will be testing
+	var controller;
 
-  var $controller;
+	//These will be used to hold the mock services that we will inject into the cntl
+	var scope, stateParams, interval,
+        cordovaDevice, cordovaFile, cordovaMedia, 
+        cordovaGeolocation, cordovaInAppBrowser, 
+        SaveService,DatabaseService;
 
-  beforeEach(inject(function(_$controller_){
-    // The injector unwraps the underscores (_) from around the parameter names when matching
-    $controller = _$controller_;
-  }));
+    //Before each test, load our module
+    beforeEach(module('soundbiteCntl'));
 
-  describe('$scope.timer', function() {
-    it('check the initial timer is 0', function() {
-      var $scope = {};
-      var controller = $controller('SoundbiteCtrl', { $scope: $scope });
-      expect($scope.timer).toEqual(0);
-    });
-  });
+    ///Create/Inject our mocks into the controller
+	beforeEach(inject(function($rootScope, $controller) {
+		//Create the mock services
+		scope = $rootScope.$new();
+		stateParams = {soundbiteId: 'TEST_ID'};
+		cordovaDevice = {};
+		cordovaFile = {};
+		cordovaMedia = {};
+        cordovaGeolocation = {};
+        cordovaInAppBrowser = {};
+        SaveService = {};
+        DatabaseService = {};
+
+        //Create our controller and inject the services
+		controller = $controller('SoundbiteCntl', {
+										$scope: scope,
+										$stateParams: stateParams,
+										$cordovaDevice: cordovaDevice,
+										$cordovaFile: cordovaFile,
+										$cordovaMedia: cordovaMedia,
+										$cordovaGeolocation: cordovaGeolocation,
+										$cordovaInAppBrowser: cordovaInAppBrowser,
+										SaveService: SaveService,
+										DatabaseService: DatabaseService});
+	}));
+
+	//These are our actual unit tests
+	it('$scope.timer', function(){
+		expect(scope.timer).toBe(0);
+		scope.startTimer();
+		expect(scope.soundbiteId).toBe('TEST_ID');
+	});
+
+	it('scope.soundbiteId', function(){
+		expect(scope.soundbiteId).toBe('TEST_ID');
+	});
+
+	it('scope.buttonState', function(){
+		expect(scope.buttonState).toBe('record');
+	});
+
+	it('scope.buttonState', function(){
+		expect(scope.buttonState).toBe('record');
+	});
 });

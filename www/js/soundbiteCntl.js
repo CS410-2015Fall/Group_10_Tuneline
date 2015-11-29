@@ -2,7 +2,7 @@ angular.module('soundbiteCntl', [])
 
 .controller('SoundbiteCntl', function($scope, $rootScope, $stateParams, $interval,
                                          $cordovaDevice, $cordovaFile, $cordovaMedia, 
-                                         $cordovaGeolocation, $cordovaInAppBrowser,   
+                                         $cordovaGeolocation, $cordovaInAppBrowser, $location,  
                                         SaveService,DatabaseService) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -22,7 +22,7 @@ angular.module('soundbiteCntl', [])
   $scope.mediaObject; //The media obj. (file) that we can record/play/pause etc.
   $scope.mediaStatus = 0; //the status of the media plugin
 
-  $scope.timer = 0; //the timer that is shwon on the screen
+  $scope.timer = 0; //the timer that is shown on the screen
 
   $scope.mediaLength = 0; //the length of the currently loaded file ($scope.mediaObject)
   $scope.mediaPosition = {pos: "0"}; //the position within the file ($scope.mediaObject)
@@ -220,9 +220,13 @@ angular.module('soundbiteCntl', [])
     soundbite.fileName = fileName;
     soundbite.mediaLength = mediaLength;
 
-    DatabaseService.saveSound(soundbite);
-    console.log('************SOUNDBITE: '+soundbite);
+    if(!soundbite.name){
+      soundbite.name = new Date().toLocaleString();
+    }
 
+    DatabaseService.saveSound(soundbite);
+    console.log('************SOUNDBITE: '+ JSON.stringify(soundbite));
+    $location.path('/tab/tuneline');
   };
 
   $scope.targetUrl;
@@ -244,5 +248,18 @@ angular.module('soundbiteCntl', [])
   };
 
   $scope.getGpsLocation();
+
+  if($scope.soundbiteId){
+    DatabaseService.getSoundsById($scope.soundbiteId, function(results){
+      if(results && results.length > 0){
+        console.log('*****************SINGLE SOUNDBITE:'+JSON.stringify(results));
+          console.log('*****************SINGLE SOUNDBITE:'+JSON.stringify(results[0].url));
+        $scope.soundbiteObj = results[0];
+        if($scope.soundbiteObj.fileName !== 'undefined'){
+          $scope.initPlayer($scope.soundbiteObj.fileName);
+        }
+      }      
+    });
+  }
 
 });

@@ -2,31 +2,36 @@
   <ion-content>
     <div class="row">
       <div class="col" style="text-align: center;">
-        <h1>Soundbite url:  {{soundbiteId}}</h1>
-        <h1>{{Math.floor(timer/(36000))}}:
-        {{Math.floor((timer%(36000))/(600))}}:
-        {{(((timer%36000)%600)/10).toFixed(1)}}</h1>
+        <h1>{{soundbiteObj.name}}</h1>        
+      </div>
+    </div>
+
+
+    <div class="row" ng-if="soundbiteObj.url !== 'http://'">
+      <div class="col" style="text-align: center;">
+        <youtube-video video-url="soundbiteObj.url" player-width="'100%'"></youtube-video>
+      </div>
+    </div>
+
+
+
+    <div class="row" ng-show="soundbiteObj.fileName != 'undefined'">
+      <div class="col" style="text-align: center;">
+        <div class="item range">
+            <input id="mediaPositionSlider" type="range" name="mediaPosition" min="0" max="{{mediaLength*1000}}" ng-model="mediaPosition.pos">
+            {{mediaLength.toFixed(2)}}
+          </div>
+        <div class="button-bar">
+          <a class="button" ng-click="playMedia(fileName)"><i class="ion-play"></i></a>
+          <a class="button" ng-click="pauseMedia()"><i class="ion-pause"></i></a>
+          <a class="button" ng-click="stopMedia()"><i class="ion-stop"></i></a>
+        </div>        
       </div>
     </div>
     <div class="row">
-        <div class="col" style="text-align: center;">
-          <button class="button" 
-                  ng-class="buttonState=='record'? 'button-assertive':'button-energized'" 
-                  ng-click="getButtonFunction(buttonState)"
-                  style="border-radius: 100%; height: 14em; width: 14em; ">
-            <i ng-class="buttonState=='record'?'ion-ios-mic':'ion-stop'" style="font-size: 10em;"></i>
-          </button>
-        </div>
-    </div>
-    <div class="row">
-    <div class="col" style="text-align: center;" ng-if="mediaLength > 0">
-      <div class="item range">
-        <slider floor="0" ceiling="400" step="1" precision="1" ng-model="mediaPosition"></slider> {{mediaLength.toFixed(2)}}
-      </div>
-      <div class="button-bar">
-        <a class="button" ng-click="playMedia(fileName)"><i class="ion-play"></i></a>
-        <a class="button" ng-click="pauseMedia()"><i class="ion-pause"></i></a>
-        <a class="button" ng-click="stopMedia()"><i class="ion-stop"></i></a>
+      <div class="col" style="text-align: center;">
+        <img src="{{soundbiteObj.photo}}" ng-if="soundbiteObj.photo"/>
+        {{soundbiteObj.tags}}
       </div>
     </div>
   </ion-content>

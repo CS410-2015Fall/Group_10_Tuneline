@@ -15,7 +15,6 @@ angular.module('metaDataFormProvider', [])
             '</div>' +
             '<select ng-model="targetUrl" ng-change="openBrowser(targetUrl)">' +
               '<option value="http://www.youtube.com">Youtube</option>' +
-              '<option value="http://www.soundcloud.com">SoundCloud</option>' +
             '</select>' +
           '</label>' +
           '<label class="item item-input">' +
@@ -67,13 +66,12 @@ angular.module('metaDataFormProvider', [])
             scope.takePicture = function(){
               var options = {
                   quality: 50,
-                  destinationType: Camera.DestinationType.FILE_URI,
+                  destinationType: Camera.DestinationType.NATIVE_URI,
                   sourceType: Camera.PictureSourceType.CAMERA,
                   allowEdit: true,
                   encodingType: Camera.EncodingType.JPEG,
                   targetWidth: 500,
                   targetHeight: 500,
-                  popoverOptions: CameraPopoverOptions,
                   saveToPhotoAlbum: false,
                   correctOrientation:true
                 };

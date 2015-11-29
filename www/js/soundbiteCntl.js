@@ -1,8 +1,8 @@
 angular.module('soundbiteCntl', [])
 
-.controller('SoundbiteCtrl', function($scope, $rootScope, $stateParams, $interval,
-                                         $cordovaDevice, $cordovaFile, $cordovaMedia,
-                                         $cordovaGeolocation, $cordovaInAppBrowser,
+.controller('SoundbiteCntl', function($scope, $rootScope, $stateParams, $interval,
+                                         $cordovaDevice, $cordovaFile, $cordovaMedia, 
+                                         $cordovaGeolocation, $cordovaInAppBrowser, 
                                         SaveService,DatabaseService) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.

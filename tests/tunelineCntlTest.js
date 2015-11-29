@@ -5,7 +5,7 @@ describe('TunelineCntl', function() {
 	var controller;
 
 	//These will be used to hold the mock services that we will inject into the cntl
-	var scope, DatabaseService;
+	var scope, DatabaseService, TunelineService;
 
     //Before each test, load our module
     beforeEach(module('tunelineCntl'));
@@ -17,11 +17,13 @@ describe('TunelineCntl', function() {
 		DatabaseService = {getSounds:function(){
 			//need to return mock data
 		}};
+		TunelineService = {};
 
         //Create our controller and inject the services
 		controller = $controller('TunelineCntl', {
 										$scope: scope,
 										DatabaseService: DatabaseService,
+										TunelineService: TunelineService
 										});
 	}));
 

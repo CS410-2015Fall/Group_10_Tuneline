@@ -9,7 +9,7 @@ angular.module('databaseConfig', [])
                 {name: 'type', type: 'text'},
                 {name: 'name', type: 'text'},
                 {name: 'datetime', type: 'integer not null'},
-                {name: 'filename', type: 'text'},
+                {name: 'fileName', type: 'text'},
                 {name: 'url', type: 'text'},
                 {name: 'tags', type: 'text'},
                 {name: 'photo', type: 'text'},
@@ -37,10 +37,8 @@ angular.module('databaseConfig', [])
         {
             name: 'UserInfo',
             columns: [
-                {name: 'fbId', type: 'integer'},
-                {name: 'username', type: 'text'},
-                {name: 'firstName', type: 'text'},
-                {name: 'lastName', type: 'text'}
+                {name: 'id', type: 'integer'},
+                {name: 'name', type: 'text'},
             ]
         }
     ]

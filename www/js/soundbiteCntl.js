@@ -243,8 +243,6 @@ angular.module('soundbiteCntl', [])
     console.log('*****************Site url:'+siteUrl);
   };
 
-
   $scope.getGpsLocation();
-
 
 });

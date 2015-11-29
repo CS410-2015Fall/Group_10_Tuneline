@@ -114,7 +114,7 @@ angular.module('databaseService', ['databaseConfig'])
             var day = datetime.getDay();
             var timestamp = Math.round(jsonObj.datetime.getTime());
             var time = datetime.getHours()+datetime.getMinutes();
-            query("INSERT INTO Soundbites (type,name,datetime,filename,url,tags,photo,author,position,dayofweek,timeofday,mediaLength) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", [jsonObj.type, jsonObj.name, timestamp, jsonObj.filename, jsonObj.url, jsonObj.tags, jsonObj.photo, jsonObj.author, JSON.stringify(jsonObj.position), day, time, jsonObj.mediaLength], successCB, errorCB)
+            query("INSERT INTO Soundbites (type,name,datetime,fileName,url,tags,photo,author,position,dayofweek,timeofday,mediaLength) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", [jsonObj.type, jsonObj.name, timestamp, jsonObj.fileName, jsonObj.url, jsonObj.tags, jsonObj.photo, jsonObj.author, JSON.stringify(jsonObj.position), day, time, jsonObj.mediaLength], successCB, errorCB)
         },
 
         saveUser: function(id, name) {

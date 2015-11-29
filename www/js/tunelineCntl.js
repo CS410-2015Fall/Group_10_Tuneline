@@ -1,11 +1,27 @@
 angular.module('tunelineCntl', [])
 
-.controller('TunelineCntl', ['$scope', 'TunelineService', TunelineCntl]);
+.controller('TunelineCntl', ['$scope', 'DatabaseService', TunelineCntl]);
 
-function TunelineCntl($scope, TunelineService) {
-	$scope.soundbites = TunelineService.getSoundbites();
+function TunelineCntl($scope, DatabaseService) {
+	console.log("******************** in  TunelineCntl");
 
-	// Recommended by Ben...
-	// $scope.soundbites = null;
-	// TunelineService.getSoundbites().then(function(result){$scope.soundbites = result});
+    $scope.soundbites = [];
+
+	var soundbitesCallback = function(result){
+		console.log("result = " + JSON.stringify(result));
+		$scope.soundbites = result;
+	};
+
+    getSoundbites = function () {
+        DatabaseService.getSounds(soundbitesCallback)
+            .then(function (sbites) {                        
+                $scope.soundbites = sbites;
+                console.log('sbites returned to TunelineCntl.', sbites);
+            },
+            function () {
+                console.log('sbites retrieval failed.');
+            });
+    };
+    
+    getSoundbites();
 };

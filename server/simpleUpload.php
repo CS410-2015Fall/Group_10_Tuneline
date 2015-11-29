@@ -22,7 +22,7 @@ if ( !empty( $_FILES ) ) {
 if ($ext != "mp3") {
 	$input = "/var/www/html/sb/".$filename;
 	$output = "/var/www/html/sb/".$filenameNoExt.".mp3";
-	$command = "ffmpeg -i " . $input . " -ab 192k " . $output;
+	$command = "ffmpeg -i " . $input . " -ab 64k " . $output;
 	exec($command);
 }
 

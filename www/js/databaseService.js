@@ -92,14 +92,18 @@ angular.module('databaseService', ['databaseConfig'])
 
         getSoundsById: function(id, cb) {
             if (isInt(id)) {
-                query("SELECT * FROM Soundbites WHERE id=?", [id], cb, errorCB);
+                query("SELECT * FROM Soundbites WHERE id='?'", [id], cb, errorCB);
             } else if (id.constructor === Array) {
                 query("SELECT * FROM Soundbites WHERE id IN ('?')", [id.join()], cb, errorCB);
             }
         },
 
+        getUser: function(cb) {
+            query("SELECT * FROM UserInfo", [], cb, errorCB);
+        },
+
         removeSound: function(id, cb) {
-            query("DELETE FROM 'Soundbites' WHERE id=?", [id]);
+            query("DELETE FROM Soundbites WHERE id=?", [id]);
         },
 
         saveSound: function(jsonObj) { //public
@@ -108,35 +112,43 @@ angular.module('databaseService', ['databaseConfig'])
             // changes datetime to unix timestamp, get day of the week
             var datetime = jsonObj.datetime;
             var day = datetime.getDay();
-            var timestamp = Math.round(jsonObj.datetime.getTime()/1000);
+            var timestamp = Math.round(jsonObj.datetime.getTime());
             var time = datetime.getHours()+datetime.getMinutes();
-            query("INSERT INTO 'Soundbites' (type,name,datetime,fileName,url,tags,photo,author,position,dayofweek,timeofday,mediaLength) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", [jsonObj.type, jsonObj.name, timestamp, jsonObj.fileName, jsonObj.url, jsonObj.tags, jsonObj.photo, jsonObj.author, JSON.stringify(jsonObj.position), day, time, jsonObj.mediaLength], successCB, errorCB)
+            query("INSERT INTO Soundbites (type,name,datetime,filename,url,tags,photo,author,position,dayofweek,timeofday,mediaLength) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", [jsonObj.type, jsonObj.name, timestamp, jsonObj.filename, jsonObj.url, jsonObj.tags, jsonObj.photo, jsonObj.author, JSON.stringify(jsonObj.position), day, time, jsonObj.mediaLength], successCB, errorCB)
+        },
+
+        saveUser: function(id, name) {
+            query("INSERT INTO UserInfo (id,name) VALUES (?,?)", [id, name], successCB, errorCB)
         },
 
         updateSound: function(jsonObj) { //public
-            query("UPDATE 'Soundbites' SET (name=?,datetime=?,tags=?,photo=?,position=?) WHERE id=?", [jsonObj.name, jsonObj.datetime, jsonObj.tags, jsonObj.photo, JSON.stringify(jsonObj.position), jsonObj.id], successCB);
+            var datetime = jsonObj.datetime;
+            var day = datetime.getDay();
+            var timestamp = Math.round(jsonObj.datetime.getTime());
+            var time = datetime.getHours()+datetime.getMinutes();
+            query("UPDATE Soundbites SET (name=?,datetime=?,tags=?,photo=?,position=?,dayofweek=?,timeofday=?) WHERE id=?", [jsonObj.name, timestamp, jsonObj.tags, jsonObj.photo, JSON.stringify(jsonObj.position), jsonObj.id, day, time], successCB);
         },
 
         savePlaylist: function(jsonObj) { //public
             var name = jsonObj.name;
-            query("INSERT INTO 'Playlists' (name) VALUES (?)", [name], successCB)
+            query("INSERT INTO Playlists (name) VALUES (?)", [name], successCB)
         },
 
         updatePlaylist: function(pid, name) { //public
-            query("UPDATE 'Playlist' SET name=? WHERE pid=?", [name, pid]);
+            query("UPDATE Playlist SET name=? WHERE pid=?", [name, pid]);
         },
 
         removePlaylist: function(pid) { //public
-            query("DELETE FROM 'Playlists' WHERE id=?", [pid]);
-            query("DELETE FROM 'SoundbitesPlaylistMap' WHERE pid=?", [pid]);
+            query("DELETE FROM Playlists WHERE id=?", [pid]);
+            query("DELETE FROM SoundbitesPlaylistMap WHERE pid=?", [pid]);
         },
 
         saveSoundToPlaylist: function(sid, pid) { //pubic
-            query("INSERT INTO 'SoundbitesPlaylistMap' (sid, pid) VALUES (?,?)", [sid, pid]);
+            query("INSERT INTO SoundbitesPlaylistMap (sid, pid) VALUES (?,?)", [sid, pid]);
         },
 
         removeSoundFromPlaylist: function(sid, pid) { //public
-            query("DELETE FROM 'SoundbitesPlaylistMap' WHERE sid=? AND pid=?", [sid, pid]);
+            query("DELETE FROM SoundbitesPlaylistMap WHERE sid=? AND pid=?", [sid, pid]);
         },
 
         // gets

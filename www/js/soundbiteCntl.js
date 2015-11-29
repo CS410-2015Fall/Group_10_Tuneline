@@ -35,7 +35,6 @@ angular.module('soundbiteCntl', [])
             altitude: 0,
             name: 'default location name'
   };
-  $scope.soundbites = [];
   var mediaPositionPromise; //for holding the promise for the position updater
   var timerInterval; //used for holding the promise for the timer updater
 
@@ -223,6 +222,7 @@ angular.module('soundbiteCntl', [])
 
     DatabaseService.saveSound(soundbite);
     console.log('************SOUNDBITE: '+soundbite);
+
   };
 
   $scope.targetUrl;

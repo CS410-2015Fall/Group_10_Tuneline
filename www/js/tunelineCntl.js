@@ -8,20 +8,13 @@ function TunelineCntl($scope, DatabaseService) {
     $scope.soundbites = [];
 
 	var soundbitesCallback = function(result){
-		console.log("result = " + JSON.stringify(result));
+		console.log("*****************result = " + JSON.stringify(result));
 		$scope.soundbites = result;
 	};
 
-    getSoundbites = function () {
-        DatabaseService.getSounds(soundbitesCallback)
-            .then(function (sbites) {                        
-                $scope.soundbites = sbites;
-                console.log('sbites returned to TunelineCntl.', sbites);
-            },
-            function () {
-                console.log('sbites retrieval failed.');
-            });
+    $scope.getSoundbites = function () {
+        DatabaseService.getSounds(soundbitesCallback);
     };
     
-    getSoundbites();
+    $scope.getSoundbites();
 };

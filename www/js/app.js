@@ -8,7 +8,7 @@
 angular.module('starter', ['ionic','ionic.service.core', 'ngCordova',
                 'tunelineCntl','soundbiteCntl','profileCntl',
                 'tunelineService','profileService','saveService',
-                'databaseService',
+                'databaseService','youtube-embed',
                 'metaDataFormProvider'])
 
 .run(function($ionicPlatform) {

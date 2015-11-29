@@ -20,7 +20,7 @@
           </button>
         </div>
     </div>
-    <div class="row" ng-show="mediaLength >= 0 || soundbitObj != null">
+    <div class="row" ng-show="mediaLength > 0 || soundbitObj != null">
       <div class="col" style="text-align: center;">
         <div class="item range">
           <input id="mediaPositionSlider" type="range" name="mediaPosition" min="0" max="{{mediaLength*1000}}" ng-model="mediaPosition.pos">
@@ -33,16 +33,13 @@
         </div>
       </div>
     </div>
-    <div class="row" ng-show="mediaLength >= 0 || soundbitObj != null">
+    <div class="row">
       <div class="col" style="text-align: center;">
         <meta-data-form ng-model="soundbiteObj"/>
       </div>
     </div>
     <div class="row" ng-show="mediaLength >= 0 || soundbitObj != null">
       <div class="col" style="text-align: center;">
-      {{soundbiteObj}}
-
-      {{soundbiteObj.url}}
         <button ng-show="mediaLength >= 0 || soundbitObj != null" class="button button-full button-balanced" ng-click="save(soundbiteObj,gpsLocation,fileName,mediaLength)">
           Save
         </button>

@@ -7,7 +7,7 @@ describe('SoundbiteCntl', function() {
 	//These will be used to hold the mock services that we will inject into the cntl
 	var scope, stateParams, interval,
         cordovaDevice, cordovaFile, cordovaMedia, 
-        cordovaGeolocation, cordovaInAppBrowser, 
+        cordovaGeolocation, cordovaInAppBrowser,
         SaveService,DatabaseService;
 
     //Before each test, load our module
@@ -24,7 +24,7 @@ describe('SoundbiteCntl', function() {
         cordovaGeolocation = {};
         cordovaInAppBrowser = {};
         SaveService = {};
-        DatabaseService = {};
+        DatabaseService = {getSoundsById:function(){}};
 
         //Create our controller and inject the services
 		controller = $controller('SoundbiteCntl', {

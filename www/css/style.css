@@ -1,9 +1,9 @@
 /* Empty. Add your own CSS if you like */
 
-.verticalLine {
+/*.verticalLine {
     border-left: thick solid #0051ff;
     margin-left: 40px;
-}
+}*/
 
 
 #tlcircle {
@@ -21,3 +21,12 @@
   margin-bottom: 15px;
 }
 
+
+col-90px {
+-webkit-box-flex: 0;
+-webkit-flex: 0 0 70px;
+-moz-box-flex: 0;
+-moz-flex: 0 0 70px;
+-ms-flex: 0 0 70px;
+flex: 0 0 70px;
+max-width: 70px; }

@@ -26,17 +26,20 @@
       <p>{{ date_expression | date : format : timezone}}</p>
     </a>
 
-<div class="row" ng-repeat="soundbite in soundbites" href='#/tab/tuneline/{{soundbite.id}}'>
-  <div class="col">
-  <div class="card">
-  <div class="item item-positive" ><p>{{soundbite.datetime | date:'MMM d'}}<p></div>
+
+
+
+<div class="row" ng-repeat="soundbite in soundbites" >
+  <div class="col" style="border-right: solid #4a87ee;">
+  <div class="card" style="outline: #4a87ee;" href='#/tab/tuneline/{{soundbite.id}}'>
+  <div class="item item-positive item-text-wrap" style="margin: -10px" >{{soundbite.datetime | date:'EEE d'}}</div>
 </div>
 
   </div>
-  <div class="col col-90">
-  <div class="card">
-  <div class="item">
-    This is a basic Card which contains an item that has wrapping text.
+  <div class="col col-80" style="border-left: thick solid #4a87ee;">
+  <a href='#/tab/tuneline/{{soundbite.id}}' style="text-decoration: none;"><div class="card">
+  <div class="item item-text-wrap" >
+       <h2>{{soundbite.name}}</h2>
   </div>
 </div>
   </div>

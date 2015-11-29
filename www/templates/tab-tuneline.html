@@ -1,12 +1,86 @@
 <ion-view view-title="Tuneline">
   <ion-content class="padding">
-    <!-- {{testMessage}} -->
+    number of soundbites: {{soundbites.length}}
+ <ion-refresher pulling-text="Pull to refresh" on-refresh="doRefresh()">
+    </ion-refresher>
+      <ion-list>
+      <ion-item ng-repeat="todo in todos">{{todo.name}}</ion-item>
+    </ion-list> 
+
     <div class="list">
       <a class="item item-icon-right" ng-repeat="soundbite in soundbites" href='#/tab/tuneline/{{soundbite.id}}'>
         {{soundbite.name}}
         <i class="icon ion-chevron-right icon-accessory"></i>
       </a>
     </div>
+
+
+
+<div class="list verticalLine">
+
+    <a class="item item-avatar" ng-repeat="soundbite in soundbites" href='#/tab/tuneline/{{soundbite.id}}'>
+    <!-- <p id="tlcircle"></p> -->
+      <img src="http://ionicframework.com/img/docs/spengler.jpg">
+      <h2>{{soundbite.name}}</h2>
+      <p>{{soundbite.datetime | date:'EEE, MMM d yyyy'}}</p>
+      <p>{{ date_expression | date : format : timezone}}</p>
+    </a>
+
+<div class="row" ng-repeat="soundbite in soundbites" href='#/tab/tuneline/{{soundbite.id}}'>
+  <div class="col">
+  <div class="card">
+  <div class="item item-positive" ><p>{{soundbite.datetime | date:'MMM d'}}<p></div>
+</div>
+
+  </div>
+  <div class="col col-90">
+  <div class="card">
+  <div class="item">
+    This is a basic Card which contains an item that has wrapping text.
+  </div>
+</div>
+  </div>
+</div>
+
+  </div>
+
+<div class="row">
+  <div class="col">
+  <div class="card">
+  <div class="item item-text-wrap">asdfds fsdf </div>
+</div>
+
+  </div>
+  <div class="col col-80">
+  <div class="card">
+  <div class="item item-text-wrap">
+    This is a basic Card which contains an item that has wrapping text.
+  </div>
+</div>
+  </div>
+</div>
+
+<div class="row responsive-sm">
+  <div class="col">
+  <div class="card">
+  <div class="item item-text-wrap">
+    This is a basic Card which contains an item that has wrapping text.
+  </div>
+</div>
+    <a class="item item-avatar" href="#">
+      <img src="http://ionicframework.com/img/docs/spengler.jpg">
+      <h2>Venksdfdsman</h2>
+      <p>Back off, man. I'm a scientist.</p>
+    </a>
+
+
+<ion-list>
+  <ion-item ng-repeat="item in items track by $index" class="item-avatar">
+    <img src="http://ionicframework.com/img/docs/spengler.jpg"
+    <p>{{item}}</p>
+  </ion-item>
+  <ion-infinite-scroll on-infinite="addMoreSoundbites()"></ion-infinite-scroll>
+</ion-list>
   
   </ion-content>
 </ion-view>

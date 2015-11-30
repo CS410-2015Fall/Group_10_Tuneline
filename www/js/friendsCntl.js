@@ -6,18 +6,20 @@ angular.module('friendsCntl', [])
     var sb1 = {
         id: 1,
         datetime: "Mon 30",
-        name: "James's SB 3"
+        name: "James's SB 3",
+        url: "asdf"
     };
     var sb2 = {
         id: 2,
         datetime: "Sat 28",
         name: "James's SB 2",
-
+        url: "asdf"
     };
     var sb3 = {
         id: 3,
         datetime: "Fri 27",
-        name: "James's SB 1"
+        name: "James's SB 1",
+        url: ""
     };
 
     $scope.soundbites.push(sb1);
@@ -40,7 +42,6 @@ angular.module('friendsCntl', [])
     }
 
     $scope.togglePlaying = function(id) {
-        alert(id);
         $scope.nowPlaying = id;
         var element = document.querySelector('#audioPlayer');
         element.play();

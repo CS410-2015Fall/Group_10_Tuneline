@@ -149,12 +149,9 @@ angular.module('databaseService', ['databaseConfig'])
             }
         },
 
-        saveURL: function(id, url) {
-            query("UPDATE Soundbites SET url='?' WHERE id='?'", [url, id], successCB, errorCB);
-        },
-
         saveUser: function(id, name) {
-            query("INSERT INTO UserInfo (id,name) VALUES (?,?)", [id, name], successCB, errorCB)
+            query("INSERT INTO UserInfo (id,name) VALUES (?,?)", [id, name], successCB, errorCB);
+            query("UPDATE Soundbites SET author='?', authorId='?'", [name, id], successCB, errorCB);
         },
 
         updateSound: function(jsonObj) { //public

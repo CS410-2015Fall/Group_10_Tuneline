@@ -4,13 +4,13 @@ app.factory("UploadService", function($cordovaFileTransfer, DatabaseService) {
     var uri = "http://159.203.246.24/simpleUpload.php";
     var fac = {};
 
-    fac.uploadFile = function(path) {
+    fac.uploadFile = function(path, id) {
         var options = {
             // fileKey: "avatar",
-            fileName: path.split("/").pop(),
+            fileName: id+path.split("/").pop(),
             chunkedMode: false,
             mimeType: "audio/mpeg",
-            headers: {"Access-Control-Allow-Origin": "*"}
+            headers: {"Access-Control-Allow-Origin": "*"},
         };
         $cordovaFileTransfer.upload(uri, path, options)
         .then(function(result) {

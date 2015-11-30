@@ -29,6 +29,7 @@ angular.module('databaseService', ['databaseConfig'])
           transaction.executeSql(query, bindings, function(transaction, result) {
               deferred.resolve(result, callback);
               var rows = fetchAll(result);
+              console.log(rows);
               callback(rows);
           }, function(transaction, error) {
               deferred.reject(error);
@@ -82,7 +83,9 @@ angular.module('databaseService', ['databaseConfig'])
         },
 
         getPlaylistSounds: function(pid, cb) {
-            query("SELECT * FROM SoundbitesPlaylistMap as spm RIGHT JOIN Soundbites as sb ON spm.sid=sb.id WHERE pid=? ORDER BY sb.id DESC", [pid], cb, errorCB)
+            //query("SELECT * FROM SoundbitesPlaylistMap", [], cb, errorCB);
+
+            query("SELECT * FROM SoundbitesPlaylistMap as spm JOIN Soundbites as sb ON spm.sid=sb.id WHERE pid=? ORDER BY sb.id DESC", [pid], cb, errorCB);
         },
 
         getSounds: function(cb) {
@@ -94,10 +97,10 @@ angular.module('databaseService', ['databaseConfig'])
         },
 
         getSoundsById: function(id, cb) {
-            if (isInt(id)) {
-                query("SELECT * FROM Soundbites WHERE id='?'", [id], cb, errorCB);
+            if (isInt(id)) {                 
+                query("SELECT * FROM Soundbites WHERE id=?", [id], cb);
             } else if (id.constructor === Array) {
-                query("SELECT * FROM Soundbites WHERE id IN ('?')", [id.join()], cb, errorCB);
+                query("SELECT * FROM Soundbites WHERE id IN (?)", [id.join()], cb);
             }
         },
 
@@ -153,13 +156,13 @@ angular.module('databaseService', ['databaseConfig'])
             query("UPDATE Playlist SET name=? WHERE pid=?", [name, pid]);
         },
 
-        removePlaylist: function(pid) { //public
-            query("DELETE FROM Playlists WHERE id=?", [pid]);
-            query("DELETE FROM SoundbitesPlaylistMap WHERE pid=?", [pid]);
+        removePlaylist: function(pid, cb) { //public
+            query("DELETE FROM Playlists WHERE id=?", [pid], cb);
+            query("DELETE FROM SoundbitesPlaylistMap WHERE pid=?", [pid], cb);
         },
 
-        saveSoundToPlaylist: function(sid, pid) { //pubic
-            query("INSERT INTO SoundbitesPlaylistMap (sid, pid) VALUES (?,?)", [sid, pid]);
+        saveSoundToPlaylist: function(sid, pid, cb) { //pubic
+            query("INSERT INTO SoundbitesPlaylistMap (sid, pid) VALUES (?,?)", [sid, pid], cb);
         },
 
         removeSoundFromPlaylist: function(sid, pid) { //public

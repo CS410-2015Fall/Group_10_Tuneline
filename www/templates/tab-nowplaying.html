@@ -2,7 +2,7 @@
   <ion-content>
   <div class="button-bar">
     <a class="button icon-left ion-social-facebook button-positive" ng-click="shareFacebook()">Share</a>
-    <a class="button icon-left ion-plus-round button-dark" ng-click="openAddToPlaylist($event)">Add to Playlist</a>
+    <a class="button icon-left ion-plus button-dark" ng-click="openAddToPlaylist($event)">Add to Playlist</a>
   </div>
     <div class="row">
       <div class="col" style="text-align: center;">
@@ -50,7 +50,7 @@
     <ion-content>
       <div class="list">
         <a class="item item-icon-left" href="#" ng-click="openCreatePlaylist($event)">
-          <i class="icon ion-plus-round"></i>
+          <i class="icon ion-plus"></i>
           Create Playlist
         </a>
         <label class="item item-radio" ng-repeat="pl in playlists | orderBy:name">

@@ -1,10 +1,36 @@
 <ion-view view-title="James Crofton's Tuneline">
   <ion-content>
-    <ion-list>
-	    <a class="item" href="">
-	    	<i></i>
-	    	Insert tuneline items here
-	    </a>
-    </ion-list>
+
+<div class="row" ng-repeat="soundbite in soundbites" >
+
+  <div class="col" style="border-right: solid #4a87ee;">
+  <div class="card">
+    <div class="item item-positive item-text-wrap" 
+          style="margin:-10px; font-size:85%;">
+          {{soundbite.datetime | date:'EEE d'}}
+    </div>
+  </div>
+  </div>
+
+  <audio id="audioPlayer">
+  	<source src="http://159.203.246.24/sb/test-short.mp3" type="audio/mp3" ui-event="{ ended : 'pauseStatus()'}">
+  </audio>
+
+  <div class="col col-80">
+    <a style="text-decoration: none;">
+    <div class="card">
+      <div class="item item-text-wrap item-icon-right">
+        <h2>{{soundbite.name}}</h2>
+        <div ng-if="soundbite.url != ''">
+	        <i class="icon ion-play" ng-click="togglePlaying(soundbite.id)" ng-if="currentPlayingStatus == 'paused' || nowPlaying != soundbite.id"></i>
+	        <i class="icon ion-pause" ng-click="togglePause()" ng-if="currentPlayingStatus == 'playing' && nowPlaying == soundbite.id"></i>
+	    </div>
+	    	
+      </div>
+    </div>
+    </a>
+  </div>
+</div>
+
   </ion-content>
 </ion-view>

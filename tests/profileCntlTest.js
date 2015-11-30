@@ -27,7 +27,7 @@ describe('ProfileCntl', function() {
 										$scope: scope,
 										$cordovaFacebook: cordovaFacebook,
 										$http: http,
-										DatabaseService});
+										DatabaseService: DatabaseService});
 	}));
 
 	//These are our actual unit tests

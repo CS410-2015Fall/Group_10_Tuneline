@@ -136,5 +136,16 @@ window.navigator.camera = camera;
 window.Camera = Camera;
 
 var Ionic = {
-
+    User : {
+        current : function(){
+            return {
+                id : 'sampleId'
+            };
+        }
+    },
+    Push: function(){
+        return {
+            register : function(){}
+        };
+    }
 };

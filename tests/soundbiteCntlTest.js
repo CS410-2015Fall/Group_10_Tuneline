@@ -8,13 +8,13 @@ describe('SoundbiteCntl', function() {
 	var scope, stateParams, interval,
         cordovaDevice, cordovaFile, cordovaMedia, 
         cordovaGeolocation, cordovaInAppBrowser,
-        SaveService,DatabaseService;
+        SaveService,DatabaseService, ionicPopover;
 
     //Before each test, load our module
     beforeEach(module('soundbiteCntl'));
 
     ///Create/Inject our mocks into the controller
-	beforeEach(inject(function($rootScope, $controller) {
+	beforeEach(inject(function($rootScope, $controller, $q) {
 		//Create the mock services
 		scope = $rootScope.$new();
 		stateParams = {soundbiteId: 'TEST_ID'};
@@ -24,6 +24,10 @@ describe('SoundbiteCntl', function() {
         cordovaGeolocation = {};
         cordovaInAppBrowser = {};
         SaveService = {};
+        ionicPopover = {fromTemplateUrl : function(){
+        	var deferred = $q.defer();
+        	return deferred.promise;
+        }};
         DatabaseService = {getSoundsById:function(){}};
 
         //Create our controller and inject the services
@@ -35,6 +39,7 @@ describe('SoundbiteCntl', function() {
 										$cordovaMedia: cordovaMedia,
 										$cordovaGeolocation: cordovaGeolocation,
 										$cordovaInAppBrowser: cordovaInAppBrowser,
+										$ionicPopover: ionicPopover,
 										SaveService: SaveService,
 										DatabaseService: DatabaseService});
 	}));

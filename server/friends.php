@@ -16,10 +16,10 @@ function addFriend($conn, $src, $target, $srcName, $name) {
 	$targetEsc = mysqli_real_escape_string($conn,$target);
 	$nameEsc = mysqli_real_escape_string($conn,$name);
 	
-	$q = "INSERT INTO friends (srcId,targetId,targetName,srcName)  SELECT * FROM (SELECT '".$srcEsc."','".$targetEsc."','".$nameEsc."','" . $srcNameEsc . "') AS tmp WHERE NOT EXISTS (SELECT * FROM friends WHERE srcId='" . $srcEsc . "' AND targetId='" . $targetEsc . "') LIMIT 1";
+	$q = "INSERT INTO friends (srcId,targetId,targetName,srcName) SELECT * FROM (SELECT '".$srcEsc."','".$targetEsc."','".$nameEsc."','" . $srcNameEsc . "') AS tmp WHERE NOT EXISTS (SELECT * FROM friends WHERE srcId='" . $srcEsc . "' AND targetId='" . $targetEsc . "') LIMIT 1";
 	mysqli_query($conn, $q);
 
-	$q2 = "INSERT INTO friends (srcId,targetId,targetName,srcName)  SELECT * FROM (SELECT '".$targetEsc."','".$srcEsc."','".$srcNameEsc."','" . $nameEsc . "') AS tmp WHERE NOT EXISTS (SELECT * FROM friends WHERE srcId='" . $targetEsc . "' AND targetId='" . $srcEsc . "') LIMIT 1";
+	$q2 = "INSERT INTO friends (srcId,targetId,targetName,srcName) SELECT * FROM (SELECT '".$targetEsc."','".$srcEsc."','".$srcNameEsc."','" . $nameEsc . "') AS tmp WHERE NOT EXISTS (SELECT * FROM friends WHERE srcId='" . $targetEsc . "' AND targetId='" . $srcEsc . "') LIMIT 1";
 	mysqli_query($conn, $q2);
 }
 
@@ -99,4 +99,4 @@ if (isset($request)) {
 	echo "No POST data was sent";
 }
 
-// ?>
+?>

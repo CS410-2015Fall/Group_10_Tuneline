@@ -6,8 +6,8 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic','ionic.service.core', 'ngCordova',
-                'tunelineCntl','soundbiteCntl','profileCntl',
-                'tunelineService','profileService','saveService',
+                'tunelineCntl','soundbiteCntl','profileCntl','friendsCntl',
+                'tunelineService','profileService','saveService','uploadService',
                 'databaseService','youtube-embed',
                 'metaDataFormProvider'])
 
@@ -92,6 +92,27 @@ angular.module('starter', ['ionic','ionic.service.core', 'ngCordova',
       'tab-profile': {
         templateUrl: 'templates/tab-profile.html',
         controller: 'ProfileCntl'
+      }
+    }
+  })
+
+  .state('tab.friends', {
+    url: '/profile/friends',
+    views: {
+      'tab-profile': {
+        templateUrl: 'templates/friends.html',
+        controller: 'FriendsCntl'
+      }
+    }
+  })
+
+  .state('tab.syncTuneline', {
+    // url: '/profile/friends/:friendId',
+    url: '/profile/friends/1',
+    views: {
+      'tab-profile': {
+        templateUrl: 'templates/friends-tuneline.html',
+        controller: 'FriendsCntl'
       }
     }
   });

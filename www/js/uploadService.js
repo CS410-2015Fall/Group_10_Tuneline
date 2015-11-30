@@ -1,10 +1,10 @@
 var app = angular.module('uploadService', []);
 
-app.factory("UploadService", function($cordovaFileTransfer) {
+app.factory("UploadService", function($cordovaFileTransfer, DatabaseService) {
     var uri = "http://159.203.246.24/simpleUpload.php";
     var fac = {};
 
-    fac.upload = function(path) {
+    fac.uploadFile = function(path) {
         var options = {
             // fileKey: "avatar",
             fileName: path.split("/").pop(),
@@ -20,6 +20,21 @@ app.factory("UploadService", function($cordovaFileTransfer) {
         }, function (progress) {
             // constant progress updates
         });
+    }
+
+    fac.uploadMetadata = function(id) {
+        // get metadata from database minus photos
+        var callback = function(rows) {
+            // post metadata to server
+            var url = "http://159.203.246.24/sync.php";
+            var data = {"id": id, "metadata": rows};
+            $http.post(url, data)
+            .then(function (result){
+                console.log("Metadata posted to server");
+                console.log(result.data);
+            });
+        }
+        DatabaseService.getSoundsNoPic(callback);
     }
 
     return fac;

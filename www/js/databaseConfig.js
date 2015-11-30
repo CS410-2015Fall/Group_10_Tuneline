@@ -8,7 +8,7 @@ angular.module('databaseConfig', [])
                 {name: 'id', type: 'integer primary key'},
                 {name: 'type', type: 'text'},
                 {name: 'name', type: 'text'},
-                {name: 'datetime', type: 'integer not null'},
+                {name: 'datetime', type: 'integer'},
                 {name: 'fileName', type: 'text'},
                 {name: 'url', type: 'text'},
                 {name: 'tags', type: 'text'},
@@ -37,8 +37,18 @@ angular.module('databaseConfig', [])
         {
             name: 'UserInfo',
             columns: [
-                {name: 'id', type: 'integer'},
+                {name: 'id', type: 'text'},
                 {name: 'name', type: 'text'},
+                {name: 'doSync', type: 'integer'}
+            ]
+        },
+        {
+            name: 'Friends',
+            columns: [
+                {name: 'id', type: 'text primary key'},
+                {name: 'name', type: 'text'},
+                {name: 'data', type: 'text'},
+                {name: 'doSync', type: 'integer'}
             ]
         }
     ]

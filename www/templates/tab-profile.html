@@ -1,15 +1,22 @@
 <ion-view view-title="Profile">
   <ion-content>
     <ion-list>
+    	<ion-toggle ng-model="sync" ng-click="updateSync(sync)" ng-show="user.id != null">
+	    	Sync My Tuneline to Server
+    	</ion-toggle>
+	    <a class="item item-icon-left" ng-click="forceSync()" ng-show="user.id != null">
+	    	<i class="icon ion-loop"></i>
+	    	Force Re-Sync
+	    </a>
 	    <a class="item item-icon-left" ng-click="login()" ng-show="user.id == null">
 	    	<i class="icon ion-social-facebook-outline"></i>
 	    	Login with Facebook
 	    </a>
-	    <a class="item item-icon-left" href="#" ng-show="user.id != null">
+	    <a class="item item-icon-left" ng-show="user.id != null">
 	    	<i class="icon ion-social-facebook"></i>
 	    	Logged in as: {{fullName}}
 	    </a>
-	    <a class="item item-icon-left item-icon-right" href="#" ng-show="user.id != null">
+	    <a class="item item-icon-left item-icon-right" href="#/tab/profile/friends" ng-show="user.id != null">
 	    	<i class="icon ion-android-contacts"></i>
 	    	Friends
 	    	<i class="icon ion-chevron-right"></i>

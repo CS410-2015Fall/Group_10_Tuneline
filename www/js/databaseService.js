@@ -25,7 +25,6 @@ angular.module('databaseService', ['databaseConfig'])
     var query = function(query, bindings, callback) {
       bindings = typeof bindings !== 'undefined' ? bindings : [];
       var deferred = $q.defer();
-
       db.transaction(function(transaction) {
           transaction.executeSql(query, bindings, function(transaction, result) {
               deferred.resolve(result, callback);
@@ -90,6 +89,10 @@ angular.module('databaseService', ['databaseConfig'])
             query("SELECT * FROM Soundbites ORDER BY datetime DESC", [], cb, errorCB);
         },
 
+        getSoundsNoPic: function(cb) {
+            query("SELECT name,datetime,fileName,url,tags,author,position,dayofweek,timeofday,mediaLength FROM Soundbites ORDER BY datetime DESC", [], cb, errorCB);  
+        },
+
         getSoundsById: function(id, cb) {
             if (isInt(id)) {
                 query("SELECT * FROM Soundbites WHERE id='?'", [id], cb, errorCB);
@@ -104,6 +107,18 @@ angular.module('databaseService', ['databaseConfig'])
 
         removeSound: function(id, cb) {
             query("DELETE FROM Soundbites WHERE id=?", [id]);
+        },
+
+        saveFriends: function(friends) {
+            for (var i=0; i<friends.length; i++) {
+                query("INSERT INTO Friends (id,name) VALUES ('?','?') ON DUPLICATE KEY UPDATE name = VALUES(name)", [friends[i]['id'], friends[i]['name']]);
+            }
+        },
+
+        saveFriendsSyncStatus: function(friends) {
+            for (var i=0; i<friends.length; i++) {
+                query("INSERT INTO Friends (id,name,doSync) VALUES ('?','?','?') ON DUPLICATE KEY UPDATE name = VALUES(name), doSync = VALUES(doSync)", [friends[i]['id'], friends[i]['name'], 1]);
+            }
         },
 
         saveSound: function(jsonObj) { //public
@@ -149,6 +164,11 @@ angular.module('databaseService', ['databaseConfig'])
 
         removeSoundFromPlaylist: function(sid, pid) { //public
             query("DELETE FROM SoundbitesPlaylistMap WHERE sid=? AND pid=?", [sid, pid]);
+        },
+
+        updateSync: function(b, id) {
+            var val = (b==true) ? 1 : 0;
+            query("UPDATE UserInfo SET doSync=? WHERE id=?", [val,id], successCB);
         },
 
         // gets

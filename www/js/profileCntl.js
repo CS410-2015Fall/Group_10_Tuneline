@@ -1,17 +1,19 @@
 angular.module('profileCntl', [])
 
-.controller('ProfileCntl', function($scope, $cordovaFacebook, $http, DatabaseService) {
+.controller('ProfileCntl', function($scope, $cordovaFacebook, $http, DatabaseService, UploadService) {
   	var fbPermissions = ['email','public_profile','user_friends'];
   	var url = "http://159.203.246.24/fbLogin.php";
   	var push = null;
-  	
+
 	$scope.result = null;
 	$scope.fullName = null;
 	$scope.fbId = null;
+	$scope.sync = null;
 
   	var userCB = function(result) {
   		$scope.fullName = result[0]['name'];
   		$scope.fbId = result[0]['id'];
+  		$scope.sync = (result[0]['doSync'] == 1) ? true : false;
   		$scope.$apply();
   	}
   	DatabaseService.getUser(userCB);
@@ -62,7 +64,10 @@ angular.module('profileCntl', [])
 		$cordovaFacebook.api(path, ['user_friends'])
 		.then(function(success) {
 			var friends = success.data;
-			$scope.result = friends;
+			// save friends list to local db
+			//	format: [{"id":"10153748096834287","name":"Ben Nguyen"}, {...}, ...]
+			DatabaseService.saveFriends(friends);
+
 			// post friend data to server
 			var url = "http://159.203.246.24/friends.php";
 			var data = {"friends": friends, "srcId": $scope.fbId, "srcName": $scope.fullName};
@@ -80,17 +85,27 @@ angular.module('profileCntl', [])
 		});
 	};
 
+	$scope.getSyncList = function() {
+		// post friend data to server
+		var url = "http://159.203.246.24/syncList.php";
+		var data = {"id": $scope.fbId};
+		$http.post(url, data)
+		.then(function (result){
+			// should return friend data from server for which theyre syncing with
+        	//	format: [{"id":"10153748096834287","name":"Ben Nguyen"}, {...}, ...]
+        	var syncList = result.data;
+        	// todo: populate friend db
+        });
+	};
+
 	$scope.getMe = function() {
 		var path = $scope.fbId + "?fields=first_name,last_name";
 		$cordovaFacebook.api(path, ['public_profile'])
 		.then(function(success) {
-			console.log("IN SUCCESS FUNCTION IN GETME");
-			// $scope.result = success;
         	$scope.user.set('firstName', success.first_name);
         	$scope.user.set('lastName', success.last_name);
         	$scope.fullName = success.first_name + ' ' + success.last_name;
         	$scope.user.set('fullName', $scope.fullName);
-        	// todo: db store fullname, id
         	DatabaseService.saveUser($scope.fbId, $scope.fullName);
 
         	$scope.user.save();
@@ -109,7 +124,15 @@ angular.module('profileCntl', [])
 		});
 	};
 
-	$scope.test = function(a) {
-		console.log(a);
+	$scope.updateSync = function(bool) {
+		DatabaseService.updateSync(bool,$scope.fbId);
+		if (bool) {
+			// if sync is true, upload our metadata
+			UploadService.uploadMetadata($scope.fbId);
+		}
 	};
+
+	$scope.forceSync = function() {
+		UploadService.uploadMetadata($scope.fbId);
+	}
 });

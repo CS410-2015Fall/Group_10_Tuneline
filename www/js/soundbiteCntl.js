@@ -3,7 +3,8 @@ angular.module('soundbiteCntl', [])
 .controller('SoundbiteCntl', function($scope, $rootScope, $stateParams, $interval,
                                          $cordovaDevice, $cordovaFile, $cordovaMedia, 
                                          $cordovaGeolocation, $cordovaInAppBrowser, $location,
-                                         $ionicPopover, SaveService, DatabaseService, $cordovaFacebook) {
+                                         $ionicPopover, SaveService, DatabaseService, UploadService,
+                                         $cordovaFacebook) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -226,6 +227,7 @@ angular.module('soundbiteCntl', [])
 
     DatabaseService.saveSound(soundbite);
     console.log('************SOUNDBITE: '+ JSON.stringify(soundbite));
+    soundbiteObj = {fileName: null};
     $location.path('/tab/tuneline');
   };
 
@@ -274,8 +276,36 @@ angular.module('soundbiteCntl', [])
     $scope.newPlaylist.name = '';
   };
 
-  $scope.shareFacebook = function(){
+  $scope.shareFacebook = function(fullPath){
+    var options = {
+      method: "feed",
+      link: "http://159.203.246.24/sb/",
+      caption: "Check out my Soundbite! "
+    };   
 
+    var file = fullPath.split("/").pop();
+
+    DatabaseService.getMyId(function(results){
+      if(results.length > 0){
+        if(fullPath && typeof(fullPath) == 'string'){
+          var file = fullPath.split("/").pop();
+          file = file.split('.')[0] + '.mp3';
+          UploadService.uploadFile(fullPath,results[0].id);
+          options.link = options.link + results[0].id + file;
+        } else{
+          options.link = '';
+        }
+
+        $cordovaFacebook.showDialog(options)
+        .then(function(success) {
+          // success
+          console.log('FACEBOOK SHARING SUCCESS: ' + JSON.stringify(success));
+        }, function (error) {
+          // error
+          console.error('FACEBOOK SHARING ERROR: ' + JSON.stringify(error));
+        });
+      }
+    });
   };
 
   $scope.showDeletePlaylist = false;

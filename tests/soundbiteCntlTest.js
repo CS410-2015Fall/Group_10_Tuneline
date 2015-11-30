@@ -8,7 +8,7 @@ describe('SoundbiteCntl', function() {
 	var scope, stateParams, interval,
         cordovaDevice, cordovaFile, cordovaMedia, 
         cordovaGeolocation, cordovaInAppBrowser,
-        SaveService,DatabaseService, ionicPopover;
+        SaveService,DatabaseService, UploadService, ionicPopover;
 
     //Before each test, load our module
     beforeEach(module('soundbiteCntl'));
@@ -24,6 +24,7 @@ describe('SoundbiteCntl', function() {
         cordovaGeolocation = {};
         cordovaInAppBrowser = {};
         SaveService = {};
+        UploadService = {};
         ionicPopover = {fromTemplateUrl : function(string, obj){
         	var deferred = $q.defer();
         	return deferred.promise;
@@ -50,7 +51,9 @@ describe('SoundbiteCntl', function() {
 										$cordovaInAppBrowser: cordovaInAppBrowser,
 										$ionicPopover: ionicPopover,
 										SaveService: SaveService,
-										DatabaseService: DatabaseService});
+										DatabaseService: DatabaseService,
+										UploadService: UploadService
+									});
 	}));
 
 	//These are our actual unit tests

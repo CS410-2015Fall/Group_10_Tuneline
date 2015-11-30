@@ -1,89 +1,66 @@
 <ion-view view-title="Tuneline">
   <ion-content class="padding">
-    number of soundbites: {{soundbites.length}}
  <ion-refresher pulling-text="Pull to refresh" on-refresh="doRefresh()">
-    </ion-refresher>
-      <ion-list>
-      <ion-item ng-repeat="todo in todos">{{todo.name}}</ion-item>
-    </ion-list> 
+ </ion-refresher>
 
-    <div class="list">
-      <a class="item item-icon-right" ng-repeat="soundbite in soundbites" href='#/tab/tuneline/{{soundbite.id}}'>
-        {{soundbite.name}}
-        <i class="icon ion-chevron-right icon-accessory"></i>
-      </a>
-    </div>
-
-
-
-<div class="list verticalLine">
-
-    <a class="item item-avatar" ng-repeat="soundbite in soundbites" href='#/tab/tuneline/{{soundbite.id}}'>
-    <!-- <p id="tlcircle"></p> -->
-      <img src="http://ionicframework.com/img/docs/spengler.jpg">
-      <h2>{{soundbite.name}}</h2>
-      <p>{{soundbite.datetime | date:'EEE, MMM d yyyy'}}</p>
-      <p>{{ date_expression | date : format : timezone}}</p>
-    </a>
-
-
-
-
-<div class="row" ng-repeat="soundbite in soundbites" >
-  <div class="col" style="border-right: solid #4a87ee;">
-  <div class="card" style="outline: #4a87ee;" href='#/tab/tuneline/{{soundbite.id}}'>
-  <div class="item item-positive item-text-wrap" style="margin: -10px" >{{soundbite.datetime | date:'EEE d'}}</div>
-</div>
-
-  </div>
-  <div class="col col-80" style="border-left: thick solid #4a87ee;">
-  <a href='#/tab/tuneline/{{soundbite.id}}' style="text-decoration: none;"><div class="card">
-  <div class="item item-text-wrap" >
-       <h2>{{soundbite.name}}</h2>
-  </div>
-</div>
-  </div>
-</div>
-
-  </div>
 
 <div class="row">
+
   <div class="col">
   <div class="card">
-  <div class="item item-text-wrap">asdfds fsdf </div>
-</div>
-
+    <div class="item item-positive" 
+          style="margin:-10px; font-size:85%;"> 
+          Today
+    </div>
   </div>
+  </div>
+
   <div class="col col-80">
-  <div class="card">
-  <div class="item item-text-wrap">
-    This is a basic Card which contains an item that has wrapping text.
-  </div>
-</div>
-  </div>
-</div>
-
-<div class="row responsive-sm">
-  <div class="col">
-  <div class="card">
-  <div class="item item-text-wrap">
-    This is a basic Card which contains an item that has wrapping text.
-  </div>
-</div>
-    <a class="item item-avatar" href="#">
-      <img src="http://ionicframework.com/img/docs/spengler.jpg">
-      <h2>Venksdfdsman</h2>
-      <p>Back off, man. I'm a scientist.</p>
+    <a href='#/tab/soundbite'
+        style="text-decoration: none;">
+    <div class="card">
+      <div class="item item-text-wrap" >
+        <h2 style="color: #ef473a;">New soundbite...</h2>
+      </div>
+    </div>
     </a>
+  </div>
+
+</div>
+
+ <!-- style="color: #ef473a;" -->
+<div class="row" ng-repeat="soundbite in soundbites" >
+
+  <div class="col" style="border-right: solid #4a87ee;">
+  <div class="card">
+    <div class="item item-positive item-text-wrap" 
+          style="margin:-10px; font-size:85%;">
+          {{soundbite.datetime | date:'EEE d'}}
+    </div>
+  </div>
+  </div>
+
+  <div class="col col-80">
+    <a href='#/tab/tuneline/{{soundbite.id}}'
+        style="text-decoration: none;">
+    <div class="card">
+      <div class="item item-text-wrap" >
+        <h2>{{soundbite.name}}</h2>
+      </div>
+    </div>
+    </a>
+  </div>
+</div>
+   
 
 
-<ion-list>
+<!-- <ion-list>
   <ion-item ng-repeat="item in items track by $index" class="item-avatar">
     <img src="http://ionicframework.com/img/docs/spengler.jpg"
     <p>{{item}}</p>
   </ion-item>
   <ion-infinite-scroll on-infinite="addMoreSoundbites()"></ion-infinite-scroll>
-</ion-list>
+</ion-list> -->
   
   </ion-content>
 </ion-view>

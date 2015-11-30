@@ -1,24 +1,70 @@
 angular.module('tunelineCntl', [])
 
-.controller('TunelineCntl', ['$scope', 'DatabaseService', 'TunelineService', TunelineCntl]);
+.controller('TunelineCntl', ['$scope', 'DatabaseService', TunelineCntl]);
 
-function TunelineCntl($scope, DatabaseService, TunelineService) {
-	console.log("******************** in  TunelineCntl");
+function TunelineCntl($scope, DatabaseService) {
+    console.log("******************** in  TunelineCntl");
+
+    $scope.showAlert = function() {
+    alert("show");
+};
+
+// $scope.showFilterBar = function () {
+//       filterBarInstance = $ionicFilterBar.show({
+//         items: items,
+//         update: function (filteredItems) {
+//           items = filteredItems;
+//         },
+//         filterProperties: 'description'
+//       });
+//     };
+    $scope.selectItem = "nulls";
+
+    $scope.filterKey = {
+        name:  null,
+        date: null,
+        tags: null,
+        location: null
+    }
+    // $scope.foo = null;
+    $scope.doSomething = function () {
+        console.log("Hello, " + $scope.filterKey.name);
+        console.log("*****************scope.soundbites = " + JSON.stringify($scope.soundbites));
+
+    var matchFound = false;
+    var newSoundbitesList = [];
+    for (var i = 0, len = $scope.soundbites.length; i < len; i++)
+    {
+        matchFound = $scope.soundbites[i].name == $scope.filterKey.name;
+        if(matchFound){
+
+            console.log("*****************MATCH!");
+            newSoundbitesList.push($scope.soundbites[i]);
+            break;
+        }
+    }
+
+    $scope.soundbites = newSoundbitesList;  
+
+    }
+
+
+
 
     $scope.soundbites = [];
 
-	var soundbitesCallback = function(result){
-		console.log("*****************result = " + JSON.stringify(result));
-		$scope.soundbites = result;
-	};
+    var soundbitesCallback = function(result){
+        // console.log("*****************result = " + JSON.stringify(result));
+        $scope.soundbites = result;
+    };
 
     $scope.getSoundbites = function () {
         DatabaseService.getSounds(soundbitesCallback);
-        console.log("*****************scope.soundbites = " + JSON.stringify($scope.soundbites));
+        // console.log("*****************scope.soundbites = " + JSON.stringify($scope.soundbites));
     };
 
-	// Fetch from DB
-	$scope.getSoundbites();
+    // Fetch from DB
+    $scope.getSoundbites();
 
 
   // For infinite list
@@ -26,7 +72,7 @@ function TunelineCntl($scope, DatabaseService, TunelineService) {
     $scope.items = []
     $scope.addMoreSoundbites = function() {
         for (var i = currentStart; i < currentStart+20; i++) {
-        	$scope.items.push({});
+            $scope.items.push({});
         }
         currentStart += 20
     };

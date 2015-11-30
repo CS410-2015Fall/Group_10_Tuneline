@@ -24,11 +24,20 @@ describe('SoundbiteCntl', function() {
         cordovaGeolocation = {};
         cordovaInAppBrowser = {};
         SaveService = {};
-        ionicPopover = {fromTemplateUrl : function(){
+        ionicPopover = {fromTemplateUrl : function(string, obj){
         	var deferred = $q.defer();
         	return deferred.promise;
         }};
-        DatabaseService = {getSoundsById:function(){}};
+
+        DatabaseService = {
+        	getSoundsById: function(){},
+        	saveSoundToPlaylist: function(){},
+        	savePlaylist: function(name){return name;},
+        	getPlaylists: function(cb){
+        		cb('1');
+        	},
+        	removePlaylist: function(){}
+    	};
 
         //Create our controller and inject the services
 		controller = $controller('SoundbiteCntl', {
@@ -110,6 +119,71 @@ describe('SoundbiteCntl', function() {
 		scope.resetMedia();
 		expect(scope.mediaStatus).toBe(4);
 		expect(scope.mediaObject).toBe(null);
+	});
+
+	it('$scope.toggleDeletePlaylist', function(){
+		expect(scope.showDeletePlaylist).toBe(false);		
+		scope.toggleDeletePlaylist();
+		expect(scope.showDeletePlaylist).toBe(true);
+		scope.toggleDeletePlaylist();
+		expect(scope.showDeletePlaylist).toBe(false);
+	});
+
+	it('$scope.openAddToPlaylist', function(){
+		scope.popoverAdd = {
+        		show: function(event){},
+        		hide: function(){}
+        	};		
+		scope.openAddToPlaylist();
+	});
+
+	it('$scope.closeAddToPlaylist', function(){
+		scope.popoverAdd = {
+        		show: function(event){},
+        		hide: function(){}
+        	};
+		scope.showDeletePlaylist = true;
+		scope.closeAddToPlaylist();
+		expect(scope.showDeletePlaylist).toBe(false);
+	});
+
+	it('$scope.saveToPlaylist', function(){
+		scope.popoverAdd = {
+        		show: function(event){},
+        		hide: function(){}
+        	};
+        scope.playlistId = {selected: 5};
+		scope.showDeletePlaylist = true;
+		scope.saveToPlaylist();
+		expect(scope.showDeletePlaylist).toBe(false);
+		expect(scope.playlistId.selected).toBe('');
+	});
+
+	it('$scope.openCreatePlaylist', function(){
+		scope.popoverCreate = {
+        		show: function(event){},
+        		hide: function(){}
+        	};
+		scope.openCreatePlaylist();
+	});
+
+	it('$scope.createPlaylist', function(){
+		scope.popoverCreate = {
+        		show: function(event){},
+        		hide: function(){}
+        	};
+        scope.popoverAdd = {
+        		show: function(event){},
+        		hide: function(){}
+        	};
+        scope.newPlaylist.name = 'test name'
+		scope.createPlaylist();
+		expect(scope.playlists).toBe('1');
+		expect(scope.newPlaylist.name).toBe('');
+	});
+
+	it('$scope.deletePlaylist', function(){		
+		scope.deletePlaylist();
 	});
 
 });

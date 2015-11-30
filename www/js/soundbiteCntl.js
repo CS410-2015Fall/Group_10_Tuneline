@@ -251,6 +251,7 @@ angular.module('soundbiteCntl', [])
     DatabaseService.saveSoundToPlaylist(parseInt($scope.soundbiteObj.id), parseInt($scope.playlistId.selected),function(results){});
     $scope.popoverAdd.hide();
     $scope.playlistId = {selected: ''};
+    $scope.showDeletePlaylist = false;
   };
 
   $scope.openCreatePlaylist = function($event){

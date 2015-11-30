@@ -2,8 +2,8 @@ angular.module('soundbiteCntl', [])
 
 .controller('SoundbiteCntl', function($scope, $rootScope, $stateParams, $interval,
                                          $cordovaDevice, $cordovaFile, $cordovaMedia, 
-                                         $cordovaGeolocation, $cordovaInAppBrowser, $location,  
-                                        SaveService,DatabaseService) {
+                                         $cordovaGeolocation, $cordovaInAppBrowser, $location,
+                                         $ionicPopover, $ionicListDelegate, SaveService,DatabaseService) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -234,6 +234,65 @@ angular.module('soundbiteCntl', [])
     $cordovaInAppBrowser.open(targetUrl,'_blank',{});
   };
 
+
+  $scope.playlists = [];
+  $scope.openAddToPlaylist = function($event){
+    $scope.popoverAdd.show($event);
+  };
+
+  $scope.closeAddToPlaylist = function(){
+    $scope.popoverAdd.hide();
+    $scope.showDeletePlaylist = false;
+  };
+
+  $scope.playlistId = {selected: ''};
+  $scope.saveToPlaylist = function(sid,pid){
+    console.log(sid+' : '+pid);
+    DatabaseService.saveSoundToPlaylist(parseInt($scope.soundbiteObj.id), parseInt($scope.playlistId.selected),function(results){});
+  };
+
+  $scope.openCreatePlaylist = function($event){
+    $scope.popoverCreate.show($event);
+  };
+
+  $scope.closeCreatePlaylist = function(){
+    $scope.popoverCreate.hide();
+  };
+
+  $scope.newPlaylist = {name:''};
+  $scope.createPlaylist = function(){
+    console.log($scope.newPlaylist.name);
+    DatabaseService.savePlaylist({name: $scope.newPlaylist.name});
+    $scope.popoverCreate.hide();
+    $scope.popoverAdd.hide();
+    DatabaseService.getPlaylists(function(results){
+      $scope.playlists = results;
+    });
+    $scope.newPlaylist.name = '';
+  };
+
+  $scope.shareFacebook = function(){
+
+  };
+
+  $scope.showDeletePlaylist = false;
+  $scope.toggleDeletePlaylist = function(){
+    if($scope.showDeletePlaylist){
+      $scope.showDeletePlaylist = false;
+    } else{
+      $scope.showDeletePlaylist = true;
+    }
+  };
+
+  $scope.deletePlaylist = function(pid){
+    console.log(pid);
+    DatabaseService.removePlaylist(pid, function(results){
+      DatabaseService.getPlaylists(function(results){
+        $scope.playlists = results;
+      });
+    });
+  };
+
   $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event){
     // insert Javascript via code / file
     $cordovaInAppBrowser.executeScript({
@@ -245,21 +304,41 @@ angular.module('soundbiteCntl', [])
   var fillUrl = function(siteUrl){
     $scope.soundbiteObj.url = siteUrl;
     console.log('*****************Site url:'+siteUrl);
-  };
+  };  
 
-  $scope.getGpsLocation();
-
-  if($scope.soundbiteId){
-    DatabaseService.getSoundsById($scope.soundbiteId, function(results){
-      if(results && results.length > 0){
-        console.log('*****************SINGLE SOUNDBITE:'+JSON.stringify(results));
-          console.log('*****************SINGLE SOUNDBITE:'+JSON.stringify(results[0].url));
-        $scope.soundbiteObj = results[0];
-        if($scope.soundbiteObj.fileName !== 'undefined'){
-          $scope.initPlayer($scope.soundbiteObj.fileName);
-        }
-      }      
-    });
+  var getCurrentSoundbite = function(results){
+    console.log('TESTING*************************************************'+results.length);
+    if(results && results.length > 0){
+      console.log('*****************SINGLE SOUNDBITE:'+JSON.stringify(results[0]));
+      $scope.soundbiteObj = {};
+      $scope.soundbiteObj = results[0];
+      if($scope.soundbiteObj.fileName !== 'undefined'){
+        $scope.initPlayer($scope.soundbiteObj.fileName);
+      }
+    }      
   }
 
+  if($scope.soundbiteId){
+    DatabaseService.getSoundsById(parseInt($scope.soundbiteId), getCurrentSoundbite);
+    console.log('TESTING***********************************');
+  }
+
+  $ionicPopover.fromTemplateUrl('playlist.html', {
+    scope: $scope
+  }).then(function(popover) {
+    $scope.popoverAdd = popover;
+    DatabaseService.getPlaylists(function(results){
+      //console.log('Playlists: ' + JSON.stringify(results));
+      $scope.playlists = results;
+    });
+  });
+
+  $ionicPopover.fromTemplateUrl('createPlaylist.html', {
+    scope: $scope
+  }).then(function(popover) {
+    $scope.popoverCreate = popover;
+  });
+
+  $scope.getGpsLocation();
 });
+  

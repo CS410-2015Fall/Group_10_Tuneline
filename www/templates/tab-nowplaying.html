@@ -1,20 +1,20 @@
 <ion-view view-title="Now Playing">
   <ion-content>
+  <div class="button-bar">
+    <a class="button icon-left ion-social-facebook button-positive" ng-click="shareFacebook()">Share</a>
+    <a class="button icon-left ion-plus-round button-dark" ng-click="openAddToPlaylist($event)">Add to Playlist</a>
+  </div>
     <div class="row">
       <div class="col" style="text-align: center;">
-        <h1>{{soundbiteObj.name}}</h1>        
+        <h1>{{soundbiteObj.name}}</h1>
+        <h5>{{ soundbiteObj.datetime | date : 'MMMM d, yyyy, h:mm a' }}</h5>    
       </div>
     </div>
-
-
     <div class="row" ng-if="soundbiteObj.url !== 'http://'">
       <div class="col" style="text-align: center;">
         <youtube-video video-url="soundbiteObj.url" player-width="'100%'"></youtube-video>
       </div>
     </div>
-
-
-
     <div class="row" ng-show="soundbiteObj.fileName != 'undefined'">
       <div class="col" style="text-align: center;">
         <div class="item range">
@@ -36,3 +36,55 @@
     </div>
   </ion-content>
 </ion-view>
+
+<!--Code for playlist popups-->
+<script id="playlist.html" type="text/ng-template">
+  <ion-popover-view>    
+    <ion-header-bar class="bar-calm">
+      <h1 class="title">Add To Playlist</h1>
+    </ion-header-bar>
+    <ion-footer-bar>
+      <button class="button button-assertive" ng-click="closeAddToPlaylist()">Cancel</button>
+      <button class="button button-balanced" ng-click="saveToPlaylist(soundbiteObj.id,playlistId.selected)">Add...</button>
+    </ion-footer-bar>
+    <ion-content>
+      <div class="list">
+        <a class="item item-icon-left" href="#" ng-click="openCreatePlaylist($event)">
+          <i class="icon ion-plus-round"></i>
+          Create Playlist
+        </a>
+        <label class="item item-radio" ng-repeat="pl in playlists | orderBy:name">
+          <input type="radio" ng-value="pl.pid" name="playlistId" ng-model="playlistId.selected"/>
+          <div class="item-content radio-content">
+            <span>{{pl.name}}</span>
+            <i class="radio-icon ion-checkmark"></i>
+          </div>
+          
+        </label>
+      </div>
+    </ion-content>
+  </ion-popover-view>
+</script>
+<script id="createPlaylist.html" type="text/ng-template">
+  <ion-popover-view>
+    <ion-header-bar class="bar-balanced">
+      <h1 class="title">Create New Playlist</h1>
+    </ion-header-bar>
+    <ion-content>    
+      <div class="list">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Enter Playlist Name</span>
+          <input type="text" ng-model="newPlaylist.name" placeholder="Name..."/>
+        </label>
+      </div>
+    </ion-content>
+    <ion-footer-bar>
+      <button class="button button-assertive" ng-click="closeCreatePlaylist()">Cancel</button>
+
+      <button class="button button-balanced" ng-click="createPlaylist()">Create</button>
+    </ion-footer-bar>
+    
+  </ion-popover-view>
+</script>
+
+

@@ -78,6 +78,10 @@ angular.module('databaseService', ['databaseConfig'])
 
     return {
 
+        getFriends: function(cb) {
+            query("SELECT * from Friends", [], cb, errorCB);
+        },
+
         getMyId: function(cb) {
             query("SELECT id FROM UserInfo", [], cb, errorCB);
         },
@@ -137,6 +141,16 @@ angular.module('databaseService', ['databaseConfig'])
             var timestamp = Math.round(jsonObj.datetime.getTime());
             var time = datetime.getHours()+datetime.getMinutes();
             query("INSERT INTO Soundbites (type,name,datetime,fileName,url,tags,photo,author,position,dayofweek,timeofday,mediaLength) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", [jsonObj.type, jsonObj.name, timestamp, jsonObj.fileName, jsonObj.url, jsonObj.tags, jsonObj.photo, jsonObj.author, JSON.stringify(jsonObj.position), day, time, jsonObj.mediaLength], successCB, errorCB)
+        },
+
+        saveSyncable: function(friends) {
+            for (var i=0; i<friends.length; i++) {
+                query("UPDATE Friends SET doSync=1 WHERE id='?'", [friends[i]['id']], successCB, errorCB);
+            }
+        },
+
+        saveURL: function(id, url) {
+            query("UPDATE Soundbites SET url='?' WHERE id='?'", [url, id], successCB, errorCB);
         },
 
         saveUser: function(id, name) {

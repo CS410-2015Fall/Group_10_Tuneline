@@ -95,6 +95,7 @@ angular.module('profileCntl', [])
         	//	format: [{"id":"10153748096834287","name":"Ben Nguyen"}, {...}, ...]
         	var syncList = result.data;
         	// todo: populate friend db
+        	DatabaseService.saveSyncable(syncList);
         });
 	};
 

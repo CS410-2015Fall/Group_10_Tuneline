@@ -78,6 +78,10 @@ angular.module('databaseService', ['databaseConfig'])
 
     return {
 
+        getMyId: function(cb) {
+            query("SELECT id FROM UserInfo", [], cb, errorCB);
+        },
+
         getPlaylists: function(cb) {
             query("SELECT * FROM Playlists ORDER BY name ASC", [], cb, errorCB);
         },

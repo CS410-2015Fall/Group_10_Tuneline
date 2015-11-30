@@ -315,8 +315,11 @@ angular.module('soundbiteCntl', [])
       console.log('*****************SINGLE SOUNDBITE:'+JSON.stringify(results[0]));
       $scope.soundbiteObj = {};
       $scope.soundbiteObj = results[0];
-      if($scope.soundbiteObj.fileName !== 'undefined'){
+      
+      if($scope.soundbiteObj.fileName && ($scope.soundbiteObj.fileName !== 'undefined')){
         $scope.initPlayer($scope.soundbiteObj.fileName);
+      } else if($scope.soundbiteObj.filename && ($scope.soundbiteObj.filename !== 'undefined')){
+        $scope.initPlayer($scope.soundbiteObj.filename);
       }
     }      
   }

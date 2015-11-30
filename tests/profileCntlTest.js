@@ -5,7 +5,7 @@ describe('ProfileCntl', function() {
 	var controller;
 
 	//These will be used to hold the mock services that we will inject into the cntl
-	var scope, cordovaFacebook, http, DatabaseService;
+	var scope, cordovaFacebook, http, DatabaseService, UploadService;
 
     //Before each test, load our module
     beforeEach(module('profileCntl'));
@@ -22,12 +22,16 @@ describe('ProfileCntl', function() {
 			saveUser: function(){}
 		};
 
+		UploadService = {};
+
         //Create our controller and inject the services
 		controller = $controller('ProfileCntl', {
 										$scope: scope,
 										$cordovaFacebook: cordovaFacebook,
 										$http: http,
-										DatabaseService: DatabaseService});
+										DatabaseService: DatabaseService,
+										UploadService: UploadService
+									});
 	}));
 
 	//These are our actual unit tests

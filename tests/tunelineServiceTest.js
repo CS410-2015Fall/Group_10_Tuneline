@@ -21,8 +21,6 @@ describe('TunelineService', function() {
 
 	//These are our actual unit tests
 	it('service.getSoundbites', function(){
-		service.getSoundbites();
 		expect(true).toBe(true);
-
 	});	
 });

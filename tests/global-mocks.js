@@ -134,3 +134,7 @@ camera.cleanup = function (successCallback, errorCallback) {
 
 window.navigator.camera = camera;
 window.Camera = Camera;
+
+var Ionic = {
+
+};

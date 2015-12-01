@@ -1,5 +1,9 @@
-<ion-view view-title="James Crofton's Tuneline">
+<ion-view view-title="{{name}}'s Tuneline">
   <ion-content>
+
+<audio id="audioPlayer">
+  	<source src="" type="audio/mp3" ui-event="{ ended : 'pauseStatus()'}" id="audioSource">
+</audio>
 
 <div class="row" ng-repeat="soundbite in soundbites" >
 
@@ -12,25 +16,20 @@
   </div>
   </div>
 
-  <audio id="audioPlayer">
-  	<source src="http://159.203.246.24/sb/test-short.mp3" type="audio/mp3" ui-event="{ ended : 'pauseStatus()'}">
-  </audio>
-
   <div class="col col-80">
     <a style="text-decoration: none;">
     <div class="card">
       <div class="item item-text-wrap item-icon-right">
         <h2>{{soundbite.name}}</h2>
-        <div ng-if="soundbite.url != ''">
-	        <i class="icon ion-play" ng-click="togglePlaying(soundbite.id)" ng-if="currentPlayingStatus == 'paused' || nowPlaying != soundbite.id"></i>
+        <div ng-if="soundbite.mp3url != '' && !soundbite.mp3url">
+	        <i class="icon ion-play" id="{{soundbite.id}}" data-url="{{soundbite.mp3url}}" ng-click="togglePlaying(soundbite.id)" ng-if="currentPlayingStatus == 'paused' || nowPlaying != soundbite.id"></i>
 	        <i class="icon ion-pause" ng-click="togglePause()" ng-if="currentPlayingStatus == 'playing' && nowPlaying == soundbite.id"></i>
 	    </div>
-	    	
+
       </div>
     </div>
     </a>
   </div>
 </div>
-
   </ion-content>
 </ion-view>

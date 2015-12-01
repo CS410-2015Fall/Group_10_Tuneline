@@ -1,8 +1,9 @@
 <ion-view view-title="Now Playing">
   <ion-content>
   <div class="button-bar">
-    <a class="button icon-left ion-social-facebook button-positive" ng-click="shareFacebook(soundbiteObj.fileName)">Share</a>
-    <a class="button icon-left ion-plus button-dark" ng-click="openAddToPlaylist($event)">Add to Playlist</a>
+    <a class="button icon-left ion-social-facebook button-positive" ng-click="shareFacebook(soundbiteObj.fileName,soundbiteObj.id)">Share</a>
+    <a class="button icon-left ion-android-upload" ng-click="uploadFile(soundbiteObj.fileName,soundbiteObj.id)">Upload</a>
+    <a class="button icon-left ion-plus button-dark" ng-click="openAddToPlaylist($event)">Playlist</a>
   </div>
     <div class="row">
       <div class="col" style="text-align: center;">

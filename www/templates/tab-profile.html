@@ -16,12 +16,11 @@
 	    	<i class="icon ion-social-facebook"></i>
 	    	Logged in as: {{fullName}}
 	    </a>
-	    <a class="item item-icon-left item-icon-right" href="#/tab/profile/friends" ng-show="user.id != null">
+	    <a class="item item-icon-left item-icon-right" href="#/tab/profile/friends" ng-show="user.id != null" ng-click="updateFriends()">
 	    	<i class="icon ion-android-contacts"></i>
 	    	Friends
 	    	<i class="icon ion-chevron-right"></i>
 	    </a>
-	    {{result}}
     </ion-list>
   </ion-content>
 </ion-view>

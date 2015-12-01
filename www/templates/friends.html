@@ -1,7 +1,7 @@
 <ion-view view-title="Friends">
   <ion-content>
     <ion-list>
-	    <a class="item item-icon-right" href="#/tab/profile/friends/1">
+	    <!-- <a class="item item-icon-right" href="#/tab/profile/friends/1">
 	    	<i></i>
 	    	Anthony Chang
 	    	<i class="icon ion-chevron-right"></i>
@@ -15,7 +15,15 @@
 	    	<i></i>
 	    	Perry Bennet
 	    	<i class="icon ion-chevron-right"></i>
-	    </a>
+	    </a> -->
+
+		<div ng-repeat="f in friends" >
+		    <a class="item item-icon-right" href="#/tab/profile/friends/{{f.id}}/{{f.name}}">
+		    	<i></i>
+		    	{{f.name}}
+		    	<i class="icon ion-chevron-right"></i>
+			</a>  
+		</div>
     </ion-list>
   </ion-content>
 </ion-view>

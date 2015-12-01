@@ -11,6 +11,7 @@ angular.module('databaseConfig', [])
                 {name: 'datetime', type: 'integer'},
                 {name: 'fileName', type: 'text'},
                 {name: 'url', type: 'text'},
+                {name: 'mp3url', type: 'text'},
                 {name: 'tags', type: 'text'},
                 {name: 'photo', type: 'text'},
                 {name: 'author', type: 'text'},

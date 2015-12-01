@@ -22,16 +22,21 @@ angular.module('databaseService', ['databaseConfig'])
         });
     }
 
-    var query = function(query, bindings, callback) {
+    var query = function(query, bindings, callback, errorCallback) {
       bindings = typeof bindings !== 'undefined' ? bindings : [];
       var deferred = $q.defer();
       db.transaction(function(transaction) {
           transaction.executeSql(query, bindings, function(transaction, result) {
               deferred.resolve(result, callback);
               var rows = fetchAll(result);
-              console.log(rows);
-              callback(rows);
+              // console.log("Query result: " + JSON.stringify(rows));
+              if (callback != null) {
+                callback(rows);
+              }
           }, function(transaction, error) {
+              if (errorCallback != null) {
+                errorCallback(transaction, error);
+              }
               deferred.reject(error);
           });
       });
@@ -70,16 +75,29 @@ angular.module('databaseService', ['databaseConfig'])
         console.log("Generic query success");
     }
 
-    var errorCB = function() {
-        console.log("Generic query error");
+    var errorCB = function(tx,e) {
+        console.log("Query error: " + e.message);
     }
 
     init();
 
     return {
 
+        testAdd: function(id,name) {
+            var someErrorCB = function(tx, e) {
+                console.log("error: " + e.message);
+            }
+            console.log("id="+id+", name="+name);
+            query("INSERT INTO Friends ('id','name') VALUES (?,?)", [id, name], successCB, someErrorCB);
+        },
+
         getFriends: function(cb) {
-            query("SELECT * from Friends", [], cb, errorCB);
+            query("SELECT * from Friends ORDER BY name ASC", [], cb, errorCB);
+        },
+
+        getFriendSoundbites: function(id, cb) {
+            console.log("Getting friend soundbites: id="+id);
+            query("SELECT data FROM Friends WHERE id=?", [id], cb);
         },
 
         getMyId: function(cb) {
@@ -121,15 +139,37 @@ angular.module('databaseService', ['databaseConfig'])
         },
 
         saveFriends: function(friends) {
-            for (var i=0; i<friends.length; i++) {
-                query("INSERT INTO Friends (id,name) VALUES ('?','?') ON DUPLICATE KEY UPDATE name = VALUES(name)", [friends[i]['id'], friends[i]['name']]);
+            console.log("SAVING FRIENDS TO DATABASE");
+            var friendCB = function(tx, results) {
+                console.log("ADDED FRIENDS TO DATABASE: tx=" + tx + "   results=" + results);
             }
+            var someError = function(tx, e) {
+                console.log("e=" + e.message);
+            }
+            console.log(JSON.stringify(friends));
+            for (var i=0; i<friends.length; i++) {
+                console.log("id="+friends[i].id + "  name=" + friends[i].name);
+                query("INSERT OR IGNORE INTO Friends (id,name,doSync) VALUES (?,?,0)", [friends[i].id, friends[i].name], friendCB, someError);
+                query("UPDATE Friends SET name=? WHERE id=?", [friends[i].name, friends[i].id], friendCB, someError);
+                
+            }
+        },
+
+        saveFriendSoundbites: function(id, meta) {
+            query("UPDATE Friends SET data=? WHERE id=?", [JSON.stringify(meta), id], successCB, errorCB);
         },
 
         saveFriendsSyncStatus: function(friends) {
             for (var i=0; i<friends.length; i++) {
-                query("INSERT INTO Friends (id,name,doSync) VALUES ('?','?','?') ON DUPLICATE KEY UPDATE name = VALUES(name), doSync = VALUES(doSync)", [friends[i]['id'], friends[i]['name'], 1]);
+                //TODO CHANGE THIS LIKE SAVEFRIENDS
+                query("INSERT INTO Friends (id,name,doSync) VALUES (?,?,?) ON DUPLICATE KEY UPDATE name = VALUES(name), doSync = VALUES(doSync)", [friends[i]['id'], friends[i]['name'], 1]);
+                query("UPDATE Friends SET doSync=1 WHERE id=?", [friends[i].id], successCB, errorCB);
             }
+        },
+
+        saveMP3URL: function(sbid, url) {
+            query("UPDATE Soundbites SET mp3url='?' WHERE id=?", [url,sbid], successCB, errorCB);
+            console.log("MP3 URL: " + url);
         },
 
         saveSound: function(jsonObj) { //public

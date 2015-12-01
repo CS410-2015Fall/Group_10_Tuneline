@@ -56,6 +56,8 @@ function TunelineCntl($scope, DatabaseService) {
     var soundbitesCallback = function(result){
         // console.log("*****************result = " + JSON.stringify(result));
         $scope.soundbites = result;
+        // force redraw of the view
+        $scope.$apply();
     };
 
     $scope.getSoundbites = function () {

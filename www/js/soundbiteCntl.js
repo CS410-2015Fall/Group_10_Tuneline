@@ -276,7 +276,7 @@ angular.module('soundbiteCntl', [])
     $scope.newPlaylist.name = '';
   };
 
-  $scope.shareFacebook = function(fullPath){
+  $scope.shareFacebook = function(fullPath,sbId){
     var options = {
       method: "feed",
       link: "http://159.203.246.24/sb/",
@@ -290,7 +290,7 @@ angular.module('soundbiteCntl', [])
         if(fullPath && typeof(fullPath) == 'string'){
           var file = fullPath.split("/").pop();
           file = file.split('.')[0] + '.mp3';
-          UploadService.uploadFile(fullPath,results[0].id);
+          UploadService.uploadFile(fullPath,results[0].id,sbId);
           options.link = options.link + results[0].id + file;
         } else{
           options.link = '';
@@ -306,6 +306,18 @@ angular.module('soundbiteCntl', [])
         });
       }
     });
+  };
+
+  $scope.uploadFile = function(fullPath,sbId) {
+    DatabaseService.getMyId(function(results){
+      if(results.length > 0){
+        if(fullPath && typeof(fullPath) == 'string'){
+          UploadService.uploadFile(fullPath,results[0].id,sbId);
+        }
+      }
+      
+    });
+    
   };
 
   $scope.showDeletePlaylist = false;

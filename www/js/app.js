@@ -107,8 +107,8 @@ angular.module('starter', ['ionic','ionic.service.core', 'ngCordova',
   })
 
   .state('tab.syncTuneline', {
-    // url: '/profile/friends/:friendId',
-    url: '/profile/friends/1',
+    url: '/profile/friends/:fbId/:fName',
+    // url: '/profile/friends/1',
     views: {
       'tab-profile': {
         templateUrl: 'templates/friends-tuneline.html',

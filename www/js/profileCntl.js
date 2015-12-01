@@ -11,10 +11,12 @@ angular.module('profileCntl', [])
 	$scope.sync = null;
 
   	var userCB = function(result) {
-  		$scope.fullName = result[0]['name'];
-  		$scope.fbId = result[0]['id'];
-  		$scope.sync = (result[0]['doSync'] == 1) ? true : false;
-  		$scope.$apply();
+  		if (result.length > 0) {
+  			$scope.fullName = result[0]['name'];
+	  		$scope.fbId = result[0]['id'];
+	  		$scope.sync = (result[0]['doSync'] == 1) ? true : false;
+	  		$scope.$apply();
+	  	}
   	}
   	DatabaseService.getUser(userCB);
   	$scope.user = Ionic.User.current();
@@ -76,7 +78,7 @@ angular.module('profileCntl', [])
 				// should return friend data from server for which theyre syncing with
             	//	format: [{"id":"10153748096834287","name":"Ben Nguyen"}, {...}, ...]
             	var syncList = result.data;
-            	// todo: populate friend db
+            	DatabaseService.saveSyncable(syncList);
 
             });
 		}, function(error) {
@@ -129,11 +131,16 @@ angular.module('profileCntl', [])
 		DatabaseService.updateSync(bool,$scope.fbId);
 		if (bool) {
 			// if sync is true, upload our metadata
+			console.log("Uploading metadata");
 			UploadService.uploadMetadata($scope.fbId);
 		}
 	};
 
 	$scope.forceSync = function() {
 		UploadService.uploadMetadata($scope.fbId);
-	}
+	};
+
+    $scope.test = function() {
+        
+    }
 });

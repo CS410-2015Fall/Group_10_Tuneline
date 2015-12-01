@@ -102,9 +102,5 @@ angular.module('friendsCntl', [])
         srcElement.src = url;
     }
 
-    $scope.test = function() {
-        alert($scope.soundbites);
-    }
-
     init();
 });

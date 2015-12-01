@@ -140,7 +140,4 @@ angular.module('profileCntl', [])
 		UploadService.uploadMetadata($scope.fbId);
 	};
 
-    $scope.test = function() {
-        
-    }
 });

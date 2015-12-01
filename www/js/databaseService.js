@@ -83,14 +83,6 @@ angular.module('databaseService', ['databaseConfig'])
 
     return {
 
-        testAdd: function(id,name) {
-            var someErrorCB = function(tx, e) {
-                console.log("error: " + e.message);
-            }
-            console.log("id="+id+", name="+name);
-            query("INSERT INTO Friends ('id','name') VALUES (?,?)", [id, name], successCB, someErrorCB);
-        },
-
         getFriends: function(cb) {
             query("SELECT * from Friends ORDER BY name ASC", [], cb, errorCB);
         },

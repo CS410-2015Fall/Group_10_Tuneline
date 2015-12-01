@@ -119,7 +119,7 @@ angular.module('databaseService', ['databaseConfig'])
         },
 
         getSoundsNoPic: function(cb) {
-            query("SELECT name,datetime,fileName,url,tags,author,position,dayofweek,timeofday,mediaLength FROM Soundbites ORDER BY datetime DESC", [], cb, errorCB);  
+            query("SELECT id,name,datetime,fileName,url,tags,author,position,dayofweek,timeofday,mediaLength,mp3url FROM Soundbites ORDER BY datetime DESC", [], cb, errorCB);  
         },
 
         getSoundsById: function(id, cb) {
@@ -168,7 +168,7 @@ angular.module('databaseService', ['databaseConfig'])
         },
 
         saveMP3URL: function(sbid, url) {
-            query("UPDATE Soundbites SET mp3url='?' WHERE id=?", [url,sbid], successCB, errorCB);
+            query("UPDATE Soundbites SET mp3url=? WHERE id=?", [url,sbid], successCB, errorCB);
             console.log("MP3 URL: " + url);
         },
 

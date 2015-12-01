@@ -68,9 +68,16 @@ angular.module('friendsCntl', [])
     $scope.currentPlayingStatus = "paused";
     $scope.nowPlaying = null;
 
-    $scope.pauseStatus = function() {
-        $scope.currentPlayingStatus = "paused";
-        $scope.nowPlaying = null;
+    var init = function() {
+        var player = document.querySelector('#audioPlayer');
+        if (player!= null) {
+            player.onended = function() {
+                // alert("soundbite ended");
+                $scope.currentPlayingStatus = "paused";
+                $scope.nowPlaying = null;
+                $scope.$apply();
+            };
+        }
     }
 
     $scope.togglePause = function() {
@@ -81,19 +88,17 @@ angular.module('friendsCntl', [])
     }
 
     $scope.togglePlaying = function(id) {
-        alert("id="+id);
-        $scope.nowPlaying = id;
-        var sbElement = document.querySelector('#'+id);
+        var sbElement = document.querySelector('#sb'+id);
         var url = sbElement.getAttribute('data-url')
-        alert(url);
         $scope.updateSource(url);
         var playerElement = document.querySelector('#audioPlayer');
         playerElement.play();
+        $scope.nowPlaying = id;
         $scope.currentPlayingStatus = "playing";
     }
 
     $scope.updateSource = function(url) {
-        var srcElement = document.querySelector('#audioSource');
+        var srcElement = document.querySelector('#audioPlayer');
         srcElement.src = url;
     }
 
@@ -101,4 +106,5 @@ angular.module('friendsCntl', [])
         alert($scope.soundbites);
     }
 
+    init();
 });

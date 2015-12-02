@@ -6,7 +6,7 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic','ionic.service.core', 'ngCordova',
-                'tunelineCntl','soundbiteCntl','profileCntl','friendsCntl',
+                'tunelineCntl','soundbiteCntl','profileCntl','friendsCntl','playlistCntl',
                 'tunelineService','profileService','saveService','uploadService',
                 'databaseService','youtube-embed',
                 'metaDataFormProvider'])
@@ -62,6 +62,26 @@ angular.module('starter', ['ionic','ionic.service.core', 'ngCordova',
       'tab-tuneline': {
         templateUrl: 'templates/tab-tuneline.html',
         controller: 'TunelineCntl'
+      }
+    }
+  })
+
+  .state('tab.playlist', {
+    url: '/playlists',
+    views: {
+      'tab-tuneline': {
+        templateUrl: 'templates/tab-playlists.html',
+        controller: 'PlaylistCntl'
+      }
+    }
+  })
+
+  .state('tab.playlists', {
+    url: '/playlists/:playlistId',
+    views: {
+      'tab-tuneline': {
+        templateUrl: 'templates/playlist.html',
+        controller: 'PlaylistCntl'
       }
     }
   })

@@ -156,6 +156,15 @@
         "is_top_level": true,
         "variables": {}
     },
+    "com.phonegap.plugins.PushPlugin": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/uofmmike/PushPlugin.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "phonegap-facebook-plugin": {
         "source": {
             "type": "git",
@@ -167,14 +176,5 @@
             "APP_ID": "478785052293233",
             "APP_NAME": "Tuneline"
         }
-    },
-    "com.phonegap.plugins.PushPlugin": {
-        "source": {
-            "type": "git",
-            "url": "https://github.com/uofmmike/PushPlugin.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
     }
 }

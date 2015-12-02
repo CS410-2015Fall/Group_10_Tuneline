@@ -1,0 +1,12 @@
+<ion-view view-title="Playlists">
+  <ion-content>
+  <ion-refresher pulling-text="Pull to refresh" on-refresh="doRefresh()"></ion-refresher>
+	<div class="list">
+	  <a class="item item-icon-left item-icon-right" href="#/tab/tuneline/{{p.id}}" ng-repeat="p in playlist">
+	    <i class="icon ion-ios-musical-note"></i> 
+	    {{p.name}}
+	    <i class="icon ion-ios-arrow-forward"></i>
+	  </a>
+	</div>  
+  </ion-content>
+</ion-view>

@@ -9,44 +9,55 @@
 <!-- <div class="list list-inset">
   <div class="item item-input item-select">
     <i class="icon ion-funnel placeholder-icon"></i>
-    <input type="text" placeholder="Filter">
-    <select ng-model="selectItem">
-      <option selected>Name</option>
-      <option>Date</option>
-      <option>Tags</option>
-      <option>Location</option>
-    </select>
+    <input ng-model="search[option]" type="text" placeholder="Filter">
+    <select ng-model="search[option]" ng-options="option for option in sbProps"></select>
   </div>
 </div> -->
 
+<label>Any: <input ng-model="search.$"></label> <br>
+<label>Name <input ng-model="search.name"></label><br>
+<label>Tags <input ng-model="search.tags"></label><br>
+
+<!-- <label><ion-checkbox ng-model="isChecked">YoutTube</ion-checkbox></label><br>
+</div>
+ -->
 <!-- <label>Search: <input ng-model="searchText"></label>
 <table id="searchTextResults">
   <tr><th>Name</th><th>Phone</th></tr>
-  <tr ng-repeat="friend in friends | filter:searchText">
-    <td>{{friend.name}}</td>
-    <td>{{friend.phone}}</td>
+  <tr ng-repeat="soundbite in soundbites | filter:searchText">
+    <td>{{soundbite.name}}</td>
+    <td>{{soundbite.id}}</td>
   </tr>
 </table>
 <hr>
 <label>Any: <input ng-model="search.$"></label> <br>
 <label>Name only <input ng-model="search.name"></label><br>
-<label>Phone only <input ng-model="search.phone"></label><br>
+<label>Id only <input ng-model="search.phone"></label><br>
 <label>Equality <input type="checkbox" ng-model="strict"></label><br>
 <table id="searchObjResults">
   <tr><th>Name</th><th>Phone</th></tr>
-  <tr ng-repeat="friendObj in friends | filter:search:strict">
-    <td>{{friendObj.name}}</td>
-    <td>{{friendObj.phone}}</td>
-  </tr> -->
-</table>
+  <tr ng-repeat="soundbite in soundbites | filter:search:strict">
+    <td>{{soundbite.name}}</td>
+    <td>{{soundbite.id}}</td>
+  </tr>
+</table> -->
+
+<!-- <label>Search: <input ng-model="searchText"></label>
+<table id="searchTextResults"> -->
+<!--   <tr><th>Name</th><th>Phone</th></tr>
+  <tr ng-repeat="soundbite in soundbites | filter:searchText">
+    <td>{{soundbite.name}}</td>
+    <td>{{soundbite.id}}</td>
+  </tr>
+</table> -->
 
 
-  <div class="list">
+<!--   <div class="list">
     <div class="item item-input">
   <input type="text" ng-model="filterKey.name" placeholder="Filter name" />
   <button class="button  button-outline icon-right ion-funnel button-positive" ng-click="filterSoundbites()">Apply</button>
     </div>
-  </div>
+  </div> -->
 
 <!-- 
     <div class="buttons">
@@ -69,8 +80,8 @@
     <a href='#/tab/soundbite'
         style="text-decoration: none;">
     <div class="card">
-      <div class="item item-text-wrap" >
-        <h2 style="color: #ef473a;">New soundbite...</h2>
+      <div class="item item-text-wrap item-icon-right" >
+        <span>Add Soundbite</span><span class='icon ion-plus-circled': style="color: #ef473a;"></span>
       </div>
     </div>
     </a>
@@ -79,7 +90,7 @@
 </div>
 
  <!-- style="color: #ef473a;" -->
-<div class="row" ng-repeat="soundbite in soundbites" >
+<div class="row" ng-repeat="soundbite in soundbites | filter:search:strict" >
 
   <div class="col" style="border-right: solid #4a87ee;">
   <div class="card">
@@ -94,8 +105,10 @@
     <a href='#/tab/tuneline/{{soundbite.id}}'
         style="text-decoration: none;">
     <div class="card">
-      <div class="item item-text-wrap" >
-        <h2>{{soundbite.name}}</h2>
+      <div class="item item-text-wrap" > 
+        <span ng-class="{'icon icon-right ion-social-youtube': soundbite.url != 'http://', '': soundbite.url == 'http://'}"><span> {{soundbite.name}} </span></span>
+        <!-- <p>{{soundbite.datetime | date:'longDate'}}</p> -->
+        <p class="icon icon-left ion-pricetag" ng-if="soundbite.tags">  {{soundbite.tags}}</p>
       </div>
     </div>
     </a>

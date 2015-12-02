@@ -1,13 +1,43 @@
 angular.module('tunelineCntl', [])
 
+// .filter('upperCase', function() {
+//   return function(input) {
+//     input = input || '';
+//     return input.toUpperCase();
+//   };
+// })
+
+
+
 .controller('TunelineCntl', ['$scope', 'DatabaseService', TunelineCntl]);
 
 function TunelineCntl($scope, DatabaseService) {
     console.log("******************** in  TunelineCntl");
 
     $scope.showAlert = function() {
-    alert("show");
-};
+        alert("show");
+    };
+
+    $scope.urlToggle = false;
+    $scope.$watch('urlToggle', function(){
+        $scope.urlToggleText = $scope.urlToggle ? '' : 'YouTube only';
+    })
+
+    $scope.properties = {};
+    $scope.propertyFilters = [
+    {
+        "Name": "GenderQuestion",
+        "Options": ["$", "name", "tags", "datetime"]},
+    ];
+
+    $scope.sbProps = ["$", "name", "tags", "datetime"];
+
+    $scope.ShowAnswers = function()
+    {
+        console.log($scope.properties);
+    };
+
+
 
 // $scope.showFilterBar = function () {
 //       filterBarInstance = $ionicFilterBar.show({
@@ -125,7 +155,7 @@ function TunelineCntl($scope, DatabaseService) {
 
     $scope.doRefresh = function() {
         console.log("(************** refreshed...");
-        $scope.getSoundbites();    
+        $scope.getSoundbites(); 
         $scope.$broadcast('scroll.refreshComplete'); // Stop the ion-refresher from spinning
         $scope.$apply();
   };
